@@ -23,6 +23,10 @@ public class Amount {
         this.value -= value;
     }
 
+    public boolean gte(Amount other){
+        return this.value >= other.value();
+    }
+
     public int value(){
         return this.value;
     }

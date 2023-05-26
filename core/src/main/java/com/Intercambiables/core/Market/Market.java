@@ -11,5 +11,8 @@ public class Market {
 //    public void publishCard(User publisher, ICard card, ICurrency price){
 //
 //    }
+//    public void doTransaction(ITransaction tran, User interested){
+//
+//    }
 
 }

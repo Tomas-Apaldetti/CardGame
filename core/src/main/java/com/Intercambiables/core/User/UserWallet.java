@@ -31,8 +31,15 @@ public class UserWallet implements IWallet {
             throw new InsufficientMoneyException(ex);
         }
     }
+
+    @Override
+    public boolean hasEnoughFounds(Amount value) {
+        return this.amount.gte(value);
+    }
+
     @Override
     public int money() {
         return this.amount.value();
     }
+
 }
