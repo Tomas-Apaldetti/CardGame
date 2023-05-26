@@ -1,4 +1,4 @@
-package com.Intercambiables.core;
+package com.Intercambiables.core.User;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.Intercambiables.core.DataBase.MemoryDataBase;
-import com.Intercambiables.core.User.Register;
-import com.Intercambiables.core.User.User;
 import com.Intercambiables.core.User.Exceptions.PasswordDoesntMatchException;
 import com.Intercambiables.core.User.Exceptions.UserAlreadyExistsException;
 import com.Intercambiables.core.User.Exceptions.UserDoesntExistException;
