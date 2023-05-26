@@ -16,9 +16,9 @@ public class DeckTest {
     public void createDeck() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        assertEquals(1, usr.getDecks().size());
+        assertEquals(1, usr.getDeckInventory().getDecks().size());
         assertEquals("mazo de test", deck.getDeckName());
     }
 
@@ -26,36 +26,36 @@ public class DeckTest {
     public void createDuplicateDeckFails() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        usr.createDeck("mazo de test");
+        usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.createDeck("mazo de test");
+        usr.getDeckInventory().createDeck("mazo de test");
     }
 
     @Test
     public void createDeckSavePointer() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        assertEquals(deck, usr.getDeck("mazo de test"));
+        assertEquals(deck, usr.getDeckInventory().getDeck("mazo de test"));
     }
 
     @Test(expected = DeckDoesntExistException.class)
     public void nonExistentDeckPointerIsNull() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        usr.getDeck("mazo de test");
+        usr.getDeckInventory().getDeck("mazo de test");
     }
 
     @Test
     public void removeDeck() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.removeDeck("mazo de test");
+        usr.getDeckInventory().removeDeck("mazo de test");
 
-        assertEquals(0, usr.getDecks().size());
+        assertEquals(0, usr.getDeckInventory().getDecks().size());
 
     }
 
@@ -63,41 +63,41 @@ public class DeckTest {
     public void removeNonExistentDeckDoesntFails() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.removeDeck("mazo de test");
+        usr.getDeckInventory().removeDeck("mazo de test");
 
-        usr.removeDeck("mazo de test");
+        usr.getDeckInventory().removeDeck("mazo de test");
 
-        assertEquals(0, usr.getDecks().size());
+        assertEquals(0, usr.getDeckInventory().getDecks().size());
     }
 
     @Test
     public void initialUserDoesntHaveDecks() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        assertEquals(0, usr.getDecks().size());
+        assertEquals(0, usr.getDeckInventory().getDecks().size());
     }
 
     @Test
     public void updateDeck() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.updateDeck("mazo de test", "mazo de test V.2");
+        usr.getDeckInventory().updateDeck("mazo de test", "mazo de test V.2");
 
-        assertEquals(deck, usr.getDeck("mazo de test V.2"));
+        assertEquals(deck, usr.getDeckInventory().getDeck("mazo de test V.2"));
     }
 
     @Test(expected = DeckDoesntExistException.class)
     public void updatedDeckDoesntHaveTheOldNameAnymore() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        IDeck deck = usr.createDeck("mazo de test");
+        IDeck deck = usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.updateDeck("mazo de test", "mazo de test V.2");
+        usr.getDeckInventory().updateDeck("mazo de test", "mazo de test V.2");
 
-        usr.getDeck("mazo de test");
+        usr.getDeckInventory().getDeck("mazo de test");
     }
 }
