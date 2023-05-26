@@ -1,13 +1,14 @@
 package com.Intercambiables.core.User;
 
 import java.util.HashMap;
-
-import org.aspectj.weaver.loadtime.definition.Definition.DeclareAnnotationKind;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.util.Collection;
 
 import com.Intercambiables.core.Deck.Deck;
 import com.Intercambiables.core.Deck.IDeck;
+import com.Intercambiables.core.Deck.IDeckModifiable;
 import com.Intercambiables.core.Deck.Exceptions.DeckAlreadyExistsException;
 import com.Intercambiables.core.User.Exceptions.DeckDoesntExistException;
 
@@ -15,7 +16,7 @@ public class User {
 
     private final String userName;
 
-    private final HashMap<String, IDeck> deck;
+    private final HashMap<String, IDeckModifiable> deck;
 
     User(String userName) {
         this.userName = userName;
@@ -31,7 +32,7 @@ public class User {
             throw new DeckAlreadyExistsException();
         }
 
-        IDeck deck = new Deck(deckName);
+        IDeckModifiable deck = new Deck(deckName);
 
         this.insertDeck(deck);
 
@@ -47,10 +48,18 @@ public class User {
     }
 
     public Collection<IDeck> getDecks() {
-        return this.deck.values();
+        List<IDeck> decks = this.deck.values()
+                .stream()
+                .map(e -> (IDeck) e)
+                .collect(Collectors.toList());
+        return decks;
     }
 
     public IDeck getDeck(String deckName) {
+        return this._getDeck(deckName);
+    }
+
+    private IDeckModifiable _getDeck(String deckName) {
         if (!this.existsDeck(deckName)) {
             throw new DeckDoesntExistException();
         }
@@ -59,7 +68,7 @@ public class User {
     }
 
     public void updateDeck(String oldDeckName, String newDeckName) {
-        IDeck deck = this.getDeck(oldDeckName);
+        IDeckModifiable deck = this._getDeck(oldDeckName);
 
         this.removeDeck(oldDeckName);
 
@@ -69,7 +78,7 @@ public class User {
     }
 
     private void insertDeck(IDeck deck) {
-        this.deck.put(deck.getDeckName(), deck);
+        this.deck.put(deck.getDeckName(), (IDeckModifiable) deck);
     }
 
 }

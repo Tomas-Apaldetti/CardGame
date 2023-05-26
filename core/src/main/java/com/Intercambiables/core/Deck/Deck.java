@@ -1,6 +1,6 @@
 package com.Intercambiables.core.Deck;
 
-public class Deck implements IDeck {
+public class Deck implements IDeckModifiable {
 
     public String deckName;
 
