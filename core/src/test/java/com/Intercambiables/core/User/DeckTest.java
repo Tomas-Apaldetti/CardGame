@@ -1,15 +1,16 @@
 package com.Intercambiables.core.User;
 
-import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+
+import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Deck.IDeck;
 import com.Intercambiables.core.Deck.Exceptions.DeckAlreadyExistsException;
 import com.Intercambiables.core.User.Exceptions.DeckDoesntExistException;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class DeckTest {
 
     @Test
@@ -22,13 +23,14 @@ public class DeckTest {
         assertEquals("mazo de test", deck.getDeckName());
     }
 
-    @Test(expected = DeckAlreadyExistsException.class)
+    @Test
     public void createDuplicateDeckFails() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
         usr.getDeckInventory().createDeck("mazo de test");
 
-        usr.getDeckInventory().createDeck("mazo de test");
+
+        assertThrows(DeckAlreadyExistsException.class, () -> usr.getDeckInventory().createDeck("mazo de test"));
     }
 
     @Test
@@ -40,11 +42,11 @@ public class DeckTest {
         assertEquals(deck, usr.getDeckInventory().getDeck("mazo de test"));
     }
 
-    @Test(expected = DeckDoesntExistException.class)
+    @Test
     public void nonExistentDeckPointerIsNull() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        usr.getDeckInventory().getDeck("mazo de test");
+        assertThrows(DeckAlreadyExistsException.class, ()-> usr.getDeckInventory().getDeck("mazo de test"));
     }
 
     @Test
@@ -90,7 +92,7 @@ public class DeckTest {
         assertEquals(deck, usr.getDeckInventory().getDeck("mazo de test V.2"));
     }
 
-    @Test(expected = DeckDoesntExistException.class)
+    @Test
     public void updatedDeckDoesntHaveTheOldNameAnymore() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
@@ -98,6 +100,6 @@ public class DeckTest {
 
         usr.getDeckInventory().updateDeck("mazo de test", "mazo de test V.2");
 
-        usr.getDeckInventory().getDeck("mazo de test");
+        assertThrows(DeckDoesntExistException.class, () -> usr.getDeckInventory().getDeck("mazo de test"));
     }
 }
