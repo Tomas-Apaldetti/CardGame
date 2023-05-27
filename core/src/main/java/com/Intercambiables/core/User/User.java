@@ -41,7 +41,7 @@ public class User implements IBuyer, ISeller {
     }
 
     public void addItem(Card card){
-        this.cards.add(card);
+        this.getCards().add(card);
     }
 
     @Override
@@ -60,6 +60,14 @@ public class User implements IBuyer, ISeller {
     }
 
     public void removeItem(Card card) {
-        this.cards.remove(card);
+        this.getCards().remove(card);
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public int getFounds() {
+        return this.wallet.money();
     }
 }

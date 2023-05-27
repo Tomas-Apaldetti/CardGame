@@ -84,4 +84,28 @@ public class UserWalletTest {
             a.subtract(3);
         });
     }
+
+    @Test
+    public void hasEnoughFoundsCorrectForMinnorValue(){
+        UserWallet a = new UserWallet(2);
+        Amount b = new Amount(1);
+
+        assertEquals(a.hasEnoughFounds(b), true);
+    }
+
+    @Test
+    public void hasEnoughFoundsCorrectForEqualsValue(){
+        UserWallet a = new UserWallet(2);
+        Amount b = new Amount(2);
+
+        assertEquals(a.hasEnoughFounds(b), true);
+    }
+
+    @Test
+    public void hasEnoughFoundsCorrectForGratherValue(){
+        UserWallet a = new UserWallet(2);
+        Amount b = new Amount(3);
+
+        assertEquals(a.hasEnoughFounds(b), false);
+    }
 }

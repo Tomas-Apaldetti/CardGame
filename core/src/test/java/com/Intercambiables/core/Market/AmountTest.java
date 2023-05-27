@@ -85,4 +85,28 @@ public class AmountTest {
             a.subtract(3);
         });
     }
+
+    @Test
+    public void gteCorrectForMinnorValue(){
+        Amount a = new Amount(2);
+        Amount b = new Amount(1);
+
+        assertEquals(a.gte(b), true);
+    }
+
+    @Test
+    public void gteCorrectForEqualsValue(){
+        Amount a = new Amount(2);
+        Amount b = new Amount(2);
+
+        assertEquals(a.gte(b), true);
+    }
+
+    @Test
+    public void gteCorrectForGratherValue(){
+        Amount a = new Amount(2);
+        Amount b = new Amount(3);
+
+        assertEquals(a.gte(b), false);
+    }
 }
