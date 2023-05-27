@@ -4,4 +4,5 @@ public enum TransactionStatus {
     NOT_ENOUGH_FUNDS,
     TRANSACTION_APPLIED,
     PENDING,
+    CLOSED,
 }
