@@ -1,11 +1,10 @@
 package com.Intercambiables.core.Card;
 
-import com.Intercambiables.core.Market.AbstractTransactionable;
-import com.Intercambiables.core.Market.IBuyer;
-import com.Intercambiables.core.Market.ISeller;
-import com.Intercambiables.core.User.User;
+import com.Intercambiables.core.Market.Transactions.IBuyer;
+import com.Intercambiables.core.Market.Transactions.ISeller;
+import com.Intercambiables.core.Market.Transactions.ITransactionable;
 
-public class Card extends AbstractTransactionable{
+public class Card implements ITransactionable {
 
     public String name;
     public Card(String name){
@@ -13,12 +12,12 @@ public class Card extends AbstractTransactionable{
     }
 
     @Override
-    public void removeFrom(User user){
-        user.removeItem(this);
+    public void removeFrom(ISeller seller){
+        seller.removeItem(this);
     }
 
     @Override
-    public void addTo(User user) {
-        user.addItem(this);
+    public void addTo(IBuyer buyer) {
+        buyer.addItem(this);
     }
 }

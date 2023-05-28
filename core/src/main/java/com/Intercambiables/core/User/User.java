@@ -2,7 +2,8 @@ package com.Intercambiables.core.User;
 
 import com.Intercambiables.core.Card.Card;
 import com.Intercambiables.core.Market.*;
-import com.Intercambiables.core.Market.Exception.UnknownTransactionableItemException;
+import com.Intercambiables.core.Market.Transactions.IBuyer;
+import com.Intercambiables.core.Market.Transactions.ISeller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +31,14 @@ public class User implements IBuyer, ISeller {
         return this.deckInventory;
     }
 
-    @Override
-    public void addItem(ITransactionable item) {
-        throw new UnknownTransactionableItemException();
-    }
 
     @Override
     public void subtract(Amount value) {
         this.wallet.subtract(value.value());
     }
 
-    public void addItem(Card card){
+    @Override
+    public void addItem(Card card) {
         this.getCards().add(card);
     }
 
@@ -50,15 +48,11 @@ public class User implements IBuyer, ISeller {
     }
 
     @Override
-    public void removeItem(ITransactionable item) {
-        throw new UnknownTransactionableItemException();
-    }
-
-    @Override
     public void credit(Amount value) {
         this.wallet.add(value.value());
     }
 
+    @Override
     public void removeItem(Card card) {
         this.getCards().remove(card);
     }

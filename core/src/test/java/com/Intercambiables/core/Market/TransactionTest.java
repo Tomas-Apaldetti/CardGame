@@ -1,6 +1,11 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
+import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
+import com.Intercambiables.core.Market.Transactions.ITransaction;
+import com.Intercambiables.core.Market.Transactions.ITransactionable;
+import com.Intercambiables.core.Market.Transactions.Status.TransactionStatus;
 import com.Intercambiables.core.User.TestUserRegister;
 import com.Intercambiables.core.User.User;
 import org.junit.jupiter.api.Test;
@@ -10,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TransactionTest {
 
     @Test
-    public void transactionCreditsTheCorrectAmount(){
+    public void transactionCreditsTheCorrectAmount() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
         ITransactionable card = new Card("cartita");
         buyer.credit(new Amount(10));
         card.addTo(seller);
 
-        ITransaction trans = TestTransactionFactory.createTransaction(seller,new Amount(10),card);
+        ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
         TransactionStatus status = trans.apply(buyer);
 
         assertEquals(card, buyer.getCards().get(0));
@@ -28,20 +33,45 @@ public class TransactionTest {
     }
 
     @Test
-    public void transactionNot(){
+    public void transactionNotEnoughFounds() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
         ITransactionable card = new Card("cartita");
         buyer.credit(new Amount(5));
         card.addTo(seller);
 
-        ITransaction trans = TestTransactionFactory.createTransaction(seller,new Amount(10),card);
-        TransactionStatus status = trans.apply(buyer);
+        ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
+        assertThrows(NotEnoughFoundsException.class, () -> trans.apply(buyer));
 
         assertEquals(card, seller.getCards().get(0));
         assertEquals(0, buyer.getCards().size());
         assertEquals(0, seller.getFounds());
         assertEquals(5, buyer.getFounds());
-        assertEquals(TransactionStatus.NOT_ENOUGH_FUNDS, status);
+    }
+
+    @Test
+    public void transactionDoubleApplyThrows() {
+        User seller = TestUserRegister.createUser("pepe", "pepe");
+        User buyer = TestUserRegister.createUser("jose", "jose");
+        ITransactionable card = new Card("cartita");
+        buyer.credit(new Amount(20));
+        card.addTo(seller);
+
+        ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(1), card);
+        assertDoesNotThrow(() -> trans.apply(buyer));
+        assertThrows(TransactionAlreadyAppliedException.class, () -> trans.apply(buyer));
+
+    }
+
+    @Test
+    public void transactionRecognizesPublisher(){
+        User seller = TestUserRegister.createUser("pepe", "pepe");
+        User buyer = TestUserRegister.createUser("jose", "jose");
+        ITransactionable card = new Card("cartita");
+
+        ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(1), card);
+
+        assertEquals(true, trans.isPublisher(seller));
+        assertEquals(false, trans.isPublisher(buyer));
     }
 }

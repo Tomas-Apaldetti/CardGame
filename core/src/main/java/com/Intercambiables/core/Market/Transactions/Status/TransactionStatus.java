@@ -1,7 +1,6 @@
-package com.Intercambiables.core.Market;
+package com.Intercambiables.core.Market.Transactions.Status;
 
 public enum TransactionStatus {
-    NOT_ENOUGH_FUNDS,
     TRANSACTION_APPLIED,
     PENDING,
     CLOSED,

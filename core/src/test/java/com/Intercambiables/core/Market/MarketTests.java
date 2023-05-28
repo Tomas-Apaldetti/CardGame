@@ -1,6 +1,10 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
+import com.Intercambiables.core.Market.Exception.PublisherIsBuyerException;
+import com.Intercambiables.core.Market.Transactions.ITransaction;
+import com.Intercambiables.core.Market.Transactions.Status.TransactionStatus;
 import com.Intercambiables.core.User.TestUserRegister;
 import com.Intercambiables.core.User.User;
 import org.junit.jupiter.api.Test;
@@ -10,7 +14,7 @@ public class MarketTests {
     @Test
     public void marketCreatesCorrectly(){
         Market mk = new Market();
-        assertEquals(0,mk.retrieveCardPublications().size());
+        assertEquals(0,mk.retrievePublications().size());
     }
 
     @Test
@@ -21,7 +25,7 @@ public class MarketTests {
         Market mk = new Market();
         mk.publishTransaction(seller, card, new Amount(10));
 
-        assertEquals(1,mk.retrieveCardPublications().size());
+        assertEquals(1,mk.retrievePublications().size());
     }
 
     @Test
@@ -34,13 +38,9 @@ public class MarketTests {
         Market mk = new Market();
         ITransaction transaction = mk.publishTransaction(seller, card, new Amount(10));
 
-        assertEquals(0,buyer.getCards().size());
-        assertEquals(1,seller.getCards().size());
-        assertEquals(1,mk.retrieveCardPublications().size());
+        assertEquals(1,mk.retrievePublications().size());
         assertEquals(TransactionStatus.TRANSACTION_APPLIED,mk.doTransaction(transaction,buyer));
-        assertEquals(0,mk.retrieveCardPublications().size());
-        assertEquals(1,buyer.getCards().size());
-        assertEquals(0,seller.getCards().size());
+        assertEquals(0,mk.retrievePublications().size());
     }
     @Test
     public void marketDoTransactionCorrectlyForNotEnough(){
@@ -52,12 +52,24 @@ public class MarketTests {
         Market mk = new Market();
         ITransaction transaction = mk.publishTransaction(seller, card, new Amount(10));
 
-        assertEquals(0,buyer.getCards().size());
-        assertEquals(1,seller.getCards().size());
-        assertEquals(1,mk.retrieveCardPublications().size());
-        assertEquals(TransactionStatus.NOT_ENOUGH_FUNDS,mk.doTransaction(transaction,buyer));
-        assertEquals(1,mk.retrieveCardPublications().size());
-        assertEquals(0,buyer.getCards().size());
-        assertEquals(1,seller.getCards().size());
+        assertEquals(1,mk.retrievePublications().size());
+        assertThrows(NotEnoughFoundsException.class, () -> mk.doTransaction(transaction,buyer));
+        assertEquals(1,mk.retrievePublications().size());
+    }
+
+    @Test
+    public void marketWithPublisherEqualsBuyerThrows(){
+        User seller = TestUserRegister.createUser("pepe", "pepe");
+        User buyer = TestUserRegister.createUser("jose", "jose");
+        Card card = new Card("cartita");
+        buyer.credit(new Amount(5));
+        card.addTo(seller);
+        Market mk = new Market();
+        ITransaction transaction = mk.publishTransaction(seller, card, new Amount(10));
+
+        assertEquals(1,mk.retrievePublications().size());
+        assertThrows(PublisherIsBuyerException.class, () -> mk.doTransaction(transaction,seller));
+        assertEquals(1,mk.retrievePublications().size());
     }
 }
+

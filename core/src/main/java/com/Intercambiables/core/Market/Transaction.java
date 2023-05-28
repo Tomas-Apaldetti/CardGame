@@ -1,40 +1,68 @@
 package com.Intercambiables.core.Market;
 
-import com.Intercambiables.core.User.User;
+import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
+import com.Intercambiables.core.Market.Transactions.IBuyer;
+import com.Intercambiables.core.Market.Transactions.ISeller;
+import com.Intercambiables.core.Market.Transactions.ITransaction;
+import com.Intercambiables.core.Market.Transactions.ITransactionable;
+import com.Intercambiables.core.Market.Transactions.Status.ITransactionStatus;
+import com.Intercambiables.core.Market.Transactions.Status.Pending;
+import com.Intercambiables.core.Market.Transactions.Status.TransactionStatus;
 
-public class Transaction implements ITransaction{
+public class Transaction implements ITransaction {
 
-    private final User publisher;
+    private final ISeller publisher;
     private final Amount value;
     private final ITransactionable item;
-    private TransactionStatus status;
+    private ITransactionStatus status;
 
-    Transaction(User publisher, Amount value, ITransactionable sellItem){
+    Transaction(ISeller publisher, Amount value, ITransactionable sellItem){
         this.publisher = publisher;
         this.value = value;
         this.item = sellItem;
-        this.status = TransactionStatus.PENDING;
+        this.status = new Pending();
+    }
+
+    Transaction(ISeller publisher, Amount value, ITransactionable sellItem, ITransactionStatus initialStatus){
+        this.publisher = publisher;
+        this.value = value;
+        this.item = sellItem;
+        this.status = initialStatus;
     }
     
     @Override
-    public TransactionStatus apply(User buyer) {
+    public TransactionStatus apply(IBuyer buyer) {
+        this.status.assertCanApply();
         if (!buyer.hasEnoughFounds(this.value)){
-            return TransactionStatus.NOT_ENOUGH_FUNDS;
-        } else {
-            this.transferItem(buyer);
-            this.transferMoney(buyer);
-            this.status = TransactionStatus.TRANSACTION_APPLIED;
+            throw new NotEnoughFoundsException();
         }
-        return this.status;
+
+        this.transferItem(buyer);
+        this.transferMoney(buyer);
+        this.status = this.status.next();
+
+        return this.status.type();
     }
 
-    private void transferItem(User buyer){
+    @Override
+    public TransactionStatus status() {
+        return this.status.type();
+    }
+
+    @Override
+    public boolean isPublisher(IBuyer buyer){
+        return this.publisher == buyer;
+    }
+
+    private void transferItem(IBuyer buyer){
         this.item.removeFrom(this.publisher);
         this.item.addTo(buyer);
     }
 
-    private void transferMoney(User buyer){
+    private void transferMoney(IBuyer buyer){
         this.publisher.credit(this.value);
         buyer.subtract(this.value);
     }
+
+
 }
