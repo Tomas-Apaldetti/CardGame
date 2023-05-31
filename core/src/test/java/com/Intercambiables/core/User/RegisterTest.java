@@ -1,14 +1,15 @@
 package com.Intercambiables.core.User;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.Intercambiables.core.DataBase.MemoryDataBase;
 import com.Intercambiables.core.User.Exceptions.PasswordDoesntMatchException;
 import com.Intercambiables.core.User.Exceptions.UserAlreadyExistsException;
 import com.Intercambiables.core.User.Exceptions.UserDoesntExistException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class RegisterTest {
@@ -22,12 +23,12 @@ public class RegisterTest {
         assertEquals("caro", usr.getUserName());
     }
 
-    @Test(expected = UserAlreadyExistsException.class)
+    @Test
     public void createExistentUserFails() {
         Register reg = new Register(new MemoryDataBase());
 
         User usr = reg.createUser("caro", "caro&fran");
-        reg.createUser("caro", "caro&fran");
+        assertThrows(UserAlreadyExistsException.class, () -> reg.createUser("caro", "caro&fran"));
     }
 
     @Test
@@ -41,22 +42,22 @@ public class RegisterTest {
         assertEquals("caro", logged.getUserName());
     }
 
-    @Test(expected = UserDoesntExistException.class)
+    @Test
     public void loginForNonExistentUserFails() {
         Register reg = new Register(new MemoryDataBase());
 
         User usr = reg.createUser("caro", "caro&fran");
 
-        reg.login("fran", "caro&fran");
+        assertThrows(UserDoesntExistException.class, () -> reg.login("fran", "caro&fran"));
     }
 
-    @Test(expected = PasswordDoesntMatchException.class)
+    @Test
     public void loginForInvalidPasswordFails() {
         Register reg = new Register(new MemoryDataBase());
 
         User usr = reg.createUser("caro", "caro&fran");
 
-        reg.login("caro", "fran&caro");
+        assertThrows(PasswordDoesntMatchException.class, () -> reg.login("caro", "fran&caro"));
     }
 
 }
