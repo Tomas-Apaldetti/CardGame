@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.Deck.Exceptions.CardAlreadyExistsInDeckException;
 
 public class Deck implements IDeckModifiable {
 
@@ -30,7 +31,16 @@ public class Deck implements IDeckModifiable {
     }
 
     public void addCard(ICard card) {
-        List<ICard> existing = this.cards.getOrDefault(card.getType(), new ArrayList<ICard>());
+        if (!this.cards.containsKey(card.getType())) {
+            this.cards.put(card.getType(), new ArrayList<ICard>());
+        }
+
+        List<ICard> existing = this.cards.get(card.getType());
+
+        if (existing.contains(card)) {
+            throw new CardAlreadyExistsInDeckException();
+        }
+
         existing.add(card);
     }
 
