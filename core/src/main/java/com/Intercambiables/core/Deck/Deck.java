@@ -3,6 +3,7 @@ package com.Intercambiables.core.Deck;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -52,5 +53,11 @@ public class Deck implements IDeckModifiable {
 
     public Collection<ICard> getCards() {
         return this.cards.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    public void removeCard(ICard card) {
+        if (this.cards.containsKey(card.getType())) {
+            this.cards.get(card.getType()).remove(card);
+        }
     }
 }
