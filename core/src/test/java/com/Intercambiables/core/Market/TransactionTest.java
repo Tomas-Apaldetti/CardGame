@@ -1,6 +1,7 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Card.CardType;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;
@@ -18,7 +19,7 @@ public class TransactionTest {
     public void transactionCreditsTheCorrectAmount() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(10));
         card.addTo(seller);
 
@@ -36,7 +37,7 @@ public class TransactionTest {
     public void transactionNotEnoughFounds() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(5));
         card.addTo(seller);
 
@@ -53,7 +54,7 @@ public class TransactionTest {
     public void transactionDoubleApplyThrows() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(20));
         card.addTo(seller);
 
@@ -64,10 +65,10 @@ public class TransactionTest {
     }
 
     @Test
-    public void transactionRecognizesPublisher(){
+    public void transactionRecognizesPublisher() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
 
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(1), card);
 

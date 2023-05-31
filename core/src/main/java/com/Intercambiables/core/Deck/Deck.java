@@ -1,11 +1,22 @@
 package com.Intercambiables.core.Deck;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.Intercambiables.core.Card.CardType;
+
 public class Deck implements IDeckModifiable {
 
-    public String deckName;
+    private String deckName;
+
+    private final HashMap<CardType, List<ICard>> cards;
 
     public Deck(String deckName) {
         this.deckName = deckName;
+        this.cards = new HashMap<>();
     }
 
     @Override
@@ -18,4 +29,18 @@ public class Deck implements IDeckModifiable {
         return this.deckName;
     }
 
+    public void addCard(ICard card) {
+        List<ICard> existing = this.cards.getOrDefault(card.getType(), new ArrayList<ICard>());
+        existing.add(card);
+    }
+
+    public void addCards(Collection<ICard> cards) {
+        for (ICard card : cards) {
+            this.addCard(card);
+        }
+    }
+
+    public Collection<ICard> getCards() {
+        return this.cards.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
 }
