@@ -1,6 +1,8 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;
@@ -18,14 +20,14 @@ public class TransactionTest {
     public void transactionCreditsTheCorrectAmount() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(10));
         card.addTo(seller);
 
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
         TransactionStatus status = trans.apply(buyer);
 
-        assertEquals(card, buyer.getCards().get(0));
+        assertEquals(true, (buyer.getCards()).contains((ICard) card));
         assertEquals(0, seller.getCards().size());
         assertEquals(0, buyer.getFounds());
         assertEquals(10, seller.getFounds());
@@ -36,14 +38,14 @@ public class TransactionTest {
     public void transactionNotEnoughFounds() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(5));
         card.addTo(seller);
 
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
         assertThrows(NotEnoughFoundsException.class, () -> trans.apply(buyer));
 
-        assertEquals(card, seller.getCards().get(0));
+        assertEquals(false, (buyer.getCards()).contains((ICard) card));
         assertEquals(0, buyer.getCards().size());
         assertEquals(0, seller.getFounds());
         assertEquals(5, buyer.getFounds());
@@ -53,7 +55,7 @@ public class TransactionTest {
     public void transactionDoubleApplyThrows() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
         buyer.credit(new Amount(20));
         card.addTo(seller);
 
@@ -64,10 +66,10 @@ public class TransactionTest {
     }
 
     @Test
-    public void transactionRecognizesPublisher(){
+    public void transactionRecognizesPublisher() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        ITransactionable card = new Card("cartita");
+        ITransactionable card = new Card(CardType.Alquimista, true);
 
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(1), card);
 

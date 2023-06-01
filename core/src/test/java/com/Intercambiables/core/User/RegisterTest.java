@@ -1,7 +1,6 @@
 package com.Intercambiables.core.User;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.Intercambiables.core.DataBase.MemoryDataBase;
 import com.Intercambiables.core.User.Exceptions.PasswordDoesntMatchException;
@@ -11,7 +10,6 @@ import com.Intercambiables.core.User.Exceptions.UserDoesntExistException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
 public class RegisterTest {
 
     @Test

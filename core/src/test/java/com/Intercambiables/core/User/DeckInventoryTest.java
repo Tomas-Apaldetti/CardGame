@@ -1,7 +1,5 @@
 package com.Intercambiables.core.User;
 
-
-
 import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Deck.IDeck;
@@ -11,7 +9,7 @@ import com.Intercambiables.core.User.Exceptions.DeckDoesntExistException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DeckTest {
+public class DeckInventoryTest {
 
     @Test
     public void createDeck() {
@@ -29,7 +27,6 @@ public class DeckTest {
 
         usr.getDeckInventory().createDeck("mazo de test");
 
-
         assertThrows(DeckAlreadyExistsException.class, () -> usr.getDeckInventory().createDeck("mazo de test"));
     }
 
@@ -46,7 +43,7 @@ public class DeckTest {
     public void nonExistentDeckPointerIsNull() {
         User usr = TestUserRegister.createUser("caro", "caro&fran");
 
-        assertThrows(DeckAlreadyExistsException.class, ()-> usr.getDeckInventory().getDeck("mazo de test"));
+        assertThrows(DeckDoesntExistException.class, () -> usr.getDeckInventory().getDeck("mazo de test"));
     }
 
     @Test
