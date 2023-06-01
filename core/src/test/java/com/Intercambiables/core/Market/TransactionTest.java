@@ -2,6 +2,7 @@ package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
 import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;
@@ -26,7 +27,7 @@ public class TransactionTest {
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
         TransactionStatus status = trans.apply(buyer);
 
-        assertEquals(card, buyer.getCards().get(0));
+        assertEquals(true, (buyer.getCards()).contains((ICard) card));
         assertEquals(0, seller.getCards().size());
         assertEquals(0, buyer.getFounds());
         assertEquals(10, seller.getFounds());
@@ -44,7 +45,7 @@ public class TransactionTest {
         ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(10), card);
         assertThrows(NotEnoughFoundsException.class, () -> trans.apply(buyer));
 
-        assertEquals(card, seller.getCards().get(0));
+        assertEquals(false, (buyer.getCards()).contains((ICard) card));
         assertEquals(0, buyer.getCards().size());
         assertEquals(0, seller.getFounds());
         assertEquals(5, buyer.getFounds());

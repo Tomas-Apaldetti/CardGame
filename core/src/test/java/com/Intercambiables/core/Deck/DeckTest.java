@@ -21,8 +21,8 @@ public class DeckTest {
 
         deck.addCard(card);
 
-        assertEquals(deck.getCards().contains(card), true);
-        assertEquals(deck.getCards().size(), 1);
+        assertEquals(true, deck.getCards().contains(card));
+        assertEquals(1, deck.getCards().size());
     }
 
     @Test

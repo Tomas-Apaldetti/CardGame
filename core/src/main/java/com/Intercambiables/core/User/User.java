@@ -1,12 +1,12 @@
 package com.Intercambiables.core.User;
 
+import java.util.Collection;
+
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Market.*;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class User implements IBuyer, ISeller {
 
@@ -14,13 +14,13 @@ public class User implements IBuyer, ISeller {
     private DeckInventory deckInventory;
     private IWallet wallet;
 
-    private final List<Card> cards;
+    private CardInventory cardInventory;
 
     User(String userName) {
         this.userName = userName;
         this.deckInventory = new DeckInventory();
         this.wallet = new UserWallet();
-        this.cards = new ArrayList<>();
+        this.cardInventory = new CardInventory();
     }
 
     public String getUserName() {
@@ -31,6 +31,9 @@ public class User implements IBuyer, ISeller {
         return this.deckInventory;
     }
 
+    public CardInventory getCardInventory() {
+        return this.cardInventory;
+    }
 
     @Override
     public void subtract(Amount value) {
@@ -39,7 +42,7 @@ public class User implements IBuyer, ISeller {
 
     @Override
     public void addItem(Card card) {
-        this.getCards().add(card);
+        this.cardInventory.addCard(card);
     }
 
     @Override
@@ -54,11 +57,11 @@ public class User implements IBuyer, ISeller {
 
     @Override
     public void removeItem(Card card) {
-        this.getCards().remove(card);
+        this.cardInventory.removeCard(card);
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public Collection<ICard> getCards() {
+        return this.cardInventory.getCards();
     }
 
     public int getFounds() {
