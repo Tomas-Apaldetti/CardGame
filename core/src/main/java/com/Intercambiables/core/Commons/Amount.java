@@ -1,6 +1,6 @@
 package com.Intercambiables.core.Commons;
 
-import com.Intercambiables.core.Market.Exception.InvalidAmountException;
+import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 
 public class Amount {
     private int value;
@@ -13,6 +13,11 @@ public class Amount {
             throw new InvalidAmountException();
         }
     }
+
+    public void add(Amount value){
+        this.value += value.value;
+    }
+
     public void add(int value){
         this.assertPositive(value);
         this.value += value;
@@ -21,6 +26,11 @@ public class Amount {
         this.assertPositive(value);
         this.assertPositive(this.value - value);
         this.value -= value;
+    }
+
+    public void subtract(Amount value){
+        this.assertPositive(this.value - value.value);
+        this.value -= value.value;
     }
 
     public void subtractOrZero(Amount other){

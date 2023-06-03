@@ -1,4 +1,4 @@
-package com.Intercambiables.core.Market.Exception;
+package com.Intercambiables.core.Commons.Exception;
 
 public class InvalidAmountException extends RuntimeException {
 }
