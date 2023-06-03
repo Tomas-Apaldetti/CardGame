@@ -1,22 +1,16 @@
 package com.Intercambiables.core.Card;
 
-import com.Intercambiables.core.Card.Cost.ICost;
-
 public class CardBuilder {
-
     private CardName cardName;
-    private ICost invokeCost;
 
+    public final InvocationCostBuilder InvocationCost;
     public CardBuilder(CardName cardName) {
         this.cardName = cardName;
+        this.InvocationCost = new InvocationCostBuilder();
     }
 
     public Card build() {
-        return new Card(cardName, false);
-    }
-
-    public void addInvokeCost(ICost invokeCost) {
-        this.invokeCost = invokeCost;
+        return new Card(cardName, false, this.InvocationCost.getCost());
     }
 
 }

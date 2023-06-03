@@ -20,7 +20,7 @@ class CostEnergyTest {
                 Optional.of(EnergyType.Fire),
                 new Amount(3));
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(5));
 
         cost.apply(player);
@@ -39,7 +39,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(5));
         player.add(EnergyType.Plant, new Amount(5));
 
@@ -60,7 +60,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(2));
         player.add(EnergyType.Plant, new Amount(2));
 
@@ -81,7 +81,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(6));
 
         cost.apply(player);
@@ -95,7 +95,7 @@ class CostEnergyTest {
                 Optional.empty(),
                 new Amount(3));
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
 
         cost.apply(player);
@@ -118,7 +118,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
@@ -139,7 +139,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
@@ -160,7 +160,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, null, new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
