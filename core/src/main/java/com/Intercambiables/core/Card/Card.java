@@ -1,16 +1,17 @@
 package com.Intercambiables.core.Card;
 
 import com.Intercambiables.core.Deck.ICard;
+import com.Intercambiables.core.driver.DriverCardName;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
 import com.Intercambiables.core.Market.Transactions.ITransactionable;
 
 public class Card implements ITransactionable, ICard {
 
-    private final CardType type;
+    private final DriverCardName type;
     private final boolean shouldCount;
 
-    public Card(CardType type, boolean shouldCount) {
+    public Card(DriverCardName type, boolean shouldCount) {
         this.type = type;
         this.shouldCount = shouldCount;
     }
@@ -26,7 +27,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public CardType getType() {
+    public DriverCardName getType() {
         return this.type;
     }
 

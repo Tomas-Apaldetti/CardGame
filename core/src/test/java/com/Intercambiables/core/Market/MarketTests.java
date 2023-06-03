@@ -1,7 +1,7 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.driver.DriverCardName;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.PublisherIsBuyerException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;
@@ -22,7 +22,7 @@ public class MarketTests {
     @Test
     public void marketPublishTransactionCorrectly() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
-        Card card = new Card(CardType.Alquimista, true);
+        Card card = new Card(DriverCardName.Alchemist, true);
         card.addTo(seller);
         Market mk = new Market();
         mk.publishTransaction(seller, card, new Amount(10));
@@ -34,7 +34,7 @@ public class MarketTests {
     public void marketDoTransactionCorrectly() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        Card card = new Card(CardType.Alquimista, true);
+        Card card = new Card(DriverCardName.Alchemist, true);
         buyer.credit(new Amount(10));
         card.addTo(seller);
         Market mk = new Market();
@@ -49,7 +49,7 @@ public class MarketTests {
     public void marketDoTransactionCorrectlyForNotEnough() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        Card card = new Card(CardType.Alquimista, true);
+        Card card = new Card(DriverCardName.Alchemist, true);
         buyer.credit(new Amount(5));
         card.addTo(seller);
         Market mk = new Market();
@@ -64,7 +64,7 @@ public class MarketTests {
     public void marketWithPublisherEqualsBuyerThrows() {
         User seller = TestUserRegister.createUser("pepe", "pepe");
         User buyer = TestUserRegister.createUser("jose", "jose");
-        Card card = new Card(CardType.Alquimista, true);
+        Card card = new Card(DriverCardName.Alchemist, true);
         buyer.credit(new Amount(5));
         card.addTo(seller);
         Market mk = new Market();

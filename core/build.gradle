@@ -1,12 +1,12 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
 	id 'java'
 }
 
 group = 'ar.uba.fi.tdd'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "16"
+sourceCompatibility = "17"
 
 apply plugin: 'checkstyle'
 apply plugin: "jacoco"
@@ -32,4 +32,4 @@ checkstyle {
 }
 
 test.doLast jacocoTestReport.&generate
-targetCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_17

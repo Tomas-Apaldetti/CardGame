@@ -1,6 +1,8 @@
 package com.Intercambiables.core.driver;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Deck.Deck;
+import com.Intercambiables.core.Deck.IDeck;
 import com.Intercambiables.core.Market.Amount;
 import com.Intercambiables.core.User.User;
 
@@ -33,12 +35,15 @@ public class DriverClass implements Driver<User, Card>{
 
     @Override
     public void buyCards(User account, DriverCardName cardName, int amount) {
-
+        Card card = new Card(cardName,true);
+        account.subtract(new Amount(amount));
+        account.addItem(card);
     }
 
     @Override
     public int countDeckCards(User account, String deckName, DriverCardName cardName) {
-        return 0;
+        IDeck deck = account.getDeckInventory().getDeck(deckName);
+        return deck.getCards().size();
     }
 
     @Override
