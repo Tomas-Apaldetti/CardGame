@@ -1,6 +1,9 @@
-package com.Intercambiables.core.Deck;
+package com.Intercambiables.core.Match.DeckPlayable;
 import java.util.Collections;
 import java.util.List;
+
+import com.Intercambiables.core.Deck.ICard;
+import com.Intercambiables.core.Deck.IDeck;
 
 
 public class DeckPlayable implements IDeckPlayable {
@@ -15,6 +18,9 @@ public class DeckPlayable implements IDeckPlayable {
 
     @Override
     public ICard getCard() {
+        if (this.cards.isEmpty()) {
+            throw new EmptyDeckPlayableException();
+        }
         return this.cards.remove(0);
     }
 
@@ -22,5 +28,4 @@ public class DeckPlayable implements IDeckPlayable {
     public void shuffle() {
         Collections.shuffle(this.cards);
     }
-
 }
