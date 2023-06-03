@@ -3,7 +3,7 @@ package com.Intercambiables.core.User;
 import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.Card.CardName;
 import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.User.Exceptions.DuplicatedCardReferenceException;
 
@@ -18,7 +18,7 @@ public class CardInventoryTest {
     public void createCardInventory() {
         CardInventory cardInventory = new CardInventory();
 
-        ICard card = new Card(CardType.Corrosion, false);
+        ICard card = new Card(CardName.Corrosion, false);
 
         cardInventory.addCard(card);
 
@@ -30,7 +30,7 @@ public class CardInventoryTest {
     public void removeCard() {
         CardInventory cardInventory = new CardInventory();
 
-        ICard card = new Card(CardType.Corrosion, false);
+        ICard card = new Card(CardName.Corrosion, false);
 
         cardInventory.addCard(card);
 
@@ -44,7 +44,7 @@ public class CardInventoryTest {
     public void addDuplicatedCardThrows() {
         CardInventory cardInventory = new CardInventory();
 
-        ICard card = new Card(CardType.Corrosion, false);
+        ICard card = new Card(CardName.Corrosion, false);
 
         cardInventory.addCard(card);
 
@@ -56,11 +56,11 @@ public class CardInventoryTest {
     public void addeMultipleCards() {
         CardInventory cardInventory = new CardInventory();
 
-        ICard corrosion = new Card(CardType.Corrosion, false);
-        ICard alquimista = new Card(CardType.Alquimista, false);
-        ICard antimagia1 = new Card(CardType.Antimagia, true);
-        ICard barreramagica = new Card(CardType.BarreraMagica, false);
-        ICard antimagia2 = new Card(CardType.Antimagia, true);
+        ICard corrosion = new Card(CardName.Corrosion, false);
+        ICard alquimista = new Card(CardName.Alquimista, false);
+        ICard antimagia1 = new Card(CardName.Antimagia, true);
+        ICard barreramagica = new Card(CardName.BarreraMagica, false);
+        ICard antimagia2 = new Card(CardName.Antimagia, true);
 
         cardInventory.addCard(corrosion);
         cardInventory.addCard(alquimista);

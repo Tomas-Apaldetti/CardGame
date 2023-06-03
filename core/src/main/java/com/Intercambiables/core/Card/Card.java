@@ -7,10 +7,10 @@ import com.Intercambiables.core.Market.Transactions.ITransactionable;
 
 public class Card implements ITransactionable, ICard {
 
-    private final CardType type;
+    private final CardName type;
     private final boolean shouldCount;
 
-    public Card(CardType type, boolean shouldCount) {
+    public Card(CardName type, boolean shouldCount) {
         this.type = type;
         this.shouldCount = shouldCount;
     }
@@ -26,7 +26,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public CardType getType() {
+    public CardName getType() {
         return this.type;
     }
 

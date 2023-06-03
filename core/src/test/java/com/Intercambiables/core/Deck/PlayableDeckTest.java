@@ -3,7 +3,7 @@ package com.Intercambiables.core.Deck;
 import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.Card.CardName;
 import com.Intercambiables.core.Match.DeckPlayable.DeckPlayable;
 import com.Intercambiables.core.Match.DeckPlayable.EmptyDeckPlayableException;
 import com.Intercambiables.core.Match.DeckPlayable.IDeckPlayable;
@@ -27,7 +27,7 @@ public class PlayableDeckTest {
     public void getCardFromPlayableDeck() {
         Deck deck = new Deck("mazo_1");
         // add a card to the deck
-        var card = new Card(CardType.Corrosion, false);
+        var card = new Card(CardName.Corrosion, false);
         deck.addCard(card);
         DeckPlayable playableDeck = new DeckPlayable(deck);
 
@@ -37,11 +37,10 @@ public class PlayableDeckTest {
     @Test
     public void getCardsFromPlayableDeck() {
         Deck deck = new Deck("mazo_1");
-        ICard card1 = new Card(CardType.Corrosion, false);
-        ICard card2 = new Card(CardType.Alquimista, false);
+        ICard card1 = new Card(CardName.Corrosion, false);
+        ICard card2 = new Card(CardName.Alquimista, false);
         deck.addCard(card1);
         deck.addCard(card2);
-
 
         ArrayList<ICard> cardsStub = new ArrayList<ICard>();
         cardsStub.add(card1);
@@ -59,11 +58,10 @@ public class PlayableDeckTest {
     @Test
     public void getMoreCardsFromPlayableDeckThanAdded() {
         Deck deck = new Deck("mazo_1");
-        ICard card1 = new Card(CardType.Corrosion, false);
-        ICard card2 = new Card(CardType.Alquimista, false);
+        ICard card1 = new Card(CardName.Corrosion, false);
+        ICard card2 = new Card(CardName.Alquimista, false);
         deck.addCard(card1);
         deck.addCard(card2);
-
 
         ArrayList<ICard> cardsStub = new ArrayList<ICard>();
         cardsStub.add(card1);

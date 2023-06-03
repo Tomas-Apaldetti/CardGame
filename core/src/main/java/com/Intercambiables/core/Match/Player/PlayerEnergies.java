@@ -6,6 +6,7 @@ import com.Intercambiables.core.Match.Player.Exception.InvalidEnergyTypeExceptio
 import com.Intercambiables.core.Match.Player.Resources.Energy;
 import com.Intercambiables.core.Match.Player.Resources.EnergyType;
 import com.Intercambiables.core.Match.Player.Resources.IModifiableResource;
+import com.Intercambiables.core.Match.Player.Resources.IResource;
 
 import java.util.*;
 
@@ -13,49 +14,64 @@ public class PlayerEnergies {
 
     private Set<IModifiableResource> energies;
 
-    public PlayerEnergies(){
+    public PlayerEnergies() {
         this.energies = new HashSet<>();
         this.energies.add(new Energy(EnergyType.Water, new Amount(0)));
         this.energies.add(new Energy(EnergyType.Fire, new Amount(0)));
         this.energies.add(new Energy(EnergyType.Plant, new Amount(0)));
     }
 
-    public IModifiableResource getEnergy(EnergyType energyType){
+    public IModifiableResource getEnergy(EnergyType energyType) {
         Optional<IModifiableResource> energy = this.energies.stream()
                 .filter(e -> e.equals(energyType))
                 .findFirst();
-        if(energy.isPresent()){
+        if (energy.isPresent()) {
             return energy.get();
         }
         throw new InvalidEnergyTypeException();
     }
 
-    public Collection<IModifiableResource> getEnergies(){
+    public IModifiableResource getEnergy(IResource resource) {
+        Optional<IModifiableResource> energy = this.energies.stream()
+                .filter(e -> e.equals(resource))
+                .findFirst();
+        if (energy.isPresent()) {
+            return energy.get();
+        }
+        throw new InvalidEnergyTypeException();
+    }
+
+    public Collection<IModifiableResource> getEnergies() {
         return this.energies.stream().toList();
     }
 
-    public void add(EnergyType type, Amount value){
+    public void add(EnergyType type, Amount value) {
         this.getEnergy(type).add(value);
     }
 
-    public void consume(EnergyType type, Amount value){
-        this.getEnergy(type).consume(value);
+    public void add(IResource resource, Amount value) {
+        this.getEnergy(resource).add(value);
     }
 
-    public void consumeAny(Amount value){
+    public IResource consume(EnergyType type, Amount value) {
+        return this.getEnergy(type).consume(value);
+    }
+
+    public IResource consumeAny(Amount value) {
         List<IModifiableResource> a = this.energies.stream().toList();
-        for(IModifiableResource energy: a){
-            if(this.tryConsume(energy, value)){
-                return;
+        for (IModifiableResource energy : a) {
+            if (this.tryConsume(energy, value)) {
+                return energy;
             }
         }
         throw new InvalidAmountException();
     }
-    private boolean tryConsume(IModifiableResource res, Amount value){
-        try{
+
+    private boolean tryConsume(IModifiableResource res, Amount value) {
+        try {
             res.consume(value);
             return true;
-        }catch(InvalidAmountException e){
+        } catch (InvalidAmountException e) {
             return false;
         }
     }

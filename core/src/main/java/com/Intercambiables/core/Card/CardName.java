@@ -1,6 +1,6 @@
 package com.Intercambiables.core.Card;
 
-public enum CardType {
+public enum CardName {
     Energia,
     Alquimista,
     Antimagia,
