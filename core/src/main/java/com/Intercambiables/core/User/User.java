@@ -16,7 +16,7 @@ public class User implements IBuyer, ISeller {
 
     private CardInventory cardInventory;
 
-    User(String userName) {
+    public User(String userName) {
         this.userName = userName;
         this.deckInventory = new DeckInventory();
         this.wallet = new UserWallet();
