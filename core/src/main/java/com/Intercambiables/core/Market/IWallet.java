@@ -1,5 +1,7 @@
 package com.Intercambiables.core.Market;
 
+import com.Intercambiables.core.Commons.Amount;
+
 public interface IWallet {
     void add(int value);
 

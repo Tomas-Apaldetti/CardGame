@@ -1,7 +1,7 @@
 package com.Intercambiables.core.Market.Transactions;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.Market.Amount;
+import com.Intercambiables.core.Commons.Amount;
 
 public interface ISeller {
 

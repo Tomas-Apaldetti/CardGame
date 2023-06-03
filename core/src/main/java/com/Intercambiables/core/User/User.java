@@ -3,12 +3,14 @@ package com.Intercambiables.core.User;
 import java.util.Collection;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Market.*;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
+import com.Intercambiables.core.Match.IAccount;
 
-public class User implements IBuyer, ISeller {
+public class User implements IBuyer, ISeller, IAccount {
 
     private final String userName;
     private DeckInventory deckInventory;

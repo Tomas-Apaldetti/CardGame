@@ -1,4 +1,4 @@
-package com.Intercambiables.core.Market;
+package com.Intercambiables.core.Commons;
 
 import com.Intercambiables.core.Market.Exception.InvalidAmountException;
 
@@ -21,6 +21,10 @@ public class Amount {
         this.assertPositive(value);
         this.assertPositive(this.value - value);
         this.value -= value;
+    }
+
+    public void subtractOrZero(Amount other){
+        this.value = Math.max(this.value - other.value(), 0);
     }
 
     public boolean gte(Amount other){

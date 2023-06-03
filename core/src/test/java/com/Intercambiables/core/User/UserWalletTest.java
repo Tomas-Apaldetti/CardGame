@@ -1,6 +1,6 @@
 package com.Intercambiables.core.User;
 
-import com.Intercambiables.core.Market.Amount;
+import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Market.Exception.InsufficientMoneyException;
 import com.Intercambiables.core.Market.Exception.InvalidAmountException;
 import org.junit.jupiter.api.Test;
