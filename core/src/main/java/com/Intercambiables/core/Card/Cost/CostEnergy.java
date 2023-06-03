@@ -2,6 +2,7 @@ package com.Intercambiables.core.Card.Cost;
 
 import java.util.Optional;
 
+import com.Intercambiables.core.Card.Cost.Exception.CanNotPayException;
 import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 import com.Intercambiables.core.Match.Player.Player;
@@ -32,21 +33,29 @@ public class CostEnergy implements ICost {
         }
     }
 
+    private IResource applyThis(Player player){
+        try{
+            return player.consume(this.energyType, this.cost);
+        }catch (InvalidAmountException e){
+            throw new CanNotPayException();
+        }
+    }
+
     @Override
     public void apply(Player player) {
         if(this.energyType.isEmpty()){
             this.applyNext(player);
-            player.consume(this.energyType, this.cost);
+            this.applyThis(player);
             return;
         }
 
-        IResource resource = player.consume(this.energyType, this.cost);
+        IResource resource = this.applyThis(player);
 
         try {
             this.applyNext(player);
-        } catch (InvalidAmountException invalidAmountException) {
+        } catch (CanNotPayException e) {
             player.add(resource, this.cost);
-            throw invalidAmountException;
+            throw e;
         }
 
     }

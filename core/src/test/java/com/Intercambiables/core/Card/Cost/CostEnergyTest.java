@@ -1,7 +1,7 @@
 package com.Intercambiables.core.Card.Cost;
 
+import com.Intercambiables.core.Card.Cost.Exception.CanNotPayException;
 import com.Intercambiables.core.Commons.Amount;
-import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 import com.Intercambiables.core.Match.Player.Player;
 import com.Intercambiables.core.Match.Player.Resources.EnergyType;
 import com.Intercambiables.core.User.TestUserRegister;
@@ -20,7 +20,7 @@ class CostEnergyTest {
                 Optional.of(EnergyType.Fire),
                 new Amount(3));
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(5));
 
         cost.apply(player);
@@ -39,7 +39,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(5));
         player.add(EnergyType.Plant, new Amount(5));
 
@@ -53,18 +53,18 @@ class CostEnergyTest {
     public void energyCostIsMoreThanPlayerHasThrowsAndEnergiesStayTheSame(){
         ICost cost = new CostEnergy(
                 Optional.of(EnergyType.Plant),
-                new Amount(3),
+                new Amount(2),
                 Optional.of(new CostEnergy(
                         Optional.of(EnergyType.Fire),
                         new Amount(3)
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(2));
         player.add(EnergyType.Plant, new Amount(2));
 
-        assertThrows(InvalidAmountException.class, ()->cost.apply(player));
+        assertThrows(CanNotPayException.class, ()->cost.apply(player));
 
         assertEquals(2,player.getEnergy(EnergyType.Fire).available());
         assertEquals(2,player.getEnergy(EnergyType.Plant).available());
@@ -81,7 +81,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(6));
 
         cost.apply(player);
@@ -95,7 +95,7 @@ class CostEnergyTest {
                 Optional.empty(),
                 new Amount(3));
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
 
         cost.apply(player);
@@ -118,7 +118,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
@@ -139,7 +139,7 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
@@ -160,11 +160,11 @@ class CostEnergyTest {
                 ))
         );
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new Amount(40));
+        Player player = new Player(user, null, new Amount(40));
         player.add(EnergyType.Fire, new Amount(3));
         player.add(EnergyType.Water, new Amount(3));
 
-        assertThrows(InvalidAmountException.class, ()->cost.apply(player));
+        assertThrows(CanNotPayException.class, ()->cost.apply(player));
 
         assertEquals(3,player.getEnergy(EnergyType.Fire).available());
         assertEquals(3,player.getEnergy(EnergyType.Water).available());
