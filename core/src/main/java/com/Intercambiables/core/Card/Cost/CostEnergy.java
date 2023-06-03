@@ -12,29 +12,42 @@ public class CostEnergy implements ICost {
 
     private Optional<EnergyType> energyType;
     private Amount cost;
-    private ICost next;
+    private Optional<ICost> next;
 
     public CostEnergy(Optional<EnergyType> energyType, Amount cost) {
         this.energyType = energyType;
         this.cost = cost;
-        this.next = null;
+        this.next = Optional.empty();
     }
 
-    public CostEnergy(Optional<EnergyType> energyType, Amount cost, ICost nextInvokeCost) {
+    public CostEnergy(Optional<EnergyType> energyType, Amount cost, Optional<ICost> nextInvokeCost) {
         this.energyType = energyType;
         this.cost = cost;
         this.next = nextInvokeCost;
     }
 
+    private void applyNext(Player player){
+        if(this.next.isPresent()) {
+            this.next.get().apply(player);
+        }
+    }
+
     @Override
     public void apply(Player player) {
+        if(this.energyType.isEmpty()){
+            this.applyNext(player);
+            player.consume(this.energyType, this.cost);
+            return;
+        }
+
         IResource resource = player.consume(this.energyType, this.cost);
 
         try {
-            this.next.apply(player);
+            this.applyNext(player);
         } catch (InvalidAmountException invalidAmountException) {
             player.add(resource, this.cost);
             throw invalidAmountException;
         }
+
     }
 }

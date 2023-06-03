@@ -19,6 +19,7 @@ public class Player {
     public Player(IAccount account, Amount baseHp) {
         this.account = account;
         this.hp = new PlainHP(baseHp);
+        this.energies = new PlayerEnergies();
     }
 
     public Player(IAccount account, IHP baseHp) {

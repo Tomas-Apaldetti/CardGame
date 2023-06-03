@@ -10,8 +10,8 @@ import com.Intercambiables.core.Match.DeckPlayable.IDeckPlayable;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PlayableDeckTest {
 
@@ -27,7 +27,7 @@ public class PlayableDeckTest {
     public void getCardFromPlayableDeck() {
         Deck deck = new Deck("mazo_1");
         // add a card to the deck
-        var card = new Card(CardName.Corrosion, false);
+        Card card = new Card(CardName.Corrosion, false);
         deck.addCard(card);
         DeckPlayable playableDeck = new DeckPlayable(deck);
 
