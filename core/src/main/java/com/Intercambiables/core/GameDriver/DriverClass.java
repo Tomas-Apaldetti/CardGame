@@ -74,6 +74,17 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public MatchDriver<Card> startMatch(DriverGameMode mode, User blue, String blueDeck, User green, String greenDeck) {
+        if (mode.equals(DriverGameMode.HitpointLoss)) {
+            // Check if both decks have between 40 to 60 cards
+            if (blue.getDeckInventory().getDeck(blueDeck).getCards().size() < 40
+                    || blue.getDeckInventory().getDeck(blueDeck).getCards().size() > 60) {
+                throw new RuntimeException("Blue deck must have between 40 to 60 cards");
+            }
+            if (green.getDeckInventory().getDeck(greenDeck).getCards().size() < 40
+                    || green.getDeckInventory().getDeck(greenDeck).getCards().size() > 60) {
+                throw new RuntimeException("Green deck must have between 40 to 60 cards");
+            }
+        }
         return null;
     }
 }
