@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.Intercambiables.core.Card.CardType;
+
+import com.Intercambiables.core.driver.DriverCardName;
 import com.Intercambiables.core.Deck.Exceptions.CardAlreadyExistsInDeckException;
 
 public class Deck implements IDeckModifiable {
 
     private String deckName;
 
-    private final HashMap<CardType, List<ICard>> cards;
+    private final HashMap<DriverCardName, List<ICard>> cards;
 
     public Deck(String deckName) {
         this.deckName = deckName;

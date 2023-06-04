@@ -1,10 +1,10 @@
 package com.Intercambiables.core.Deck;
 
-import com.Intercambiables.core.Card.CardType;
+import com.Intercambiables.core.driver.DriverCardName;
 
 public interface ICard {
 
-    public CardType getType();
+    public DriverCardName getType();
 
     public boolean shouldCountAgainstTypeLimit();
 
