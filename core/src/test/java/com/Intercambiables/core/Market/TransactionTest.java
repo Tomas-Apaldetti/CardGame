@@ -1,12 +1,7 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
-<<<<<<< core/src/test/java/com/Intercambiables/core/Market/TransactionTest.java
 import com.Intercambiables.core.driver.DriverCardName;
-=======
-import com.Intercambiables.core.Card.CardType;
-import com.Intercambiables.core.Commons.Amount;
->>>>>>> core/src/test/java/com/Intercambiables/core/Market/TransactionTest.java
 import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
@@ -15,6 +10,7 @@ import com.Intercambiables.core.Market.Transactions.ITransactionable;
 import com.Intercambiables.core.Market.Transactions.Status.TransactionStatus;
 import com.Intercambiables.core.User.TestUserRegister;
 import com.Intercambiables.core.User.User;
+import com.Intercambiables.core.Commons.Amount;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

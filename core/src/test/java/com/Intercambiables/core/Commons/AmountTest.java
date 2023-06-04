@@ -1,29 +1,29 @@
 package com.Intercambiables.core.Commons;
 
-import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AmountTest {
 
     @Test
-    public void amountWithPositiveValueIsCreated(){
+    public void amountWithPositiveValueIsCreated() {
         Amount a = new Amount(2);
 
         assertNotEquals(a, null);
     }
 
     @Test
-    public void amountWithNegativeValuesThrows(){
+    public void amountWithNegativeValuesThrows() {
         assertThrows(InvalidAmountException.class, () -> {
-           new Amount(-2);
+            new Amount(-2);
         });
     }
 
     @Test
-    public void addPositiveIntoAmountCorrect(){
+    public void addPositiveIntoAmountCorrect() {
         Amount a = new Amount(2);
 
         a.add(1);
@@ -32,7 +32,7 @@ public class AmountTest {
     }
 
     @Test
-    public void addNegativeAmountThrows(){
+    public void addNegativeAmountThrows() {
         Amount a = new Amount(2);
 
         assertThrows(InvalidAmountException.class, () -> {
@@ -41,7 +41,7 @@ public class AmountTest {
     }
 
     @Test
-    public void addZeroCorrect(){
+    public void addZeroCorrect() {
         Amount a = new Amount(2);
 
         a.add(0);
@@ -50,7 +50,7 @@ public class AmountTest {
     }
 
     @Test
-    public void subtractPositiveIntoAmountCorrect(){
+    public void subtractPositiveIntoAmountCorrect() {
         Amount a = new Amount(2);
 
         a.subtract(1);
@@ -59,7 +59,7 @@ public class AmountTest {
     }
 
     @Test
-    public void subtractNegativeAmountThrows(){
+    public void subtractNegativeAmountThrows() {
         Amount a = new Amount(2);
 
         assertThrows(InvalidAmountException.class, () -> {
@@ -68,7 +68,7 @@ public class AmountTest {
     }
 
     @Test
-    public void subtractZeroCorrect(){
+    public void subtractZeroCorrect() {
         Amount a = new Amount(2);
 
         a.subtract(0);
@@ -86,7 +86,7 @@ public class AmountTest {
     }
 
     @Test
-    public void gteCorrectForMinnorValue(){
+    public void gteCorrectForMinnorValue() {
         Amount a = new Amount(2);
         Amount b = new Amount(1);
 
@@ -94,7 +94,7 @@ public class AmountTest {
     }
 
     @Test
-    public void gteCorrectForEqualsValue(){
+    public void gteCorrectForEqualsValue() {
         Amount a = new Amount(2);
         Amount b = new Amount(2);
 
@@ -102,7 +102,7 @@ public class AmountTest {
     }
 
     @Test
-    public void gteCorrectForGratherValue(){
+    public void gteCorrectForGratherValue() {
         Amount a = new Amount(2);
         Amount b = new Amount(3);
 
@@ -110,32 +110,32 @@ public class AmountTest {
     }
 
     @Test
-    public void subtractOrZeroNonZeroOK(){
+    public void subtractOrZeroNonZeroOK() {
         Amount a = new Amount(3);
         Amount b = new Amount(2);
 
         a.subtractOrZero(b);
 
-        assertEquals(1,a.value() );
+        assertEquals(1, a.value());
     }
 
     @Test
-    public void subtractOrZeroZeroOK(){
+    public void subtractOrZeroZeroOK() {
         Amount a = new Amount(3);
         Amount b = new Amount(3);
 
         a.subtractOrZero(b);
 
-        assertEquals(0,a.value() );
+        assertEquals(0, a.value());
     }
 
     @Test
-    public void subtractOrZeroNegativeOK(){
+    public void subtractOrZeroNegativeOK() {
         Amount a = new Amount(3);
         Amount b = new Amount(4);
 
         a.subtractOrZero(b);
 
-        assertEquals(0,a.value() );
+        assertEquals(0, a.value());
     }
 }

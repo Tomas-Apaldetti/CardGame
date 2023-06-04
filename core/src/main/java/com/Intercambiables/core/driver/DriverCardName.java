@@ -27,7 +27,7 @@ public enum DriverCardName {
 
     /**
      * @return A list of length count, starting with prefix, followed by the
-     * full card list looped as necessary
+     *         full card list looped as necessary
      */
     public static List<DriverCardName> loopedCardNames(int count, Stream<DriverCardName> prefix) {
         DriverCardName[] arr = DriverCardName.values();

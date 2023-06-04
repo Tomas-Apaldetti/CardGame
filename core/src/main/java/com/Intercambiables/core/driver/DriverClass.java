@@ -1,10 +1,10 @@
 package com.Intercambiables.core.driver;
 
 import com.Intercambiables.core.Card.Card;
+import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Deck.Deck;
 import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.Deck.IDeck;
-import com.Intercambiables.core.Market.Amount;
 import com.Intercambiables.core.User.User;
 
 import java.nio.charset.Charset;

@@ -9,11 +9,11 @@ public class UserWallet implements IWallet {
 
     private final Amount amount;
 
-    public UserWallet(){
+    public UserWallet() {
         this.amount = new Amount(0);
     }
 
-    public UserWallet(int initialValue){
+    public UserWallet(int initialValue) {
         this.amount = new Amount(initialValue);
     }
 
@@ -24,10 +24,11 @@ public class UserWallet implements IWallet {
 
     @Override
     public void subtract(int value) {
-        try{
+        try {
             this.amount.subtract(value);
-        }catch (InvalidAmountException ex){
-            if(value < 0) throw ex;
+        } catch (InvalidAmountException ex) {
+            if (value < 0)
+                throw ex;
             throw new InsufficientMoneyException(ex);
         }
     }

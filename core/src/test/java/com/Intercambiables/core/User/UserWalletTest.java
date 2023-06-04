@@ -3,27 +3,28 @@ package com.Intercambiables.core.User;
 import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Market.Exception.InsufficientMoneyException;
 import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserWalletTest {
     @Test
-    public void amountWithPositiveValueIsCreated(){
+    public void amountWithPositiveValueIsCreated() {
         UserWallet a = new UserWallet(2);
 
         assertNotEquals(a, null);
     }
 
     @Test
-    public void amountWithNegativeValuesThrows(){
+    public void amountWithNegativeValuesThrows() {
         assertThrows(InvalidAmountException.class, () -> {
             new UserWallet(-2);
         });
     }
 
     @Test
-    public void addPositiveIntoUserWalletCorrect(){
+    public void addPositiveIntoUserWalletCorrect() {
         UserWallet a = new UserWallet(2);
 
         a.add(1);
@@ -32,7 +33,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void addNegativeUserWalletThrows(){
+    public void addNegativeUserWalletThrows() {
         UserWallet a = new UserWallet(2);
 
         assertThrows(InvalidAmountException.class, () -> {
@@ -41,7 +42,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void addZeroCorrect(){
+    public void addZeroCorrect() {
         UserWallet a = new UserWallet(2);
 
         a.add(0);
@@ -50,7 +51,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void subtractPositiveIntoUserWalletCorrect(){
+    public void subtractPositiveIntoUserWalletCorrect() {
         UserWallet a = new UserWallet(2);
 
         a.subtract(1);
@@ -59,7 +60,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void subtractNegativeUserWalletThrows(){
+    public void subtractNegativeUserWalletThrows() {
         UserWallet a = new UserWallet(2);
 
         assertThrows(InvalidAmountException.class, () -> {
@@ -68,7 +69,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void subtractZeroCorrect(){
+    public void subtractZeroCorrect() {
         UserWallet a = new UserWallet(2);
 
         a.subtract(0);
@@ -86,7 +87,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void hasEnoughFoundsCorrectForMinnorValue(){
+    public void hasEnoughFoundsCorrectForMinnorValue() {
         UserWallet a = new UserWallet(2);
         Amount b = new Amount(1);
 
@@ -94,7 +95,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void hasEnoughFoundsCorrectForEqualsValue(){
+    public void hasEnoughFoundsCorrectForEqualsValue() {
         UserWallet a = new UserWallet(2);
         Amount b = new Amount(2);
 
@@ -102,7 +103,7 @@ public class UserWalletTest {
     }
 
     @Test
-    public void hasEnoughFoundsCorrectForGratherValue(){
+    public void hasEnoughFoundsCorrectForGratherValue() {
         UserWallet a = new UserWallet(2);
         Amount b = new Amount(3);
 
