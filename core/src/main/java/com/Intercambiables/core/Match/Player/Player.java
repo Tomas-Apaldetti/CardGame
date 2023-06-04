@@ -1,15 +1,10 @@
 package com.Intercambiables.core.Match.Player;
 
 import com.Intercambiables.core.Commons.Amount;
-import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
-import com.Intercambiables.core.Deck.IDeck;
 import com.Intercambiables.core.Match.IAccount;
-import com.Intercambiables.core.Match.Player.Exception.InvalidEnergyTypeException;
-import com.Intercambiables.core.Match.Player.HP.IHP;
-import com.Intercambiables.core.Match.Player.HP.PlainHP;
-import com.Intercambiables.core.Match.Player.Resources.Energy;
+import com.Intercambiables.core.Match.Player.MatchEndCondition.IMatchEndCondition;
+import com.Intercambiables.core.Match.Player.MatchEndCondition.PlainHP;
 import com.Intercambiables.core.Match.Player.Resources.EnergyType;
-import com.Intercambiables.core.Match.Player.Resources.IModifiableResource;
 import com.Intercambiables.core.Match.Player.Resources.IResource;
 
 import java.util.*;
@@ -18,27 +13,27 @@ import java.util.stream.Collectors;
 public class Player {
 
     private final IAccount account;
-    private IHP hp;
+    private IMatchEndCondition condition;
     private PlayerEnergies energies;
 
-    public Player(IAccount account, Amount baseHp){
+    public Player(IAccount account, IMatchEndCondition victoryCondition){
         this.account = account;
-        this.hp = new PlainHP(baseHp);
-    }
-    public Player(IAccount account, IHP baseHp){
-        this.account = account;
-        this.hp = baseHp;
+        this.condition = victoryCondition;
         this.energies = new PlayerEnergies();
     }
 
-
-    public void receiveDamage(Amount value){
-        this.hp = this.hp.receiveDamage(value);
+    public void affectMatchEndCondition(Amount value){
+        this.condition = this.condition.modify(value);
     }
 
-    public int currentHp(){
-        return this.hp.getNumeric();
+    public boolean matchEndConditionMet(){
+        return this.condition.isMet();
     }
+
+    public int matchEndConditionPoints(){
+        return this.condition.getNumeric();
+    }
+
 
     public IResource getEnergy(EnergyType energyType){
         return this.energies.getEnergy(energyType);
