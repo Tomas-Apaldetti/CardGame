@@ -45,6 +45,7 @@ public interface Driver<AccountReference, CardReference> {
 
     /**
      * Start a match between two players.
+     * 
      * @throws RuntimeException if either deck is invalid for the game mode
      */
     MatchDriver<CardReference> startMatch(
@@ -52,6 +53,5 @@ public interface Driver<AccountReference, CardReference> {
             AccountReference blue,
             String blueDeck,
             AccountReference green,
-            String greenDeck
-    );
+            String greenDeck);
 }
