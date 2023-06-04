@@ -1,7 +1,6 @@
-package com.Intercambiables.core.Market;
+package com.Intercambiables.core.Commons;
 
-
-import com.Intercambiables.core.Market.Exception.InvalidAmountException;
+import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,5 +107,35 @@ public class AmountTest {
         Amount b = new Amount(3);
 
         assertEquals(a.gte(b), false);
+    }
+
+    @Test
+    public void subtractOrZeroNonZeroOK(){
+        Amount a = new Amount(3);
+        Amount b = new Amount(2);
+
+        a.subtractOrZero(b);
+
+        assertEquals(1,a.value() );
+    }
+
+    @Test
+    public void subtractOrZeroZeroOK(){
+        Amount a = new Amount(3);
+        Amount b = new Amount(3);
+
+        a.subtractOrZero(b);
+
+        assertEquals(0,a.value() );
+    }
+
+    @Test
+    public void subtractOrZeroNegativeOK(){
+        Amount a = new Amount(3);
+        Amount b = new Amount(4);
+
+        a.subtractOrZero(b);
+
+        assertEquals(0,a.value() );
     }
 }

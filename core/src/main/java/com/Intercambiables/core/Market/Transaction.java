@@ -1,5 +1,6 @@
 package com.Intercambiables.core.Market;
 
+import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
