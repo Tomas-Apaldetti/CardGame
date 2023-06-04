@@ -1,18 +1,19 @@
-package com.Intercambiables.core.Match.Player.HP;
+package com.Intercambiables.core.Match.Player.MatchEndCondition;
 
 import com.Intercambiables.core.Commons.Amount;
-import com.Intercambiables.core.Match.Player.HP.Exception.HPAlreadyDepletedException;
+import com.Intercambiables.core.Match.Player.MatchEndCondition.Exception.HPAlreadyDepletedException;
 
-public class PlainHP implements IHP{
+public class PlainHP implements IMatchEndCondition {
 
     private Amount currentHP;
 
     public PlainHP(Amount value){
         this.currentHP = value;
     }
+
     @Override
-    public IHP receiveDamage(Amount value) {
-        if(this.isDepleted()){
+    public IMatchEndCondition modify(Amount value) {
+        if(this.isMet()){
             throw new HPAlreadyDepletedException();
         }
         this.currentHP.subtractOrZero(value);
@@ -20,7 +21,7 @@ public class PlainHP implements IHP{
     }
 
     @Override
-    public boolean isDepleted() {
+    public boolean isMet() {
         return this.currentHP.value() == 0;
     }
 
