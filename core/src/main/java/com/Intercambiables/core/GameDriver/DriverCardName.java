@@ -1,4 +1,4 @@
-package com.Intercambiables.core.driver;
+package com.Intercambiables.core.GameDriver;
 
 import java.util.List;
 import java.util.stream.Stream;

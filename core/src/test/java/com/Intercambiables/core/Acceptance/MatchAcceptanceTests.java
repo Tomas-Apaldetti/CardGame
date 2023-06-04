@@ -1,17 +1,18 @@
 package com.Intercambiables.core.Acceptance;
 
-import com.Intercambiables.core.driver.*;
 import org.junit.jupiter.api.Test;
+
+import com.Intercambiables.core.GameDriver.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.Intercambiables.core.driver.DriverCardName.*;
-import static com.Intercambiables.core.driver.DriverGameMode.CreatureSlayer;
-import static com.Intercambiables.core.driver.DriverGameMode.HitpointLoss;
-import static com.Intercambiables.core.driver.DriverMatchSide.Blue;
-import static com.Intercambiables.core.driver.DriverMatchSide.Green;
+import static com.Intercambiables.core.GameDriver.DriverCardName.*;
+import static com.Intercambiables.core.GameDriver.DriverGameMode.CreatureSlayer;
+import static com.Intercambiables.core.GameDriver.DriverGameMode.HitpointLoss;
+import static com.Intercambiables.core.GameDriver.DriverMatchSide.Blue;
+import static com.Intercambiables.core.GameDriver.DriverMatchSide.Green;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

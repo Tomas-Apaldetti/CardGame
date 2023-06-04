@@ -1,4 +1,4 @@
-package com.Intercambiables.core.driver;
+package com.Intercambiables.core.GameDriver;
 
 public enum DriverGameMode {
     HitpointLoss,

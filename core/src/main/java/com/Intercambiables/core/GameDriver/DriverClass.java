@@ -1,4 +1,4 @@
-package com.Intercambiables.core.driver;
+package com.Intercambiables.core.GameDriver;
 
 import com.Intercambiables.core.Card.Card;
 import com.Intercambiables.core.Commons.Amount;

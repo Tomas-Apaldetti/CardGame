@@ -1,7 +1,8 @@
 package com.Intercambiables.core.Acceptance;
 
-import com.Intercambiables.core.driver.*;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.Intercambiables.core.GameDriver.*;
 
 @SpringBootTest
 public class AcceptanceTestRoot<User, Card> {

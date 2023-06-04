@@ -1,6 +1,6 @@
 package com.Intercambiables.core.Deck;
 
-import com.Intercambiables.core.driver.DriverCardName;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 
 public interface ICard {
 

@@ -1,7 +1,7 @@
 package com.Intercambiables.core.Card;
 
 import com.Intercambiables.core.Deck.ICard;
-import com.Intercambiables.core.driver.DriverCardName;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
 import com.Intercambiables.core.Market.Transactions.ITransactionable;

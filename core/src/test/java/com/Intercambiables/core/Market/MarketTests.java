@@ -2,7 +2,7 @@ package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
 import com.Intercambiables.core.Commons.Amount;
-import com.Intercambiables.core.driver.DriverCardName;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.PublisherIsBuyerException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;

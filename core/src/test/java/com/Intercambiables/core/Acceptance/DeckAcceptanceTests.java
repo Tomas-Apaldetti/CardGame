@@ -1,7 +1,8 @@
 package com.Intercambiables.core.Acceptance;
 
-import com.Intercambiables.core.driver.DriverCardName;
 import org.junit.jupiter.api.Test;
+
+import com.Intercambiables.core.GameDriver.DriverCardName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

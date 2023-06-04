@@ -1,4 +1,4 @@
-package com.Intercambiables.core.driver;
+package com.Intercambiables.core.GameDriver;
 
 /**
  * Facade for the TCG game, to allow for multiple implementations.

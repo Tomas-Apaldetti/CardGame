@@ -1,8 +1,8 @@
 package com.Intercambiables.core.Market;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.driver.DriverCardName;
 import com.Intercambiables.core.Deck.ICard;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Market.Exception.NotEnoughFoundsException;
 import com.Intercambiables.core.Market.Exception.TransactionAlreadyAppliedException;
 import com.Intercambiables.core.Market.Transactions.ITransaction;

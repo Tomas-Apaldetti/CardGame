@@ -3,7 +3,7 @@ package com.Intercambiables.core.Deck;
 import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.driver.DriverCardName;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Match.DeckPlayable.DeckPlayable;
 import com.Intercambiables.core.Match.DeckPlayable.IDeckPlayable;
 

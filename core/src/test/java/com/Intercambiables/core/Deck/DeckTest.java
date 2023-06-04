@@ -3,8 +3,8 @@ package com.Intercambiables.core.Deck;
 import org.junit.jupiter.api.Test;
 
 import com.Intercambiables.core.Card.Card;
-import com.Intercambiables.core.driver.DriverCardName;
 import com.Intercambiables.core.Deck.Exceptions.CardAlreadyExistsInDeckException;
+import com.Intercambiables.core.GameDriver.DriverCardName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
