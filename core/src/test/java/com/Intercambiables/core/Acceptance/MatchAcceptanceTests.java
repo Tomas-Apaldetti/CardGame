@@ -1,5 +1,4 @@
-package com.Intercambiables.core.acceptance;
-
+package com.Intercambiables.core.Acceptance;
 
 import com.Intercambiables.core.driver.*;
 import org.junit.jupiter.api.Test;
@@ -41,8 +40,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void cantSummonWithoutEnergy() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                MagicSword
-        ));
+                MagicSword));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         assertThrows(Throwable.class, () -> {
@@ -53,8 +51,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void cantSummonInWrongZone() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Inventor
-        ));
+                Inventor));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         Card energy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
@@ -69,8 +66,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void cantSummonInWrongPhase() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Alchemist
-        ));
+                Alchemist));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
@@ -87,8 +83,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void useAction() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                MagicSword
-        ));
+                MagicSword));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
@@ -103,8 +98,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void useReaction() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Saboteur
-        ));
+                Saboteur));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         Card blueEnergy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
@@ -127,8 +121,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     void hitpointLossVictoryCondition() {
         MatchDriver<Card> match = commonMatch(Stream.of(
                 FireEnergy,
-                MagicSword
-        ));
+                MagicSword));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
@@ -154,20 +147,16 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 Goblin,
                 Saboteur,
                 Saboteur,
-                MagicSword
-        );
+                MagicSword);
         List<DriverCardName> blueDeck = loopedCardNames(60, Stream.of(
                 PlantEnergy,
-                Orc
-        ));
+                Orc));
         List<DriverCardName> greenDeck = loopedCardNames(60, Stream.concat(
                 Stream.of(
                         FireEnergy,
                         WaterEnergy,
-                        PlantEnergy
-                ),
-                greenCreatures.stream()
-        ));
+                        PlantEnergy),
+                greenCreatures.stream()));
 
         Account blue = accountWithDeck(blueDeck);
         Account green = accountWithDeck(greenDeck);
@@ -184,14 +173,13 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         List<Card> greenEnergies = List.of(
                 match.summon(Green, FireEnergy, DriverActiveZone.Artifact),
                 match.summon(Green, WaterEnergy, DriverActiveZone.Artifact),
-                match.summon(Green, PlantEnergy, DriverActiveZone.Artifact)
-        );
+                match.summon(Green, PlantEnergy, DriverActiveZone.Artifact));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(blueEnergy);
         Card orc = match.summon(Blue, Orc, DriverActiveZone.Combat);
 
-        for (DriverCardName creature: greenCreatures) {
+        for (DriverCardName creature : greenCreatures) {
             assertEquals(Optional.empty(), match.winner());
 
             match.skipToPhase(Green, DriverTurnPhase.Main);
@@ -214,7 +202,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     private Account accountWithDeck(List<DriverCardName> cardList) {
         Account account = testDriver.newAccount();
         testDriver.addCurrency(account, Integer.MAX_VALUE);
-        for (DriverCardName cardName: cardList) {
+        for (DriverCardName cardName : cardList) {
             testDriver.buyCards(account, cardName, 1);
             testDriver.addDeckCards(account, "main", cardName, 1);
         }

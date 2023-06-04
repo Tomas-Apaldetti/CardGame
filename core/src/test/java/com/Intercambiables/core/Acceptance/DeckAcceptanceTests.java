@@ -1,5 +1,4 @@
-package com.Intercambiables.core.acceptance;
-
+package com.Intercambiables.core.Acceptance;
 
 import com.Intercambiables.core.driver.DriverCardName;
 import org.junit.jupiter.api.Test;

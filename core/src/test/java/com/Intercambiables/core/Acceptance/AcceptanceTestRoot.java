@@ -1,4 +1,4 @@
-package com.Intercambiables.core.acceptance;
+package com.Intercambiables.core.Acceptance;
 
 import com.Intercambiables.core.driver.*;
 import org.springframework.boot.test.context.SpringBootTest;
