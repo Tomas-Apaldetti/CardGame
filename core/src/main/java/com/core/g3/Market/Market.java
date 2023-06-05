@@ -1,7 +1,7 @@
 package com.core.g3.Market;
 
 import com.core.g3.Commons.Amount;
-import com.core.g3.Market.Exception.PublisherIsBuyerException;
+import com.core.g3.Market.Exceptions.PublisherIsBuyerException;
 import com.core.g3.Market.Transactions.IBuyer;
 import com.core.g3.Market.Transactions.ISeller;
 import com.core.g3.Market.Transactions.ITransaction;

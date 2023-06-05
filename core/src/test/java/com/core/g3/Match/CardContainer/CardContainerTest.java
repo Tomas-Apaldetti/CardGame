@@ -1,7 +1,7 @@
 package com.core.g3.Match.CardContainer;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.CardName;
+import com.core.g3.Card.CardType;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.Exception.CardAlreadyOnPlaceException;
 import com.core.g3.Match.CardContainer.Exception.CardNotOnPlaceException;
@@ -16,8 +16,8 @@ class CardContainerTest {
     @Test
     public void handContainsCorrectCards() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardType.Alquimista, false);
+        Card card2 = new Card(CardType.Alquimista, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -31,8 +31,8 @@ class CardContainerTest {
     @Test
     public void handRemovesCorrectCard() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardType.Alquimista, false);
+        Card card2 = new Card(CardType.Alquimista, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -48,9 +48,9 @@ class CardContainerTest {
     @Test
     public void handRemoveCardNotOnHandThrows() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
-        Card fake = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardType.Alquimista, false);
+        Card card2 = new Card(CardType.Alquimista, false);
+        Card fake = new Card(CardType.Alquimista, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -65,7 +65,7 @@ class CardContainerTest {
     @Test
     public void handAddDuplicatedThrows() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardType.Alquimista, false);
 
         cardContainer.add(card1);
         assertThrows(CardAlreadyOnPlaceException.class, () -> cardContainer.add(card1));

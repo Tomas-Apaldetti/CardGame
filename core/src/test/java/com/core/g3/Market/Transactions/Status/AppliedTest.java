@@ -1,6 +1,6 @@
 package com.core.g3.Market.Transactions.Status;
 
-import com.core.g3.Market.Exception.TransactionAlreadyAppliedException;
+import com.core.g3.Market.Exceptions.TransactionAlreadyAppliedException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,11 +1,11 @@
 package com.core.g3.Card;
 
 public class CardBuilder {
-    private CardName cardName;
+    private CardType cardName;
 
     public final InvocationCostBuilder InvocationCost;
 
-    public CardBuilder(CardName cardName) {
+    public CardBuilder(CardType cardName) {
         this.cardName = cardName;
         this.InvocationCost = new InvocationCostBuilder();
     }

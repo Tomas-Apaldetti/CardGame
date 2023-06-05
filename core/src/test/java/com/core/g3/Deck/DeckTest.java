@@ -3,7 +3,7 @@ package com.core.g3.Deck;
 import org.junit.jupiter.api.Test;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.CardName;
+import com.core.g3.Card.CardType;
 import com.core.g3.Deck.Exceptions.CardAlreadyExistsInDeckException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +17,7 @@ public class DeckTest {
         public void addSingleCard() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard card = new Card(CardName.Corrosion, false);
+                ICard card = new Card(CardType.Corrosion, false);
 
                 deck.addCard(card);
 
@@ -29,8 +29,8 @@ public class DeckTest {
         public void addTwoCards() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
+                ICard alquimista = new Card(CardType.Drain, false);
 
                 deck.addCard(corrosion);
                 deck.addCard(alquimista);
@@ -48,8 +48,8 @@ public class DeckTest {
         public void addMultipleCardsByArray() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
+                ICard alquimista = new Card(CardType.Drain, false);
 
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
@@ -66,7 +66,7 @@ public class DeckTest {
         public void addDuplicatedCardsThrows() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
 
                 deck.addCard(corrosion);
 
@@ -78,8 +78,8 @@ public class DeckTest {
         public void addSameTypeCards() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion1 = new Card(CardName.Corrosion, false);
-                ICard corrosion2 = new Card(CardName.Corrosion, false);
+                ICard corrosion1 = new Card(CardType.Corrosion, false);
+                ICard corrosion2 = new Card(CardType.Corrosion, false);
 
                 deck.addCard(corrosion1);
                 deck.addCard(corrosion2);
@@ -97,8 +97,8 @@ public class DeckTest {
         public void removeCardOnePending() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
+                ICard alquimista = new Card(CardType.Drain, false);
 
                 deck.addCard(corrosion);
                 deck.addCard(alquimista);
@@ -113,8 +113,8 @@ public class DeckTest {
         public void removeCardNonExistent() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
+                ICard alquimista = new Card(CardType.Drain, false);
 
                 deck.addCard(alquimista);
 
@@ -128,7 +128,7 @@ public class DeckTest {
         public void removeCardEmptyDeckItsStillBeingEmpy() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion = new Card(CardName.Corrosion, false);
+                ICard corrosion = new Card(CardType.Corrosion, false);
 
                 deck.removeCard(corrosion);
 
@@ -140,8 +140,8 @@ public class DeckTest {
         public void deckWithSameTypeCardsCanRemoveSingleOne() {
                 Deck deck = new Deck("mazo_1");
 
-                ICard corrosion1 = new Card(CardName.Corrosion, false);
-                ICard corrosion2 = new Card(CardName.Corrosion, false);
+                ICard corrosion1 = new Card(CardType.Corrosion, false);
+                ICard corrosion2 = new Card(CardType.Corrosion, false);
 
                 deck.addCard(corrosion1);
                 deck.addCard(corrosion2);

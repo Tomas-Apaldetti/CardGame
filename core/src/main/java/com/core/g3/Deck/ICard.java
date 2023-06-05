@@ -1,10 +1,10 @@
 package com.core.g3.Deck;
 
-import com.core.g3.Card.CardName;
+import com.core.g3.Card.CardType;
 
 public interface ICard {
 
-    public CardName getType();
+    public CardType getType();
 
     public boolean shouldCountAgainstTypeLimit();
 

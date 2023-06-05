@@ -7,4 +7,6 @@ public interface IDeckPlayable {
     public ICard getCard();
 
     public void shuffle();
+
+    public int size();
 }

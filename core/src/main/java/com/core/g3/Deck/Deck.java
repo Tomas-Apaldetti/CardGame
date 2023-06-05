@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.core.g3.Card.CardName;
+import com.core.g3.Card.CardType;
 import com.core.g3.Deck.Exceptions.CardAlreadyExistsInDeckException;
 
 public class Deck implements IDeckModifiable {
 
     private String deckName;
 
-    private final HashMap<CardName, List<ICard>> cards;
+    private final HashMap<CardType, List<ICard>> cards;
 
     public Deck(String deckName) {
         this.deckName = deckName;
@@ -59,5 +59,16 @@ public class Deck implements IDeckModifiable {
         if (this.cards.containsKey(card.getType())) {
             this.cards.get(card.getType()).remove(card);
         }
+    }
+
+    public HashMap<CardType, Integer> getRepeatedCards() {
+        HashMap<CardType, Integer> countForEachCard = new HashMap<>();
+
+        cards.forEach((cardType, cardList) -> {
+            Integer cardsSize = cardList.get(0).shouldCountAgainstTypeLimit() ? cardList.size() : 0;
+            countForEachCard.put(cardType, cardsSize);
+        });
+
+        return countForEachCard;
     }
 }

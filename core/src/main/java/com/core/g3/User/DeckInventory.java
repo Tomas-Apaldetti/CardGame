@@ -14,10 +14,10 @@ import com.core.g3.User.Exceptions.DeckDoesntExistException;
 
 public class DeckInventory {
 
-    private final HashMap<String, IDeckModifiable> deck;
+    private final HashMap<String, IDeckModifiable> decks;
 
     DeckInventory() {
-        this.deck = new HashMap<>();
+        this.decks = new HashMap<>();
     }
 
     public IDeck createDeck(String deckName) {
@@ -33,15 +33,15 @@ public class DeckInventory {
     }
 
     private boolean existsDeck(String deckName) {
-        return this.deck.containsKey(deckName);
+        return this.decks.containsKey(deckName);
     }
 
     public void removeDeck(String deckName) {
-        this.deck.remove(deckName);
+        this.decks.remove(deckName);
     }
 
     public Collection<IDeck> getDecks() {
-        List<IDeck> decks = this.deck.values()
+        List<IDeck> decks = this.decks.values()
                 .stream()
                 .map(e -> (IDeck) e)
                 .collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class DeckInventory {
             throw new DeckDoesntExistException();
         }
 
-        return this.deck.get(deckName);
+        return this.decks.get(deckName);
     }
 
     public void updateDeck(String oldDeckName, String newDeckName) {
@@ -71,7 +71,7 @@ public class DeckInventory {
     }
 
     private void insertDeck(IDeck deck) {
-        this.deck.put(deck.getDeckName(), (IDeckModifiable) deck);
+        this.decks.put(deck.getDeckName(), (IDeckModifiable) deck);
     }
 
 }
