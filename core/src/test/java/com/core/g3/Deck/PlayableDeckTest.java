@@ -36,7 +36,7 @@ public class PlayableDeckTest {
         public void getCardsFromPlayableDeck() {
                 Deck deck = new Deck("mazo_1");
                 ICard card1 = new Card(CardName.Corrosion, false);
-                ICard card2 = new Card(CardName.Alquimista, false);
+                ICard card2 = new Card(CardName.Alchemist, false);
                 deck.addCard(card1);
                 deck.addCard(card2);
 
@@ -57,7 +57,7 @@ public class PlayableDeckTest {
         public void getMoreCardsFromPlayableDeckThanAdded() {
                 Deck deck = new Deck("mazo_1");
                 ICard card1 = new Card(CardName.Corrosion, false);
-                ICard card2 = new Card(CardName.Alquimista, false);
+                ICard card2 = new Card(CardName.Alchemist, false);
                 deck.addCard(card1);
                 deck.addCard(card2);
 

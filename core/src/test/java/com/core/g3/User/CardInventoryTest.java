@@ -57,13 +57,13 @@ public class CardInventoryTest {
                 CardInventory cardInventory = new CardInventory();
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Alquimista, false);
-                ICard antimagia1 = new Card(CardName.Antimagia, true);
-                ICard barreramagica = new Card(CardName.BarreraMagica, false);
-                ICard antimagia2 = new Card(CardName.Antimagia, true);
+                ICard alchemist = new Card(CardName.Alchemist, false);
+                ICard antimagia1 = new Card(CardName.Antimagic, true);
+                ICard barreramagica = new Card(CardName.MagicBarrier, false);
+                ICard antimagia2 = new Card(CardName.Antimagic, true);
 
                 cardInventory.addCard(corrosion);
-                cardInventory.addCard(alquimista);
+                cardInventory.addCard(alchemist);
                 cardInventory.addCard(antimagia1);
                 cardInventory.addCard(barreramagica);
                 cardInventory.addCard(antimagia2);
@@ -71,7 +71,7 @@ public class CardInventoryTest {
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
                 cards.add(corrosion);
-                cards.add(alquimista);
+                cards.add(alchemist);
                 cards.add(antimagia1);
                 cards.add(barreramagica);
                 cards.add(antimagia2);

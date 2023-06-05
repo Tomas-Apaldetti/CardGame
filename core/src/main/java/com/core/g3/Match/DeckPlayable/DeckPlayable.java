@@ -26,4 +26,9 @@ public class DeckPlayable implements IDeckPlayable {
     public void shuffle() {
         Collections.shuffle(this.cards);
     }
+
+    @Override
+    public int size() {
+        return this.cards.size();
+    }
 }

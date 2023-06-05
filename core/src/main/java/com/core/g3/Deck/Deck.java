@@ -60,4 +60,15 @@ public class Deck implements IDeckModifiable {
             this.cards.get(card.getName()).remove(card);
         }
     }
+
+    public HashMap<CardName, Integer> getRepeatedCards() {
+        HashMap<CardName, Integer> countForEachCard = new HashMap<>();
+
+        cards.forEach((cardName, cardList) -> {
+            Integer cardsSize = cardList.get(0).shouldCountAgainstNameLimit() ? cardList.size() : 0;
+            countForEachCard.put(cardName, cardsSize);
+        });
+
+        return countForEachCard;
+    }
 }

@@ -6,6 +6,6 @@ public interface ICard {
 
     public CardName getName();
 
-    public boolean shouldCountAgainstTypeLimit();
+    public boolean shouldCountAgainstNameLimit();
 
 }

@@ -30,15 +30,15 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alchemist = new Card(CardName.Drain, false);
 
                 deck.addCard(corrosion);
-                deck.addCard(alquimista);
+                deck.addCard(alchemist);
 
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
                 cards.add(corrosion);
-                cards.add(alquimista);
+                cards.add(alchemist);
 
                 assertEquals(true, deck.getCards().containsAll(cards));
                 assertEquals(2, deck.getCards().size());
@@ -49,12 +49,12 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alchemist = new Card(CardName.Drain, false);
 
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
                 cards.add(corrosion);
-                cards.add(alquimista);
+                cards.add(alchemist);
 
                 deck.addCards(cards);
 
@@ -98,14 +98,14 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alchemist = new Card(CardName.Drain, false);
 
                 deck.addCard(corrosion);
-                deck.addCard(alquimista);
+                deck.addCard(alchemist);
 
                 deck.removeCard(corrosion);
 
-                assertEquals(true, deck.getCards().contains(alquimista));
+                assertEquals(true, deck.getCards().contains(alchemist));
                 assertEquals(1, deck.getCards().size());
         }
 
@@ -114,13 +114,13 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alchemist = new Card(CardName.Drain, false);
 
-                deck.addCard(alquimista);
+                deck.addCard(alchemist);
 
                 deck.removeCard(corrosion);
 
-                assertEquals(true, deck.getCards().contains(alquimista));
+                assertEquals(true, deck.getCards().contains(alchemist));
                 assertEquals(1, deck.getCards().size());
         }
 

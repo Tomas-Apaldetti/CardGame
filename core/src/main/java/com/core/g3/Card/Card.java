@@ -46,7 +46,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public boolean shouldCountAgainstTypeLimit() {
+    public boolean shouldCountAgainstNameLimit() {
         return this.shouldCount;
     }
 
