@@ -9,16 +9,16 @@ import com.core.g3.Market.Transactions.ITransactionable;
 
 public class Card implements ITransactionable, ICard {
 
-    private final CardName type;
+    private final CardName Name;
     private final boolean shouldCount;
     private final ICost invocationCost; // TODO -> remove?
 
-    public Card(CardName type, boolean shouldCount) {
-        this(type, shouldCount, new NullInvocationCost());
+    public Card(CardName name, boolean shouldCount) {
+        this(name, shouldCount, new NullInvocationCost());
     }
 
-    public Card(CardName type, boolean shouldCount, ICost invocationCost) {
-        this.type = type;
+    public Card(CardName name, boolean shouldCount, ICost invocationCost) {
+        this.Name = name;
         this.shouldCount = shouldCount;
         this.invocationCost = invocationCost;
     }
@@ -34,12 +34,12 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public CardName getType() {
-        return this.type;
+    public CardName getName() {
+        return this.Name;
     }
 
     @Override
-    public boolean shouldCountAgainstTypeLimit() {
+    public boolean shouldCountAgainstNameLimit() {
         return this.shouldCount;
     }
 }

@@ -16,8 +16,8 @@ class CardContainerTest {
     @Test
     public void handContainsCorrectCards() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardName.Alchemist, false);
+        Card card2 = new Card(CardName.Alchemist, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -31,8 +31,8 @@ class CardContainerTest {
     @Test
     public void handRemovesCorrectCard() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardName.Alchemist, false);
+        Card card2 = new Card(CardName.Alchemist, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -48,9 +48,9 @@ class CardContainerTest {
     @Test
     public void handRemoveCardNotOnHandThrows() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
-        Card card2 = new Card(CardName.Alquimista, false);
-        Card fake = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardName.Alchemist, false);
+        Card card2 = new Card(CardName.Alchemist, false);
+        Card fake = new Card(CardName.Alchemist, false);
 
         cardContainer.add(card1);
         cardContainer.add(card2);
@@ -65,7 +65,7 @@ class CardContainerTest {
     @Test
     public void handAddDuplicatedThrows() {
         CardContainer cardContainer = new CardContainer();
-        Card card1 = new Card(CardName.Alquimista, false);
+        Card card1 = new Card(CardName.Alchemist, false);
 
         cardContainer.add(card1);
         assertThrows(CardAlreadyOnPlaceException.class, () -> cardContainer.add(card1));

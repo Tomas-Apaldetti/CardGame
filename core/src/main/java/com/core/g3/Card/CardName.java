@@ -1,22 +1,24 @@
 package com.core.g3.Card;
 
 public enum CardName {
-    Energia,
-    Alquimista,
-    Antimagia,
-    BarreraMagica,
-    Corrosion,
-    Drenar,
-    EspadaMagica,
-    Goblin,
-    Hospital,
-    ImpedirReacción,
-    Inventor,
-    Orco,
-    Reciclar,
-    Resonancia,
-    Saboteador,
-    Sacrificio,
-    TaladroMagico,
-    Traicion
-}
+        WaterEnergy,
+        FireEnergy,
+        PlantEnergy,
+        Alchemist,
+        Antimagic,
+        MagicBarrier,
+        Corrosion,
+        Drain,
+        MagicSword,
+        Goblin,
+        Hospital,
+        BlockReaction,
+        Inventor,
+        Orc,
+        Recycle,
+        Resonance,
+        Saboteur,
+        Sacrifice,
+        MagicDrill,
+        Treason
+    }

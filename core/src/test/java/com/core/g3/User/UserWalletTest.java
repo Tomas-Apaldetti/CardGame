@@ -1,7 +1,7 @@
 package com.core.g3.User;
 
 import com.core.g3.Commons.Amount;
-import com.core.g3.Market.Exception.InsufficientMoneyException;
+import com.core.g3.Market.Exceptions.InsufficientMoneyException;
 import com.core.g3.Commons.Exception.InvalidAmountException;
 
 import org.junit.jupiter.api.Test;

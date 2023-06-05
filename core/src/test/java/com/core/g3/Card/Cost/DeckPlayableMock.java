@@ -9,11 +9,16 @@ public class DeckPlayableMock implements IDeckPlayable {
 
     @Override
     public ICard getCard() {
-        return new Card(CardName.Alquimista, false);
+        return new Card(CardName.Alchemist, false);
     }
 
     @Override
     public void shuffle() {
         return;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

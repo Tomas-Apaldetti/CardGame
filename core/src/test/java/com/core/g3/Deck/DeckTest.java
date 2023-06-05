@@ -30,7 +30,7 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alquimista = new Card(CardName.Drain, false);
 
                 deck.addCard(corrosion);
                 deck.addCard(alquimista);
@@ -49,7 +49,7 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alquimista = new Card(CardName.Drain, false);
 
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
@@ -98,7 +98,7 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alquimista = new Card(CardName.Drain, false);
 
                 deck.addCard(corrosion);
                 deck.addCard(alquimista);
@@ -114,7 +114,7 @@ public class DeckTest {
                 Deck deck = new Deck("mazo_1");
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Drenar, false);
+                ICard alquimista = new Card(CardName.Drain, false);
 
                 deck.addCard(alquimista);
 

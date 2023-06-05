@@ -32,11 +32,11 @@ public class Deck implements IDeckModifiable {
     }
 
     public void addCard(ICard card) {
-        if (!this.cards.containsKey(card.getType())) {
-            this.cards.put(card.getType(), new ArrayList<ICard>());
+        if (!this.cards.containsKey(card.getName())) {
+            this.cards.put(card.getName(), new ArrayList<ICard>());
         }
 
-        List<ICard> existing = this.cards.get(card.getType());
+        List<ICard> existing = this.cards.get(card.getName());
 
         if (existing.contains(card)) {
             throw new CardAlreadyExistsInDeckException();
@@ -56,8 +56,19 @@ public class Deck implements IDeckModifiable {
     }
 
     public void removeCard(ICard card) {
-        if (this.cards.containsKey(card.getType())) {
-            this.cards.get(card.getType()).remove(card);
+        if (this.cards.containsKey(card.getName())) {
+            this.cards.get(card.getName()).remove(card);
         }
+    }
+
+    public HashMap<CardName, Integer> getRepeatedCards() {
+        HashMap<CardName, Integer> countForEachCard = new HashMap<>();
+
+        cards.forEach((cardName, cardList) -> {
+            Integer cardsSize = cardList.get(0).shouldCountAgainstNameLimit() ? cardList.size() : 0;
+            countForEachCard.put(cardName, cardsSize);
+        });
+
+        return countForEachCard;
     }
 }
