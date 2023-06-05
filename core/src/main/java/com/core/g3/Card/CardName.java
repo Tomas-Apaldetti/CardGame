@@ -1,6 +1,6 @@
 package com.core.g3.Card;
 
-public enum CardType {
+public enum CardName {
         WaterEnergy,
         FireEnergy,
         PlantEnergy,

@@ -1,6 +1,6 @@
 package com.core.g3.Match.GameMode;
 
-import com.core.g3.Card.CardType;
+import com.core.g3.Card.CardName;
 import com.core.g3.Deck.Deck;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
 
@@ -35,7 +35,7 @@ public abstract class GameMode {
     }
 
     protected void checkRepeatedCards(Deck deck, int maxRepeatedCards) {
-        HashMap<CardType, Integer> countEachCard = deck.getRepeatedCards();
+        HashMap<CardName, Integer> countEachCard = deck.getRepeatedCards();
         countEachCard.forEach((cardType, cardCount) -> {
             if (cardCount > maxRepeatedCards) {
                  throw new InvalidDeckCount("El mazo no puede tener mas de 3 copias de cada carta");

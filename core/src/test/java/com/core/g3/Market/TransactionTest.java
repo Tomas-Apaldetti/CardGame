@@ -1,7 +1,7 @@
 package com.core.g3.Market;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.CardType;
+import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Exceptions.NotEnoughFoundsException;
@@ -21,7 +21,7 @@ public class TransactionTest {
         public void transactionCreditsTheCorrectAmount() {
                 User seller = TestUserRegister.createUser("pepe", "pepe");
                 User buyer = TestUserRegister.createUser("jose", "jose");
-                ITransactionable card = new Card(CardType.Alchemist, true);
+                ITransactionable card = new Card(CardName.Alchemist, true);
                 buyer.credit(new Amount(10));
                 card.addTo(seller);
 
@@ -39,7 +39,7 @@ public class TransactionTest {
         public void transactionNotEnoughFounds() {
                 User seller = TestUserRegister.createUser("pepe", "pepe");
                 User buyer = TestUserRegister.createUser("jose", "jose");
-                ITransactionable card = new Card(CardType.Alchemist, true);
+                ITransactionable card = new Card(CardName.Alchemist, true);
                 buyer.credit(new Amount(5));
                 card.addTo(seller);
 
@@ -56,7 +56,7 @@ public class TransactionTest {
         public void transactionDoubleApplyThrows() {
                 User seller = TestUserRegister.createUser("pepe", "pepe");
                 User buyer = TestUserRegister.createUser("jose", "jose");
-                ITransactionable card = new Card(CardType.Alchemist, true);
+                ITransactionable card = new Card(CardName.Alchemist, true);
                 buyer.credit(new Amount(20));
                 card.addTo(seller);
 
@@ -70,7 +70,7 @@ public class TransactionTest {
         public void transactionRecognizesPublisher() {
                 User seller = TestUserRegister.createUser("pepe", "pepe");
                 User buyer = TestUserRegister.createUser("jose", "jose");
-                ITransactionable card = new Card(CardType.Alchemist, true);
+                ITransactionable card = new Card(CardName.Alchemist, true);
 
                 ITransaction trans = TestTransactionFactory.createTransaction(seller, new Amount(1), card);
 

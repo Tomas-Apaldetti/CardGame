@@ -1,6 +1,6 @@
 package com.core.g3.Deck;
 
-import com.core.g3.Card.CardType;
+import com.core.g3.Card.CardName;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,5 +17,5 @@ public interface IDeck {
 
     void addCard(ICard card);
 
-    public HashMap<CardType, Integer> getRepeatedCards();
+    public HashMap<CardName, Integer> getRepeatedCards();
 }

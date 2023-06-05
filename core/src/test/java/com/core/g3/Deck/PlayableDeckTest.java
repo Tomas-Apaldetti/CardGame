@@ -3,7 +3,7 @@ package com.core.g3.Deck;
 import org.junit.jupiter.api.Test;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.CardType;
+import com.core.g3.Card.CardName;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 
@@ -25,7 +25,7 @@ public class PlayableDeckTest {
         public void getCardFromPlayableDeck() {
                 Deck deck = new Deck("mazo_1");
                 // add a card to the deck
-                Card card = new Card(CardType.Corrosion, false);
+                Card card = new Card(CardName.Corrosion, false);
                 deck.addCard(card);
                 DeckPlayable playableDeck = new DeckPlayable(deck);
 
@@ -35,8 +35,8 @@ public class PlayableDeckTest {
         @Test
         public void getCardsFromPlayableDeck() {
                 Deck deck = new Deck("mazo_1");
-                ICard card1 = new Card(CardType.Corrosion, false);
-                ICard card2 = new Card(CardType.Alchemist, false);
+                ICard card1 = new Card(CardName.Corrosion, false);
+                ICard card2 = new Card(CardName.Alchemist, false);
                 deck.addCard(card1);
                 deck.addCard(card2);
 
@@ -56,8 +56,8 @@ public class PlayableDeckTest {
         @Test
         public void getMoreCardsFromPlayableDeckThanAdded() {
                 Deck deck = new Deck("mazo_1");
-                ICard card1 = new Card(CardType.Corrosion, false);
-                ICard card2 = new Card(CardType.Alchemist, false);
+                ICard card1 = new Card(CardName.Corrosion, false);
+                ICard card2 = new Card(CardName.Alchemist, false);
                 deck.addCard(card1);
                 deck.addCard(card2);
 
