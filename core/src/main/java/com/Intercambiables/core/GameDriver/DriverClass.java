@@ -37,12 +37,13 @@ public class DriverClass implements Driver<User, Card> {
     @Override
     public void buyCards(User account, DriverCardName cardName, int amount) {
         // Substract "unspecified" amount of currency
-        var unspecified_amount = 42;
-        account.subtract(new Amount(unspecified_amount));
-        for (int i = 0; i < amount; i++) {
-            Card card = new Card(cardName, true);
-            account.addItem(card);
-        }
+        // var unspecified_amount = 42;
+        // account.subtract(new Amount(unspecified_amount));
+        // for (int i = 0; i < amount; i++) {
+        // Card card = new Card(cardName, true);
+        // account.addItem(card);
+        // }
+        // TODO: implement
     }
 
     @Override
@@ -59,17 +60,18 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public void addDeckCards(User account, String deckName, DriverCardName cardName, int amount) {
-        IDeck deck;
-        try {
-            deck = account.getDeckInventory().getDeck(deckName);
-        } catch (Exception e) {
-            deck = account.getDeckInventory().createDeck(deckName);
-        }
-        // Create as many cards as amount parameter indicates
-        for (int i = 0; i < amount; i++) {
-            Card card = new Card(cardName, true);
-            deck.addCard(card);
-        }
+        // IDeck deck;
+        // try {
+        // deck = account.getDeckInventory().getDeck(deckName);
+        // } catch (Exception e) {
+        // deck = account.getDeckInventory().createDeck(deckName);
+        // }
+        // // Create as many cards as amount parameter indicates
+        // for (int i = 0; i < amount; i++) {
+        // Card card = new Card(cardName, true);
+        // deck.addCard(card);
+        // }
+        // TODO: implement
     }
 
     @Override

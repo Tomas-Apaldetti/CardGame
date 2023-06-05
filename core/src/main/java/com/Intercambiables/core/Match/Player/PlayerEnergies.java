@@ -6,6 +6,7 @@ import com.Intercambiables.core.Match.Player.Exception.InvalidEnergyTypeExceptio
 import com.Intercambiables.core.Match.Player.Resources.Energy;
 import com.Intercambiables.core.Match.Player.Resources.EnergyType;
 import com.Intercambiables.core.Match.Player.Resources.IModifiableResource;
+import com.Intercambiables.core.Match.Player.Resources.IResource;
 
 import java.util.*;
 
@@ -30,6 +31,16 @@ public class PlayerEnergies {
         throw new InvalidEnergyTypeException();
     }
 
+    public IModifiableResource getEnergy(IResource resource) {
+        Optional<IModifiableResource> energy = this.energies.stream()
+                .filter(e -> e.equals(resource))
+                .findFirst();
+        if (energy.isPresent()) {
+            return energy.get();
+        }
+        throw new InvalidEnergyTypeException();
+    }
+
     public Collection<IModifiableResource> getEnergies() {
         return this.energies.stream().toList();
     }
@@ -38,15 +49,19 @@ public class PlayerEnergies {
         this.getEnergy(type).add(value);
     }
 
-    public void consume(EnergyType type, Amount value) {
-        this.getEnergy(type).consume(value);
+    public void add(IResource resource, Amount value) {
+        this.getEnergy(resource).add(value);
     }
 
-    public void consumeAny(Amount value) {
+    public IResource consume(EnergyType type, Amount value) {
+        return this.getEnergy(type).consume(value);
+    }
+
+    public IResource consumeAny(Amount value) {
         List<IModifiableResource> a = this.energies.stream().toList();
         for (IModifiableResource energy : a) {
             if (this.tryConsume(energy, value)) {
-                return;
+                return energy;
             }
         }
         throw new InvalidAmountException();

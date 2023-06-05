@@ -1,5 +1,7 @@
 package com.Intercambiables.core.Card;
 
+import com.Intercambiables.core.Card.Cost.ICost;
+import com.Intercambiables.core.Card.Cost.NullInvocationCost;
 import com.Intercambiables.core.Deck.ICard;
 import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
@@ -8,12 +10,19 @@ import com.Intercambiables.core.Market.Transactions.ITransactionable;
 
 public class Card implements ITransactionable, ICard {
 
-    private final DriverCardName type;
+    private final CardName type;
     private final boolean shouldCount;
 
-    public Card(DriverCardName type, boolean shouldCount) {
+    private final ICost invocationCost;
+
+    public Card(CardName type, boolean shouldCount) {
+        this(type, shouldCount, new NullInvocationCost());
+    }
+
+    public Card(CardName type, boolean shouldCount, ICost invocationCost) {
         this.type = type;
         this.shouldCount = shouldCount;
+        this.invocationCost = invocationCost;
     }
 
     @Override
@@ -27,7 +36,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public DriverCardName getType() {
+    public CardName getType() {
         return this.type;
     }
 

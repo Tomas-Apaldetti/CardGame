@@ -40,8 +40,9 @@ public class Energy implements IModifiableResource {
     }
 
     @Override
-    public void consume(Amount value) {
+    public IResource consume(Amount value) {
         this.currentAmount.subtract(value);
+        return this;
     }
 
     @Override
