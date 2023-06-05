@@ -1,8 +1,8 @@
 package com.Intercambiables.core.Match.Player.Resources;
 
-import com.Intercambiables.core.Commons.Amount;
-
 import java.util.Objects;
+
+import com.Intercambiables.core.Commons.Amount;
 
 public class Energy implements IModifiableResource {
 

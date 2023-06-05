@@ -2,6 +2,7 @@ package com.Intercambiables.core.Match.Player.Resources;
 
 import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Commons.Exception.InvalidAmountException;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EnergyTest {
 
     @Test
-    public void addAmountTest(){
+    public void addAmountTest() {
         IModifiableResource energy = new Energy(EnergyType.Fire, new Amount(10));
 
         energy.add(new Amount(2));
@@ -18,7 +19,7 @@ public class EnergyTest {
     }
 
     @Test
-    public void subtractWhenAvailableTest(){
+    public void subtractWhenAvailableTest() {
         IModifiableResource energy = new Energy(EnergyType.Fire, new Amount(10));
 
         energy.consume(new Amount(2));
@@ -27,7 +28,7 @@ public class EnergyTest {
     }
 
     @Test
-    public void subtractWhenAvailableUntilZeroTest(){
+    public void subtractWhenAvailableUntilZeroTest() {
         IModifiableResource energy = new Energy(EnergyType.Fire, new Amount(10));
 
         energy.consume(new Amount(2));
@@ -37,27 +38,27 @@ public class EnergyTest {
     }
 
     @Test
-    public void subtractWhenNotEnoughAvailableThrows(){
+    public void subtractWhenNotEnoughAvailableThrows() {
         IModifiableResource energy = new Energy(EnergyType.Fire, new Amount(10));
 
-        assertThrows(InvalidAmountException.class , () -> energy.consume(new Amount(11)));
+        assertThrows(InvalidAmountException.class, () -> energy.consume(new Amount(11)));
     }
 
     @Test
-    public void energyIsEqualIfSameType(){
+    public void energyIsEqualIfSameType() {
         IResource energy = new Energy(EnergyType.Fire, new Amount(10));
         IResource a = new Energy(EnergyType.Fire, new Amount(2));
 
-        assertEquals(energy,a);
+        assertEquals(energy, a);
     }
 
     @Test
-    public void energyIsEqualToItsType(){
+    public void energyIsEqualToItsType() {
         IResource energy = new Energy(EnergyType.Fire, new Amount(10));
         EnergyType a = EnergyType.Fire;
         EnergyType b = EnergyType.Water;
 
-        assertEquals(energy,a);
-        assertNotEquals(energy,b);
+        assertEquals(energy, a);
+        assertNotEquals(energy, b);
     }
 }

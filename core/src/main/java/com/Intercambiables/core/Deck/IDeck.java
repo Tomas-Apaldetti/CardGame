@@ -5,5 +5,8 @@ import java.util.Collection;
 public interface IDeck {
 
     public String getDeckName();
-    public Collection<ICard> getCards();
+    void removeCard(ICard card);
+    Collection<ICard> getCards();
+    void addCards(Collection<ICard> cards);
+    void addCard(ICard card);
 }

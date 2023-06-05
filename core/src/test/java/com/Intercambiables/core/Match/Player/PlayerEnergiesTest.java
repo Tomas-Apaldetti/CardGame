@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerEnergiesTest {
 
     @Test
-    public void addEnergyOk(){
+    public void addEnergyOk() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
 
@@ -20,20 +20,20 @@ class PlayerEnergiesTest {
     }
 
     @Test
-    public void addMultipleEnergyOk(){
+    public void addMultipleEnergyOk() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
         energies.add(EnergyType.Water, new Amount(20));
         energies.add(EnergyType.Plant, new Amount(15));
         energies.add(EnergyType.Fire, new Amount(7));
 
-        assertEquals(energies.getEnergy(EnergyType.Fire).available(), 10+7);
+        assertEquals(energies.getEnergy(EnergyType.Fire).available(), 10 + 7);
         assertEquals(energies.getEnergy(EnergyType.Water).available(), 20);
         assertEquals(energies.getEnergy(EnergyType.Plant).available(), 15);
     }
 
     @Test
-    public void consumeAvailableEnergyOk(){
+    public void consumeAvailableEnergyOk() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
         energies.consume(EnergyType.Fire, new Amount(5));
@@ -44,7 +44,7 @@ class PlayerEnergiesTest {
     }
 
     @Test
-    public void consumeMultipleAvailableOk(){
+    public void consumeMultipleAvailableOk() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
         energies.add(EnergyType.Water, new Amount(20));
@@ -59,7 +59,7 @@ class PlayerEnergiesTest {
     }
 
     @Test
-    public void consumeMoreThanAvailableThrows(){
+    public void consumeMoreThanAvailableThrows() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
 
@@ -67,14 +67,14 @@ class PlayerEnergiesTest {
     }
 
     @Test
-    public void consumeFreshThrows(){
+    public void consumeFreshThrows() {
         PlayerEnergies energies = new PlayerEnergies();
 
         assertThrows(InvalidAmountException.class, () -> energies.consume(EnergyType.Fire, new Amount(1)));
     }
 
     @Test
-    public void consumeAnyWithOnlyFireAvailableOk(){
+    public void consumeAnyWithOnlyFireAvailableOk() {
         PlayerEnergies energies = new PlayerEnergies();
         energies.add(EnergyType.Fire, new Amount(10));
         energies.consumeAny(new Amount(10));

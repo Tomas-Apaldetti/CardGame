@@ -6,8 +6,7 @@ import com.Intercambiables.core.Match.CardContainer.CardContainer;
 import com.Intercambiables.core.Match.DeckPlayable.IDeckPlayable;
 import com.Intercambiables.core.Match.IAccount;
 import com.Intercambiables.core.Match.Player.Exception.HandIsEmptyException;
-import com.Intercambiables.core.Match.Player.HP.IHP;
-import com.Intercambiables.core.Match.Player.HP.PlainHP;
+import com.Intercambiables.core.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.Intercambiables.core.Match.Player.Resources.EnergyType;
 import com.Intercambiables.core.Match.Player.Resources.IResource;
 
@@ -16,32 +15,32 @@ import java.util.stream.Collectors;
 
 public class Player {
     private final IAccount account;
-    private IHP hp;
+    private IMatchEndCondition condition;
     private final IDeckPlayable deck;
     private final CardContainer hand;
     private final CardContainer discard;
     private PlayerEnergies energies;
 
-    public Player(IAccount account, IDeckPlayable deck, Amount baseHp) {
-        this(account,deck, new PlainHP(baseHp));
-
-    }
-
-    public Player(IAccount account, IDeckPlayable deck, IHP baseHp) {
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition) {
         this.account = account;
-        this.hp = baseHp;
+        this.condition = condition;
         this.deck = deck;
         this.deck.shuffle();
         this.hand = new CardContainer();
         this.discard = new CardContainer();
         this.energies = new PlayerEnergies();
     }
-    public void receiveDamage(Amount value) {
-        this.hp = this.hp.receiveDamage(value);
+
+    public void affectMatchEndCondition(Amount value) {
+        this.condition = this.condition.modify(value);
     }
 
-    public int currentHp() {
-        return this.hp.getNumeric();
+    public boolean matchEndConditionMet() {
+        return this.condition.isMet();
+    }
+
+    public int matchEndConditionPoints() {
+        return this.condition.getNumeric();
     }
 
     public IResource getEnergy(EnergyType energyType) {
@@ -71,27 +70,28 @@ public class Player {
         return this.energies.consumeAny(value);
     }
 
-    public void drawCard(){
+    public void drawCard() {
         this.hand.add(this.deck.getCard());
     }
 
-    public List<ICard> seeHand(){
+    public List<ICard> seeHand() {
         return this.hand.peek();
     }
 
-    public List<ICard> seeDiscard(){
+    public List<ICard> seeDiscard() {
         return this.discard.peek();
     }
-    public void recoverCard(ICard card){
+
+    public void recoverCard(ICard card) {
         this.hand.add(this.discard.remove(card));
     }
 
-    public void discardFromHand(ICard card){
+    public void discardFromHand(ICard card) {
         this.discard.add(this.hand.remove(card));
     }
 
-    public ICard discardFromHand(){
-        if(this.hand.peek().isEmpty()){
+    public ICard discardFromHand() {
+        if (this.hand.peek().isEmpty()) {
             throw new HandIsEmptyException();
         }
         ICard card = this.hand.peek().get(0);
