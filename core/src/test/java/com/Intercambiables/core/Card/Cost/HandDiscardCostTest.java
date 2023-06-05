@@ -3,20 +3,20 @@ package com.Intercambiables.core.Card.Cost;
 import com.Intercambiables.core.Card.Cost.Exception.CanNotPayException;
 import com.Intercambiables.core.Commons.Amount;
 import com.Intercambiables.core.Match.Player.Player;
+import com.Intercambiables.core.Match.Player.MatchEndCondition.PlainHP;
 import com.Intercambiables.core.User.TestUserRegister;
 import com.Intercambiables.core.User.User;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HandDiscardCostTest {
 
     @Test
-    public void discardOneCardOk(){
+    public void discardOneCardOk() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
         player.drawCard();
 
         cost.apply(player);
@@ -26,10 +26,10 @@ public class HandDiscardCostTest {
     }
 
     @Test
-    public void discardOneCardWithThreeOnHandOk(){
+    public void discardOneCardWithThreeOnHandOk() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
         player.drawCard();
         player.drawCard();
         player.drawCard();
@@ -41,31 +41,31 @@ public class HandDiscardCostTest {
     }
 
     @Test
-    public void discardWithNoCardOnHandThrows(){
+    public void discardWithNoCardOnHandThrows() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
 
-        assertThrows(CanNotPayException.class, ()-> cost.apply(player));
+        assertThrows(CanNotPayException.class, () -> cost.apply(player));
 
         assertEquals(0, player.seeHand().size());
         assertEquals(0, player.seeDiscard().size());
     }
 
     @Test
-    public void discardWithOtherCostFailsThrowsHandStayTheSame(){
+    public void discardWithOtherCostFailsThrowsHandStayTheSame() {
         ICost cost = new HandDiscardCost(new ErrorCost());
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new Amount(40));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
         player.drawCard();
-        assertThrows(CanNotPayException.class, ()-> cost.apply(player));
+        assertThrows(CanNotPayException.class, () -> cost.apply(player));
 
         assertEquals(1, player.seeHand().size());
         assertEquals(0, player.seeDiscard().size());
     }
 }
 
-class ErrorCost implements ICost{
+class ErrorCost implements ICost {
 
     @Override
     public void apply(Player player) {

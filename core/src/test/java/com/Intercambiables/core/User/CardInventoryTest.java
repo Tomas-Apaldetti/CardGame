@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import com.Intercambiables.core.Card.Card;
 import com.Intercambiables.core.Card.CardName;
 import com.Intercambiables.core.Deck.ICard;
-import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.User.Exceptions.DuplicatedCardReferenceException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -3,7 +3,6 @@ package com.Intercambiables.core.Card;
 import com.Intercambiables.core.Card.Cost.ICost;
 import com.Intercambiables.core.Card.Cost.NullInvocationCost;
 import com.Intercambiables.core.Deck.ICard;
-import com.Intercambiables.core.GameDriver.DriverCardName;
 import com.Intercambiables.core.Market.Transactions.IBuyer;
 import com.Intercambiables.core.Market.Transactions.ISeller;
 import com.Intercambiables.core.Market.Transactions.ITransactionable;

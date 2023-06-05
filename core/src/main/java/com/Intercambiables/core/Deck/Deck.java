@@ -9,7 +9,6 @@ import java.util.Collection;
 
 import com.Intercambiables.core.Card.CardName;
 import com.Intercambiables.core.Deck.Exceptions.CardAlreadyExistsInDeckException;
-import com.Intercambiables.core.GameDriver.DriverCardName;
 
 public class Deck implements IDeckModifiable {
 
