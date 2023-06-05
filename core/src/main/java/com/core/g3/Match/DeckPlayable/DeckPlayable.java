@@ -7,11 +7,9 @@ import com.core.g3.Deck.ICard;
 import com.core.g3.Deck.IDeck;
 
 public class DeckPlayable implements IDeckPlayable {
-    private IDeck deck; // TODO -> remove?
     private List<ICard> cards;
 
     public DeckPlayable(IDeck deck) {
-        this.deck = deck;
         this.cards = (List<ICard>) deck.getCards();
         this.shuffle();
     }
