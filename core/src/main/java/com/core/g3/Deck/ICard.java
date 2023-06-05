@@ -4,7 +4,7 @@ import com.core.g3.Card.CardName;
 
 public interface ICard {
 
-    public CardName getType();
+    public CardName getName();
 
     public boolean shouldCountAgainstTypeLimit();
 
