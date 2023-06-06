@@ -21,7 +21,7 @@ public class CardTypeBuilderTest {
         Card card = cardBuilder.build();
 
         ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Artefacto);
+        actual.add(ICardType.CardType.Artifact);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, card.getTypes().containsAll(actual));
@@ -35,8 +35,8 @@ public class CardTypeBuilderTest {
         Card card = cardBuilder.build();
 
         ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Artefacto);
-        actual.add(ICardType.CardType.Combinada);
+        actual.add(ICardType.CardType.Artifact);
+        actual.add(ICardType.CardType.Combined);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, card.getTypes().containsAll(actual));
@@ -50,11 +50,11 @@ public class CardTypeBuilderTest {
         Card card = cardBuilder.build();
 
         ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Accion);
-        actual.add(ICardType.CardType.Artefacto);
-        actual.add(ICardType.CardType.Combinada);
-        actual.add(ICardType.CardType.Criatura);
-        actual.add(ICardType.CardType.Reaccion);
+        actual.add(ICardType.CardType.Action);
+        actual.add(ICardType.CardType.Artifact);
+        actual.add(ICardType.CardType.Combined);
+        actual.add(ICardType.CardType.Creature);
+        actual.add(ICardType.CardType.Reaction);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, card.getTypes().containsAll(actual));
@@ -65,9 +65,9 @@ public class CardTypeBuilderTest {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
 
         ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Accion);
-        actual.add(ICardType.CardType.Artefacto);
-        actual.add(ICardType.CardType.Artefacto);
+        actual.add(ICardType.CardType.Action);
+        actual.add(ICardType.CardType.Artifact);
+        actual.add(ICardType.CardType.Artifact);
 
         cardBuilder.setTypeAccion();
         cardBuilder.setTypeArtefacto();

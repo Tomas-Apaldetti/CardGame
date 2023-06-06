@@ -22,33 +22,33 @@ public class CardTypeBuilder {
     }
 
     public void setTypeCriatura() {
-        CardTypeCriatura criatura = new CardTypeCriatura();
-        checkType(criatura.getType());
-        this.cardTypes.add(criatura);
+        CardTypeCriatura creature = new CardTypeCriatura();
+        checkType(creature.getType());
+        this.cardTypes.add(creature);
     }
 
     public void setTypeArtefacto() {
-        CardTypeArtefacto artefacto = new CardTypeArtefacto();
-        checkType(artefacto.getType());
-        this.cardTypes.add(artefacto);
+        CardTypeArtefacto artifact = new CardTypeArtefacto();
+        checkType(artifact.getType());
+        this.cardTypes.add(artifact);
     }
 
     public void setTypeAccion() {
-        CardTypeAccion accion = new CardTypeAccion();
-        checkType(accion.getType());
-        this.cardTypes.add(accion);
+        CardTypeAccion action = new CardTypeAccion();
+        checkType(action.getType());
+        this.cardTypes.add(action);
     }
 
     public void setTypeReaccion() {
-        CardTypeReaccion reaccion = new CardTypeReaccion();
-        checkType(reaccion.getType());
-        this.cardTypes.add(reaccion);
+        CardTypeReaccion reaction = new CardTypeReaccion();
+        checkType(reaction.getType());
+        this.cardTypes.add(reaction);
     }
 
     public void setTypeCombinada() {
-        CardTypeCombinada combinada = new CardTypeCombinada();
-        checkType(combinada.getType());
-        this.cardTypes.add(combinada);
+        CardTypeCombinada combined = new CardTypeCombinada();
+        checkType(combined.getType());
+        this.cardTypes.add(combined);
     }
 
     // TODO -> refactor of setTypes?
