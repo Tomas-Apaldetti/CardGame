@@ -3,7 +3,16 @@ package com.core.g3.Card.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.core.g3.Card.Cost.ICost;
+import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Type.Action.CardTypeAction;
+import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
+import com.core.g3.Card.Type.Creature.Attribute;
+import com.core.g3.Card.Type.Creature.CardTypeCreature;
+import com.core.g3.Card.Type.Creature.IAttack;
 import com.core.g3.Card.Type.Exceptions.CardTypeIsAlreadyContainedInCardException;
+import com.core.g3.Card.Type.Reaction.CardTypeReaction;
+import com.core.g3.Commons.Amount;
 
 public class CardTypeBuilder {
 
@@ -21,43 +30,45 @@ public class CardTypeBuilder {
         }
     }
 
-    public void setTypeCriatura() {
-        CardTypeCriatura creature = new CardTypeCriatura();
+    public void setTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks) {
+        CardTypeCreature creature = new CardTypeCreature(baseHP, attributes, attacks);
         checkType(creature.getType());
         this.cardTypes.add(creature);
     }
 
-    public void setTypeArtefacto() {
-        CardTypeArtefacto artifact = new CardTypeArtefacto();
-        checkType(artifact.getType());
-        this.cardTypes.add(artifact);
+    public void setTypeArtefact(List<IEffect> effects) {
+        CardTypeArtefact artefact = new CardTypeArtefact(effects);
+        checkType(artefact.getType());
+        this.cardTypes.add(artefact);
     }
 
-    public void setTypeAccion() {
-        CardTypeAccion action = new CardTypeAccion();
+    public void setTypeAction(List<IEffect> effects) {
+        CardTypeAction action = new CardTypeAction(effects);
         checkType(action.getType());
         this.cardTypes.add(action);
     }
 
-    public void setTypeReaccion() {
-        CardTypeReaccion reaction = new CardTypeReaccion();
+    public void setTypeAction(ICost useCost, List<IEffect> effects) {
+        CardTypeAction action = new CardTypeAction(useCost, effects);
+        checkType(action.getType());
+        this.cardTypes.add(action);
+    }
+
+    public void setTypeReaccion(List<IEffect> effects) {
+        CardTypeReaction reaction = new CardTypeReaction(effects);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
 
-    public void setTypeCombinada() {
-        CardTypeCombinada combined = new CardTypeCombinada();
-        checkType(combined.getType());
-        this.cardTypes.add(combined);
+    public void setTypeReaccion(ICost useCost, List<IEffect> effects) {
+        CardTypeReaction reaction = new CardTypeReaction(useCost, effects);
+        checkType(reaction.getType());
+        this.cardTypes.add(reaction);
     }
 
     // TODO -> refactor of setTypes?
 
-    public List<ICardType.CardType> getTypes() {
-        ArrayList<ICardType.CardType> types = new ArrayList<ICardType.CardType>();
-
-        this.cardTypes.forEach(cardType -> types.add(cardType.getType()));
-
-        return types;
+    public List<CardType> getTypes() {
+        return this.cardTypes;
     }
 }
