@@ -57,24 +57,24 @@ public class CardInventoryTest {
                 CardInventory cardInventory = new CardInventory();
 
                 ICard corrosion = new Card(CardName.Corrosion, false);
-                ICard alquimista = new Card(CardName.Alchemist, false);
-                ICard antimagia1 = new Card(CardName.Antimagic, true);
-                ICard barreramagica = new Card(CardName.MagicBarrier, false);
-                ICard antimagia2 = new Card(CardName.Antimagic, true);
+                ICard alchemist = new Card(CardName.Alchemist, false);
+                ICard antimagic1 = new Card(CardName.Antimagic, true);
+                ICard magicbarrier = new Card(CardName.MagicBarrier, false);
+                ICard antimagic2 = new Card(CardName.Antimagic, true);
 
                 cardInventory.addCard(corrosion);
-                cardInventory.addCard(alquimista);
-                cardInventory.addCard(antimagia1);
-                cardInventory.addCard(barreramagica);
-                cardInventory.addCard(antimagia2);
+                cardInventory.addCard(alchemist);
+                cardInventory.addCard(antimagic1);
+                cardInventory.addCard(magicbarrier);
+                cardInventory.addCard(antimagic2);
 
                 ArrayList<ICard> cards = new ArrayList<ICard>();
 
                 cards.add(corrosion);
-                cards.add(alquimista);
-                cards.add(antimagia1);
-                cards.add(barreramagica);
-                cards.add(antimagia2);
+                cards.add(alchemist);
+                cards.add(antimagic1);
+                cards.add(magicbarrier);
+                cards.add(antimagic2);
 
                 assertEquals(true, cardInventory.getCards().containsAll(cards));
                 assertEquals(5, cardInventory.getCards().size());
