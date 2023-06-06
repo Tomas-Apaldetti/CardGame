@@ -2,7 +2,10 @@ package com.core.g3.Match.GameMode;
 
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.Deck;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.User.User;
 
 import java.util.HashMap;
 
@@ -34,7 +37,9 @@ public abstract class GameMode {
         return this.initialHandSize;
     }
 
-    protected void checkRepeatedCards(Deck deck, int maxRepeatedCards) {
+    public abstract Player addPlayer(User user, IDeck deck);
+
+    protected void checkRepeatedCards(IDeck deck, int maxRepeatedCards) {
         HashMap<CardName, Integer> countEachCard = deck.getRepeatedCards();
         countEachCard.forEach((cardType, cardCount) -> {
             if (cardCount > maxRepeatedCards) {
@@ -43,7 +48,7 @@ public abstract class GameMode {
         });
     }
 
-    protected void checkDecks(Deck deck) {
+    protected void checkDecks(IDeck deck) {
         if (deck.getCards().size() < MINIMUM_CARDS_PER_DECK || deck.getCards().size() > MAXIMUM_CARDS_PER_DECK) {
             throw new InvalidDeckCount("El mazo debe tener entre 40 y 60 cartas");
         }

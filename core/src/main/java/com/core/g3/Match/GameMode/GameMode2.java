@@ -2,6 +2,7 @@ package com.core.g3.Match.GameMode;
 
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.Player.MatchEndCondition.PointsCounter;
@@ -17,13 +18,13 @@ public class GameMode2 extends GameMode {
     private int reserveZoneLimit = 3;
     private final int initialHandSize = 7;
 
-    GameMode2() {
+    public GameMode2() {
         this.MAXIMUM_CARDS_PER_DECK = 60;
         this.MINIMUM_CARDS_PER_DECK = 0;
         this.MAXIMUM_REPEATED_CARDS = 4;
     }
 
-    public Player addPlayer(User user, Deck deck) {
+    public Player addPlayer(User user, IDeck deck) {
         this.checkDecks(deck);
         this.checkRepeatedCards(deck, MAXIMUM_REPEATED_CARDS);
 
