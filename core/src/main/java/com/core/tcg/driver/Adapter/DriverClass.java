@@ -47,31 +47,12 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public int countDeckCards(User account, String deckName, DriverCardName cardName) {
-        IDeck deck = account.getDeckInventory().getDeck(deckName);
-        Integer count = 0;
-        for (ICard card : deck.getCards()) {
-            CardName cardType = CardName.values()[cardName.ordinal()];
-            if (card.getName().equals(cardType)) {
-                count++;
-            }
-        }
-        return count;
+        return  account.countDeckSpecificCards(deckName,MapCardName.from(cardName));
     }
 
     @Override
     public void addDeckCards(User account, String deckName, DriverCardName cardName, int amount) {
-        IDeck deck;
-        try {
-            deck = account.getDeckInventory().getDeck(deckName);
-        } catch (Exception e) {
-            deck = account.getDeckInventory().createDeck(deckName);
-        }
-        // Create as many cards as amount parameter indicates
-        for (int i = 0; i < amount; i++) {
-            CardName name = CardName.values()[cardName.ordinal()];
-            Card card = new Card(name, true);
-            deck.addCard(card);
-        }
+        account.addCardToDeck(deckName,MapCardName.from(cardName),amount);
     }
 
     @Override

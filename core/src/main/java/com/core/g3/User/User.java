@@ -1,17 +1,20 @@
 package com.core.g3.User;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Market.*;
 import com.core.g3.Market.Exceptions.InsufficientMoneyException;
 import com.core.g3.Market.Transactions.IBuyer;
 import com.core.g3.Market.Transactions.ISeller;
 import com.core.g3.Match.IAccount;
+import com.core.tcg.driver.Adapter.MapCardName;
 
 public class User implements IBuyer, ISeller, IAccount {
 
@@ -89,12 +92,25 @@ public class User implements IBuyer, ISeller, IAccount {
     }
 
     public int countCards(CardName name) {
-        int size = 0;
-        for(ICard card : this.cardInventory.cards){
-            if( card.getName().equals(name)){
-                size += 1;
+        return this.cardInventory.countCards(name);
+    }
+
+    public int countDeckSpecificCards(String deckName, CardName name) {
+        IDeck deck = deckInventory.getDeck(deckName);
+        Integer count = 0;
+        for (ICard card : deck.getCards()) {
+            if (card.getName().equals(name)) {
+                count++;
             }
         }
-        return size;
+        return count;
+    }
+
+    public void addCardToDeck(String deckName, CardName name, int amount) {
+        IDeck deck = deckInventory.getOrCreateDeck(deckName);
+
+        Collection<ICard> cards = cardInventory.getCardsByName(name, amount);
+        deck.addCards(cards);
+
     }
 }
