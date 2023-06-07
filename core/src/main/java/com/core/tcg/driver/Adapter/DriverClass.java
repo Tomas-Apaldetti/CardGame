@@ -27,7 +27,7 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public int countCards(User account, DriverCardName cardName) {
-        return account.getCards().size();
+        return account.countCards(MapCardName.from(cardName));
     }
 
     @Override
@@ -42,14 +42,7 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public void buyCards(User account, DriverCardName cardName, int amount) {
-        // Substract "unspecified" amount of currency
-        var unspecified_amount = 42;
-        account.subtract(new Amount(unspecified_amount));
-        for (int i = 0; i < amount; i++) {
-            CardName cardType = CardName.values()[cardName.ordinal()];
-            Card card = new Card(cardType, true);
-            account.addItem(card);
-        }
+        account.buyCards(MapCardName.from(cardName),amount);
     }
 
     @Override
