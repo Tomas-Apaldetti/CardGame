@@ -36,15 +36,15 @@ public class CardInventory {
 
     public Collection<ICard> getCardsByName(CardName name, int amount) {
         Collection<ICard> cards = new HashSet<>();
-        for(ICard card : this.cards){
-            if(cards.size() == amount){
+        for (ICard card : this.cards) {
+            if (cards.size() == amount) {
                 return cards;
             }
-            if( card.getName().equals(name)) {
+            if (card.getName().equals(name)) {
                 cards.add(card);
             }
         }
-        if(cards.size() == amount){
+        if (cards.size() == amount) {
             return cards;
         }
         throw new NotEnoughCardsException();
@@ -52,8 +52,8 @@ public class CardInventory {
 
     public int countCards(CardName name) {
         int size = 0;
-        for(ICard card : this.cards){
-            if( card.getName().equals(name)){
+        for (ICard card : this.cards) {
+            if (card.getName().equals(name)) {
                 size += 1;
             }
         }

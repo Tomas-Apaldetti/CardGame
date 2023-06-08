@@ -1,7 +1,6 @@
 package com.core.g3.User;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
@@ -14,7 +13,6 @@ import com.core.g3.Market.Exceptions.InsufficientMoneyException;
 import com.core.g3.Market.Transactions.IBuyer;
 import com.core.g3.Market.Transactions.ISeller;
 import com.core.g3.Match.IAccount;
-import com.core.tcg.driver.Adapter.MapCardName;
 
 public class User implements IBuyer, ISeller, IAccount {
 
@@ -62,7 +60,7 @@ public class User implements IBuyer, ISeller, IAccount {
     public void buyCards(CardName name, int amount) {
         Card card = new CardBuilder(name).build();
         Amount amountToSubstract = new Amount(card.getPrice() * amount);
-        if(wallet.hasEnoughFounds(amountToSubstract)){
+        if (wallet.hasEnoughFounds(amountToSubstract)) {
             wallet.subtract(amountToSubstract.value());
             for (int i = 0; i < amount; i++) {
                 Card cardToAdd = new CardBuilder(name).build();
