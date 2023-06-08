@@ -8,4 +8,5 @@ public interface ICard {
 
     public boolean shouldCountAgainstNameLimit();
 
+    public int getPrice();
 }

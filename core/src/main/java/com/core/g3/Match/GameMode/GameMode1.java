@@ -1,39 +1,38 @@
 package com.core.g3.Match.GameMode;
 
 import com.core.g3.Commons.Amount;
-import com.core.g3.Deck.Deck;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
-import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.User.User;
 
 import java.util.Optional;
 
-
 public class GameMode1 extends GameMode {
-    private int combatZoneLimit = 5;
-    private int artifactZoneLimit = 0;
-    private int reserveZoneLimit = 5;
-    private final int initialHandSize = 5;
 
-    GameMode1() {
+    public GameMode1() {
+        this.combatZoneLimit = 5;
+        this.artifactZoneLimit = 0;
+        this.reserveZoneLimit = 5;
+        this.initialHandSize = 5;
         this.MAXIMUM_CARDS_PER_DECK = 60;
         this.MINIMUM_CARDS_PER_DECK = 40;
         this.MAXIMUM_REPEATED_CARDS = 3;
+        this.initialPoints = 20;
     }
 
-    public Player addPlayer(User user, Deck deck) {
+    public Player addPlayer(User user, IDeck deck) {
         this.checkDecks(deck);
         this.checkRepeatedCards(deck, MAXIMUM_REPEATED_CARDS);
 
         DeckPlayable playableDeck = new DeckPlayable(deck);
-        Player player = new Player(user, (IDeckPlayable) deck, new PlainHP(new Amount(20)));
+        Player player = new Player(user, playableDeck, new PlainHP(new Amount(this.initialPoints)));
         return player;
     }
 
     public void drawInitialCards(Player player) {
-        for(int i = 0; i < initialHandSize; i++) {
+        for (int i = 0; i < initialHandSize; i++) {
             player.drawCard();
         }
     }
@@ -50,15 +49,4 @@ public class GameMode1 extends GameMode {
         }
         return Optional.empty();
     }
-
-    // Modo 1
-    // Mazos: 40 a 60 cartas, maximo 3 copias de cada carta
-    // Cada jugador inicia con 20 puntos de vida, que pueden reducirse por ataques
-    // directos
-
-    // Antes del primer turno: Cada jugador toma 5 cartas de su mazo
-    // Etapa inicial: Toma una carta del mazo
-    // Máximo 5 criaturas en zona de combate, 0 en zona de reserva, 5 artefactos
-    // El primer jugador en llegar a 0 o menos puntos de vida pierde
-
 }
