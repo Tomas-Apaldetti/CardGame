@@ -14,13 +14,13 @@ public class CardTypeReaction extends CardType {
     private final List<IEffect> effects;
 
     public CardTypeReaction(List<IEffect> effects) {
-        this.type = ICardType.CardType.Reaction;
+        super(ICardType.CardType.Reaction);
         this.useCost = new NullInvocationCost();
         this.effects = effects;
     }
 
     public CardTypeReaction(ICost useCost, List<IEffect> effects) {
-        this.type = ICardType.CardType.Reaction;
+        super(ICardType.CardType.Reaction);
         this.useCost = useCost;
         this.effects = effects;
     }

@@ -38,6 +38,10 @@ public class Amount {
         this.value -= amount.value;
     }
 
+    public boolean gt(Amount other) {
+        return this.value > other.value;
+    }
+
     public boolean gte(Amount other) {
         return this.value >= other.value();
     }

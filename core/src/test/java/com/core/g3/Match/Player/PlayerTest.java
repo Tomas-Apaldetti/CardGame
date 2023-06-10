@@ -100,7 +100,7 @@ class PlayerTest {
         Deck deck = new Deck("test");
         DeckPlayable playableDeck = new DeckPlayable(deck);
         PlainHP condition = new PlainHP(new Amount(100));
-        return new Player(user, playableDeck, condition);
+        return new Player(user, playableDeck, condition, null, null, null);
     }
 
     public Player getPlayerWithDeck(int numberOfCards, int numberPerCard) {
@@ -108,7 +108,7 @@ class PlayerTest {
         Deck deck = generateRandomDeck(numberOfCards, numberPerCard);
         DeckPlayable playableDeck = new DeckPlayable(deck);
         PlainHP condition = new PlainHP(new Amount(100));
-        return new Player(user, playableDeck, condition);
+        return new Player(user, playableDeck, condition, null, null, null);
     }
 
     public Deck generateRandomDeck(int numberOfCards, int numberPerCard) {

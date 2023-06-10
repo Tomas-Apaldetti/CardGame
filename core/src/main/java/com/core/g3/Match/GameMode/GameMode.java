@@ -1,44 +1,46 @@
 package com.core.g3.Match.GameMode;
 
 import com.core.g3.Card.CardName;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.IDeck;
+import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
+import com.core.g3.Match.Zone.ActiveZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
 import java.util.HashMap;
+import java.util.stream.IntStream;
 
 public abstract class GameMode {
+    protected int initialPoints;
+    protected int maxDeckCards;
+    protected int minDeckCards;
+    protected int maxRepeatedCards;
     protected int combatZoneLimit;
     protected int artifactZoneLimit;
     protected int reserveZoneLimit;
     protected int initialHandSize;
-    protected int MAXIMUM_CARDS_PER_DECK;
-    protected int MINIMUM_CARDS_PER_DECK;
-    protected int MAXIMUM_REPEATED_CARDS;
-    protected int initialPoints;
 
-    public int getCombatZoneLimit() {
-        return this.combatZoneLimit;
+    protected abstract IMatchEndCondition getCondition();
+
+    public Player addPlayer(User user, IDeck deck) {
+        this.checkDecks(deck);
+        this.checkRepeatedCards(deck, maxRepeatedCards);
+
+        DeckPlayable playableDeck = new DeckPlayable(deck);
+
+        IMatchEndCondition condition = this.getCondition();
+
+        ActiveZone artifactZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(this.artifactZoneLimit));
+        ActiveZone combatZone = new ActiveZone(ActiveZoneType.Combat, new Amount(this.combatZoneLimit));
+        ActiveZone reserveZone = new ActiveZone(ActiveZoneType.Reserve, new Amount(this.reserveZoneLimit));
+
+        Player player = new Player(user, playableDeck, condition, artifactZone, combatZone, reserveZone);
+        return player;
     }
-
-    public int getArtifactZoneLimit() {
-        return this.artifactZoneLimit;
-    }
-
-    public int getReserveZoneLimit() {
-        return this.reserveZoneLimit;
-    }
-
-    public int getInitialHandSize() {
-        return this.initialHandSize;
-    }
-
-    public int getInitialPoints() {
-        return this.initialPoints;
-    }
-
-    public abstract Player addPlayer(User user, IDeck deck);
 
     protected void checkRepeatedCards(IDeck deck, int maxRepeatedCards) {
         HashMap<CardName, Integer> countEachCard = deck.getRepeatedCards();
@@ -49,9 +51,13 @@ public abstract class GameMode {
         });
     }
 
-    protected void checkDecks(IDeck deck) {
-        if (deck.getCards().size() < MINIMUM_CARDS_PER_DECK || deck.getCards().size() > MAXIMUM_CARDS_PER_DECK) {
+    private void checkDecks(IDeck deck) {
+        if (deck.getCards().size() < minDeckCards || deck.getCards().size() > maxDeckCards) {
             throw new InvalidDeckCount("El mazo debe tener entre 40 y 60 cartas");
         }
+    }
+
+    public void drawInitialCards(Player player) {
+        IntStream.range(0, this.initialHandSize).forEach(i -> player.drawCard());
     }
 }
