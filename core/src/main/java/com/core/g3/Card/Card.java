@@ -69,11 +69,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     public List<ICardType.CardType> getTypes() {
-        ArrayList<ICardType.CardType> types = new ArrayList<ICardType.CardType>();
-
-        this.cardTypes.forEach(cardType -> types.add(cardType.getType()));
-
-        return types;
+        return this.cardTypes;
     }
 
     @Override
