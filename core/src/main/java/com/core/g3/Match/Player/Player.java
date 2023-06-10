@@ -1,5 +1,6 @@
 package com.core.g3.Match.Player;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.CardContainer;
@@ -9,6 +10,8 @@ import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.tcg.driver.Adapter.DriverMapper;
+import com.core.tcg.driver.DriverCardName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -97,5 +100,17 @@ public class Player {
         ICard card = this.hand.peek().get(0);
         this.discardFromHand(this.hand.peek().get(0));
         return card;
+    }
+
+    public List<DriverCardName> retrieveDeckOrder() {
+        List<DriverCardName> cards = new ArrayList<>();
+        for (CardName name: this.deck.getCards()){
+            cards.add(DriverMapper.toDriverCardName(name));
+        }
+        return cards;
+    }
+
+    public void forceDeckOrder(List<CardName> cards) {
+        deck.forceOrder(cards);
     }
 }

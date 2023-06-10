@@ -17,14 +17,12 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public List<DriverCardName> deckOrder(DriverMatchSide player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deckOrder'");
+        return match.getPlayer(DriverMapper.toPlayerZone(player)).retrieveDeckOrder();
     }
 
     @Override
     public void forceDeckOrder(DriverMatchSide player, List<DriverCardName> cards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'forceDeckOrder'");
+        match.forceDeckOrder(DriverMapper.toPlayerZone(player), DriverMapper.toDriverCardName(cards));
     }
 
     @Override
