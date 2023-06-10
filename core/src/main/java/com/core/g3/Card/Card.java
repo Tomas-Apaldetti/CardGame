@@ -7,6 +7,7 @@ import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Transactions.IBuyer;
 import com.core.g3.Market.Transactions.ISeller;
@@ -23,6 +24,7 @@ public class Card implements ITransactionable, ICard {
         this.name = name;
         this.shouldCount = shouldCount;
         this.invocationCost = new NullInvocationCost(); // TODO -> review
+        this.price = new Amount(0);
     }
 
     public Card(CardName name, boolean shouldCount, ICost invocationCost, List<CardType> cardTypes) {
@@ -30,6 +32,7 @@ public class Card implements ITransactionable, ICard {
         this.shouldCount = shouldCount;
         this.invocationCost = invocationCost;
         this.cardTypes = cardTypes;
+        this.price = new Amount(0);
     }
 
     @Override
@@ -50,6 +53,11 @@ public class Card implements ITransactionable, ICard {
     @Override
     public boolean shouldCountAgainstNameLimit() {
         return this.shouldCount;
+    }
+
+    @Override
+    public int getPrice() {
+        return this.price.value();
     }
 
     public List<ICardType.CardType> getTypes() {

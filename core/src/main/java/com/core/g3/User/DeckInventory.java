@@ -74,4 +74,11 @@ public class DeckInventory {
         this.decks.put(deck.getDeckName(), (IDeckModifiable) deck);
     }
 
+    public IDeck getOrCreateDeck(String deckName) {
+        if (!this.existsDeck(deckName)) {
+            this.createDeck(deckName);
+        }
+
+        return this.decks.get(deckName);
+    }
 }
