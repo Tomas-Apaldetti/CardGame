@@ -17,8 +17,9 @@ public class Card implements ITransactionable, ICard {
 
     private final CardName name;
     private final boolean shouldCount;
-    private final ICost invocationCost; // TODO -> remove?
-    private List<CardType> cardTypes;
+    private final ICost invocationCost; // TODO -> costo de invocacion de la carta
+    private List<ICardType.CardType> cardTypes;
+    private final Amount price;
 
     public Card(CardName name, boolean shouldCount) {
         this.name = name;
@@ -27,7 +28,7 @@ public class Card implements ITransactionable, ICard {
         this.price = new Amount(0);
     }
 
-    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<CardType> cardTypes) {
+    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<ICardType.CardType> cardTypes) {
         this.name = name;
         this.shouldCount = shouldCount;
         this.invocationCost = invocationCost;
@@ -61,10 +62,6 @@ public class Card implements ITransactionable, ICard {
     }
 
     public List<ICardType.CardType> getTypes() {
-        ArrayList<ICardType.CardType> types = new ArrayList<ICardType.CardType>();
-
-        this.cardTypes.forEach(cardType -> types.add(cardType.getType()));
-
-        return types;
+        return this.cardTypes;
     }
 }

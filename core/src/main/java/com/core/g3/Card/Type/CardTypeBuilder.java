@@ -16,14 +16,14 @@ import com.core.g3.Commons.Amount;
 
 public class CardTypeBuilder {
 
-    private List<CardType> cardTypes;
+    private List<ICardType> cardTypes;
 
     public CardTypeBuilder() {
-        this.cardTypes = new ArrayList<CardType>();
+        this.cardTypes = new ArrayList<ICardType>();
     }
 
     private void checkType(ICardType.CardType type) {
-        for (CardType cardType : this.cardTypes) {
+        for (ICardType cardType : this.cardTypes) {
             if (cardType.getType().equals(type)) {
                 throw new CardTypeIsAlreadyContainedInCardException();
             }
@@ -68,7 +68,8 @@ public class CardTypeBuilder {
 
     // TODO -> refactor of setTypes?
 
-    public List<CardType> getTypes() {
-        return this.cardTypes;
+    public List<ICardType.CardType> getTypes() {
+        return this.cardTypes.stream().map(cardType -> cardType.getType())
+                .collect(java.util.stream.Collectors.toList());
     }
 }
