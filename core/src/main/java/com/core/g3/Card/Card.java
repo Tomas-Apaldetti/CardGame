@@ -1,9 +1,11 @@
 package com.core.g3.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
+import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
@@ -15,7 +17,7 @@ public class Card implements ITransactionable, ICard {
 
     private final CardName name;
     private final boolean shouldCount;
-    private final ICost invocationCost; // TODO -> remove?
+    private final ICost invocationCost; // TODO -> costo de invocacion de la carta
     private List<ICardType.CardType> cardTypes;
     private final Amount price;
 
