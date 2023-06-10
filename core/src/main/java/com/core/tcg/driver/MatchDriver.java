@@ -67,19 +67,19 @@ public interface MatchDriver<CardReference> {
     void attackPlayer(CardReference creature, int index);
 
     /**
-     * Activate an artifact in the player's active zones, supplying targets if
+     * Activate an artefact in the player's active zones, supplying targets if
      * the specific card needs them
      * 
-     * @throws RuntimeException if the artifact can't be activated as indicated
+     * @throws RuntimeException if the artefact can't be activated as indicated
      */
     void activateArtifact(
-            CardReference artifact,
+            CardReference artefact,
             int index,
             Optional<DriverMatchSide> targetPlayer,
             List<CardReference> targets);
 
-    default void activateArtifact(CardReference artifact) {
-        activateArtifact(artifact, 0, Optional.empty(), List.of());
+    default void activateArtifact(CardReference artefact) {
+        activateArtifact(artefact, 0, Optional.empty(), List.of());
     }
 
     /**

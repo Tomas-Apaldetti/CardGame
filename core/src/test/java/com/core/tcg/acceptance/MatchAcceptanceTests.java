@@ -52,12 +52,12 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 Inventor));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
+        Card energy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
         assertThrows(Throwable.class, () -> {
-            match.summon(Blue, Inventor, DriverActiveZone.Artifact);
+            match.summon(Blue, Inventor, DriverActiveZone.Artefact);
         });
     }
 
@@ -67,7 +67,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 Alchemist));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
@@ -84,7 +84,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 MagicSword));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
@@ -99,10 +99,10 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 Saboteur));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card blueEnergy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
+        Card blueEnergy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Green, DriverTurnPhase.Main);
-        Card greenEnergy = match.summon(Green, WaterEnergy, DriverActiveZone.Artifact);
+        Card greenEnergy = match.summon(Green, WaterEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(blueEnergy);
@@ -122,7 +122,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
                 MagicSword));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
@@ -165,13 +165,13 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         match.start();
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card blueEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artifact);
+        Card blueEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artefact);
 
         match.skipToPhase(Green, DriverTurnPhase.Main);
         List<Card> greenEnergies = List.of(
-                match.summon(Green, FireEnergy, DriverActiveZone.Artifact),
-                match.summon(Green, WaterEnergy, DriverActiveZone.Artifact),
-                match.summon(Green, PlantEnergy, DriverActiveZone.Artifact));
+                match.summon(Green, FireEnergy, DriverActiveZone.Artefact),
+                match.summon(Green, WaterEnergy, DriverActiveZone.Artefact),
+                match.summon(Green, PlantEnergy, DriverActiveZone.Artefact));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(blueEnergy);

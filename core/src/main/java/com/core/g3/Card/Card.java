@@ -1,9 +1,11 @@
 package com.core.g3.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
+import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
@@ -16,8 +18,7 @@ public class Card implements ITransactionable, ICard {
     private final CardName name;
     private final boolean shouldCount;
     private final ICost invocationCost; // TODO -> remove?
-    private List<ICardType.CardType> cardTypes;
-    private final Amount price;
+    private List<CardType> cardTypes;
 
     public Card(CardName name, boolean shouldCount) {
         this.name = name;
@@ -26,7 +27,7 @@ public class Card implements ITransactionable, ICard {
         this.price = new Amount(0);
     }
 
-    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<ICardType.CardType> cardTypes) {
+    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<CardType> cardTypes) {
         this.name = name;
         this.shouldCount = shouldCount;
         this.invocationCost = invocationCost;
@@ -60,6 +61,10 @@ public class Card implements ITransactionable, ICard {
     }
 
     public List<ICardType.CardType> getTypes() {
-        return this.cardTypes;
+        ArrayList<ICardType.CardType> types = new ArrayList<ICardType.CardType>();
+
+        this.cardTypes.forEach(cardType -> types.add(cardType.getType()));
+
+        return types;
     }
 }
