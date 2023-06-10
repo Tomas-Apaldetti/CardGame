@@ -7,6 +7,7 @@ import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
+import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Transactions.IBuyer;
