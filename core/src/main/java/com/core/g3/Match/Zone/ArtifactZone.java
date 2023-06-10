@@ -6,7 +6,7 @@ import com.core.g3.Match.Zone.Exceptions.CardLimitReachException;
 
 import java.util.List;
 
-public class ArtifactZone implements IZone {
+public class ArtifactZone implements IActiveZone {
     private int limit;
     private List<ICard> cards;
 
