@@ -20,20 +20,20 @@ public class Card implements ITransactionable, ICard {
 
     private final CardName name;
     private final boolean shouldCount;
-    private final ICost invocationCost; // TODO -> remove?
-    private List<CardType> cardTypes;
+    private final ICost invocationCost;
+    private List<ICardType> cardTypes;
     private Amount price;
     private Amount summonableSpace;
 
     public Card(CardName name, boolean shouldCount) {
         this.name = name;
         this.shouldCount = shouldCount;
-        this.invocationCost = new NullInvocationCost(); // TODO -> review
+        this.invocationCost = new NullInvocationCost();
         this.price = new Amount(0);
         this.summonableSpace = new Amount(0);
     }
 
-    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<CardType> cardTypes,
+    public Card(CardName name, boolean shouldCount, ICost invocationCost, List<ICardType> cardTypes,
             Amount summonableSpace) {
         this.name = name;
         this.shouldCount = shouldCount;
@@ -78,7 +78,7 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public Amount summonIn(ActiveZoneType zoneType) {
-        for (CardType cardType : this.cardTypes) {
+        for (ICardType cardType : this.cardTypes) {
             if (cardType.isSummonableIn(zoneType)) {
                 return this.summonableSpace;
             }

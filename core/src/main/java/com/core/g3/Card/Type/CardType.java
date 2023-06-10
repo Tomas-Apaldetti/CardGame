@@ -33,6 +33,7 @@ public abstract class CardType implements ICardType {
         }
     }
 
+    @Override
     public boolean isSummonableIn(ActiveZoneType zoneType) {
         return this.allowedZones.contains(zoneType);
     }

@@ -35,4 +35,8 @@ public class ActiveZone {
         this.cardsSize = size;
         this.cards.add(card);
     }
+
+    public int currentCardCount(){
+        return this.cards.size();
+    }
 }

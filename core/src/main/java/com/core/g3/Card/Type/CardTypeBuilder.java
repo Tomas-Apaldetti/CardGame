@@ -16,14 +16,14 @@ import com.core.g3.Commons.Amount;
 
 public class CardTypeBuilder {
 
-    private List<CardType> cardTypes;
+    private List<ICardType> cardTypes;
 
     public CardTypeBuilder() {
-        this.cardTypes = new ArrayList<CardType>();
+        this.cardTypes = new ArrayList<>();
     }
 
     private void checkType(ICardType.CardType type) {
-        for (CardType cardType : this.cardTypes) {
+        for (ICardType cardType : this.cardTypes) {
             if (cardType.getType().equals(type)) {
                 throw new CardTypeIsAlreadyContainedInCardException();
             }
@@ -54,21 +54,18 @@ public class CardTypeBuilder {
         this.cardTypes.add(action);
     }
 
-    public void setTypeReaccion(List<IEffect> effects) {
+    public void setTypeReaction(List<IEffect> effects) {
         CardTypeReaction reaction = new CardTypeReaction(effects);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
 
-    public void setTypeReaccion(ICost useCost, List<IEffect> effects) {
+    public void setTypeReaction(ICost useCost, List<IEffect> effects) {
         CardTypeReaction reaction = new CardTypeReaction(useCost, effects);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
-
-    // TODO -> refactor of setTypes?
-
-    public List<CardType> getTypes() {
+    public List<ICardType> getTypes() {
         return this.cardTypes;
     }
 }
