@@ -66,14 +66,13 @@ class GameMode1Test {
         GameMode1 gameMode1 = new GameMode1();
         Deck deck = generateRandomDeck(40, 3);
         Player player = gameMode1.addPlayer(new User("test"), deck);
-        // Before draw initial cards
+
         int beforeHandSize = player.seeHand().size();
         assertEquals(0, beforeHandSize);
-        // After draw initial cards
+
         gameMode1.drawInitialCards(player);
         int afterHandSize = player.seeHand().size();
-        // Print afterHandSize
-        assertEquals(gameMode1.getInitialHandSize(), afterHandSize);
+        assertEquals(5, afterHandSize);
     }
 
     @Test
@@ -92,7 +91,7 @@ class GameMode1Test {
         Deck deck = generateRandomDeck(40, 3);
         Player player1 = gameMode1.addPlayer(new User("test"), deck);
         Player player2 = gameMode1.addPlayer(new User("test"), deck);
-        player2.affectMatchEndCondition(new Amount(gameMode1.getInitialPoints()));
+        player2.affectMatchEndCondition(new Amount(20));
         assertTrue(gameMode1.getWinner(player1, player2).isPresent());
         assertTrue(gameMode1.getWinner(player1, player2).get().equals(player1));
     }

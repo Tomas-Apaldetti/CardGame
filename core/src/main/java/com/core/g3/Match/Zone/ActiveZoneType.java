@@ -1,7 +1,7 @@
 package com.core.g3.Match.Zone;
 
-public enum ZoneType {
+public enum ActiveZoneType {
     Combat,
     Reserve,
-    Artifacts
+    Artefacts
 }

@@ -9,9 +9,7 @@ import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
-import com.core.g3.Match.Zone.ArtifactZone;
-import com.core.g3.Match.Zone.CombatZone;
-import com.core.g3.Match.Zone.ReserveZone;
+import com.core.g3.Match.Zone.ActiveZone;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,13 +20,13 @@ public class Player {
     private final IDeckPlayable deck;
     private final CardContainer hand;
     private final CardContainer discard;
-    private final ArtifactZone artifactZone;
-    private final CombatZone combatZone;
-    private final ReserveZone reserveZone;
+    private ActiveZone artifactZone;
+    private ActiveZone combatZone;
+    private ActiveZone reserveZone;
     private PlayerEnergies energies;
 
-    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ArtifactZone artifactZone,
-            CombatZone combatZone, ReserveZone reserveZone) {
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
+            ActiveZone combatZone, ActiveZone reserveZone) {
         this.account = account;
         this.condition = condition;
         this.deck = deck;
@@ -106,5 +104,9 @@ public class Player {
         ICard card = this.hand.peek().get(0);
         this.discardFromHand(this.hand.peek().get(0));
         return card;
+    }
+
+    public void pay(ICard card) {
+        card.applySummonCost(this);
     }
 }
