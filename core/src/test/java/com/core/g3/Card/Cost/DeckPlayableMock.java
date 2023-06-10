@@ -29,4 +29,10 @@ public class DeckPlayableMock implements IDeckPlayable {
     public List<CardName> getCards() {
         return new ArrayList<>();
     }
+
+    @Override
+    public void forceOrder(List<CardName> cards) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'forceOrder'");
+    }
 }

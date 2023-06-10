@@ -37,38 +37,40 @@ public class DeckPlayable implements IDeckPlayable {
 
     public List<CardName> getCards() {
         List<CardName> names = new ArrayList<>();
-        for (ICard card: cards){
+        for (ICard card : cards) {
             names.add(card.getName());
         }
         return names;
     }
 
-    public void forceOrder(List<CardName> names){
-        HashMap<CardName,List<Integer>> hash = new HashMap<>();
-        Integer i = 0;
-        for(CardName name: names){
-            List<Integer> positions = hash.containsKey(name) ? hash.get(name) : new ArrayList<>();
-            positions.add(i);
-            hash.put(name,positions);
-            i++;
+    private void orderCard(HashMap<CardName, List<Integer>> hash, ICard card, Integer i,
+            List<ICard> newOrderedList) {
+        if (hash.containsKey(card.getName())) {
+            List<Integer> positions = hash.get(card.getName());
+            if (positions.size() > 0) {
+                Integer position = positions.remove(0);
+                ICard cardToSwap = this.cards.get(position);
+                newOrderedList.set(position, card);
+                newOrderedList.set(i, cardToSwap);
+            }
         }
-        orderCard(hash,cards.get(0),0);
+        if (i < this.cards.size() - 1) {
+            orderCard(hash, this.cards.get(i + 1), i + 1, newOrderedList);
+        }
     }
 
-    private void orderCard(HashMap<CardName, List<Integer>> hash, ICard card, int i) {
-        if(hash.get(card.getName()).size() == 0){
-            if(i != this.cards.size() - 1){
-                i++;
-                orderCard(hash,this.cards.get(i),i);
-            }
-            else {
-                return;
-            }
+    public void forceOrder(List<CardName> names) {
+        HashMap<CardName, List<Integer>> hash = new HashMap<>();
+        Integer i = 0;
+        for (CardName name : names) {
+            List<Integer> positions = hash.containsKey(name) ? hash.get(name) : new ArrayList<>();
+            positions.add(i);
+            hash.put(name, positions);
+            i++;
         }
-        Integer pos = hash.get(card.getName()).remove(0);
-        ICard toMove = this.cards.get(i);
-        this.cards.add(i,toMove);
-        this.cards.add(pos,card);
-        orderCard(hash, toMove, i);
+        System.out.println(hash);
+        List<ICard> newOrderedList = this.cards;
+        orderCard(hash, this.cards.get(0), 0, newOrderedList);
+        this.cards = newOrderedList;
     }
 }
