@@ -97,11 +97,6 @@ public class PlayableDeckTest {
         };
 
         playableDeck.forceOrder(newOrder);
-        // Print the cards to see the order
-        assertEquals(newOrder.get(0), playableDeck.getCards().get(0));
-        assertEquals(newOrder.get(1), playableDeck.getCards().get(1));
-        assertEquals(newOrder.get(2), playableDeck.getCards().get(2));
-        assertEquals(newOrder.get(3), playableDeck.getCards().get(3));
         assertEquals(newOrder, playableDeck.getCards());
     }
 
@@ -131,8 +126,6 @@ public class PlayableDeckTest {
 
         playableDeck.forceOrder(newOrder);
 
-        // Print the cards to see the order from playable deck
-        System.out.println(playableDeck.getCards());
         for (int i = 0; i < newOrder.size(); i++) {
             assertEquals(newOrder.get(i), playableDeck.getCards().get(i));
         }

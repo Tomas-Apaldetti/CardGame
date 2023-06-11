@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
@@ -43,34 +44,23 @@ public class DeckPlayable implements IDeckPlayable {
         return names;
     }
 
-    private void orderCard(HashMap<CardName, List<Integer>> hash, ICard card, Integer i,
-            List<ICard> newOrderedList) {
-        if (hash.containsKey(card.getName())) {
-            List<Integer> positions = hash.get(card.getName());
-            if (positions.size() > 0) {
-                Integer position = positions.remove(0);
-                ICard cardToSwap = this.cards.get(position);
-                newOrderedList.set(position, card);
-                newOrderedList.set(i, cardToSwap);
+    public void forceOrder(List<CardName> names) {
+
+        // creating a map of cards as key card name and value list of ICards
+        Map<CardName, List<ICard>> cardMap = new HashMap<>();
+        for (ICard card : this.cards) {
+            CardName name = card.getName();
+            cardMap.putIfAbsent(name, new ArrayList<>());
+            cardMap.get(name).add(card);
+        }
+
+        List<ICard> orderedList = new ArrayList<>();
+        for (CardName cardName : names) {
+            if (cardMap.containsKey(cardName) && !cardMap.get(cardName).isEmpty()) {
+                orderedList.add(cardMap.get(cardName).remove(0));
             }
         }
-        if (i < this.cards.size() - 1) {
-            orderCard(hash, this.cards.get(i + 1), i + 1, newOrderedList);
-        }
-    }
-
-    public void forceOrder(List<CardName> names) {
-        HashMap<CardName, List<Integer>> hash = new HashMap<>();
-        Integer i = 0;
-        for (CardName name : names) {
-            List<Integer> positions = hash.containsKey(name) ? hash.get(name) : new ArrayList<>();
-            positions.add(i);
-            hash.put(name, positions);
-            i++;
-        }
-        System.out.println(hash);
-        List<ICard> newOrderedList = this.cards;
-        orderCard(hash, this.cards.get(0), 0, newOrderedList);
-        this.cards = newOrderedList;
+    
+        this.cards = orderedList;
     }
 }
