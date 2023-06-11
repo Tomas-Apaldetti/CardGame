@@ -1,5 +1,6 @@
 package com.core.g3.Card.Attack;
 
+import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
@@ -10,12 +11,14 @@ import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import jdk.jshell.spi.ExecutionControl;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AddEnergyAttackTest {
 
@@ -28,6 +31,13 @@ class AddEnergyAttackTest {
             return builder;
     }
 
+    private class attackMock implements IAttack{
+
+        @Override
+        public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival) {
+            throw new ExpectedException();
+        }
+    }
     @Test
     public void energyAddAttackAddCorrectAmount() {
         Player blue = new Player(null,null,null,null,null,null);
@@ -41,5 +51,19 @@ class AddEnergyAttackTest {
         action.apply();
         assertEquals(3,cig2.getHealth());
         assertEquals(3,blue.getEnergy(EnergyType.Water).available());
+    }
+
+    @Test
+    public void executeInternalAttackException() {
+        Player blue = new Player(null,null,null,null,null,null);
+        Player green = new Player(null,null,null,null,null,null);
+        ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Plant,new Amount(3),new attackMock())).build();
+        ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire,new Amount(3))).build();
+
+        CardInGame cig1 = new CardInGame(blue,card1,null);
+        CardInGame cig2 = new CardInGame(green,card2,null);
+        assertThrows(ExpectedException.class,() -> cig1.attack(cig2,blue,green, new Amount(0)));
+        assertEquals(3,cig2.getHealth());
+        assertEquals(0,blue.getEnergy(EnergyType.Plant).available());
     }
 }
