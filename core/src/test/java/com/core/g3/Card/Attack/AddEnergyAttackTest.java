@@ -19,28 +19,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddEnergyAttackTest {
 
-    private Card getCard(IAttack attack){
+    private CardBuilder getCardBuilder(IAttack attack){
             CardBuilder builder = new CardBuilder(CardName.Alchemist);
             List<Attribute> attributes = new ArrayList<>();
             List<IAttack> attacks = new ArrayList<>();
             attacks.add(attack);
             builder.cardTypeBuilder.setTypeCreature(new Amount(3),attributes, attacks);
-            return builder.build();
+            return builder;
     }
 
     @Test
-    public void energyCostReducesCorrectlyOk() {
+    public void energyAddAttackAddCorrectAmount() {
         Player blue = new Player(null,null,null,null,null,null);
         Player green = new Player(null,null,null,null,null,null);
-        ICard card1 = this.getCard(new AddEnergyAttack(EnergyType.Water,new Amount(3)));
-        ICard card2 = this.getCard(new AddEnergyAttack(EnergyType.Fire,new Amount(3)));
+        ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Water,new Amount(3))).build();
+        ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire,new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
         CardInGame cig2 = new CardInGame(green,card2,null);
         OriginalAction action = cig1.attack(cig2,blue,green, new Amount(0));
         action.apply();
-        assertEquals(cig2.getHealth(),0);
-
+        assertEquals(3,cig2.getHealth());
+        assertEquals(3,blue.getEnergy(EnergyType.Water).available());
     }
-
 }

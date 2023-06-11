@@ -31,7 +31,7 @@ public class OriginalAction {
     }
 
     public void addEffect(IEffect effect){
-        this.addEffect(effect);
+        this.effects.add(effect);
     }
 
     public void apply(){

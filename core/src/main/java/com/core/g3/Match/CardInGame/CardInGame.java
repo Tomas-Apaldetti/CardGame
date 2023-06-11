@@ -45,7 +45,7 @@ public class CardInGame implements IAttackable {
     }
 
     public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount which){
-        if(this.attackState.canAttack(which.value())){
+        if(!this.attackState.canAttack(which.value())){
             throw new CardCantAttackException();
         }
         this.attackState.deplete();
