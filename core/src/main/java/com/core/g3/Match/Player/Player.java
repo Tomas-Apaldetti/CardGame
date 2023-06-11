@@ -109,4 +109,8 @@ public class Player {
     public void pay(ICard card) {
         card.applySummonCost(this);
     }
+
+    public void discard(ICard base) {
+        this.discard.add(base);
+    }
 }

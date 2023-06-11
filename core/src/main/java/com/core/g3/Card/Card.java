@@ -3,9 +3,12 @@ package com.core.g3.Card;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
+import com.core.g3.Card.Attack.IAttack;
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
-import com.core.g3.Card.Type.CardType;
+import com.core.g3.Card.Type.Creature.CardTypeCreature;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Commons.Amount;
@@ -13,7 +16,11 @@ import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Transactions.IBuyer;
 import com.core.g3.Market.Transactions.ISeller;
 import com.core.g3.Market.Transactions.ITransactionable;
+import com.core.g3.Match.CardInGame.AttackableManager.Health;
+import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
+import com.core.g3.Match.CardInGame.AttackableManager.NoAttackable;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class Card implements ITransactionable, ICard {
@@ -68,7 +75,7 @@ public class Card implements ITransactionable, ICard {
         return this.price.value();
     }
 
-    public List<ICardType.CardType> getTypes() {
+    public List<ICardType> getTypes() {
         return this.cardTypes;
     }
 
@@ -86,4 +93,38 @@ public class Card implements ITransactionable, ICard {
     public void applySummonCost(Player player) {
         this.invocationCost.apply(player);
     }
+
+    @Override
+    public OriginalAction attack(IAttackable victim, Player user, Player rival, int idx) {
+        for(ICardType cardType: this.cardTypes){
+            if(cardType.canAttack()){
+                OriginalAction action = new OriginalAction(this);
+                return cardType.attack(action, victim, user, rival, idx);
+            }
+        }
+        throw new CardCantAttackException();
+    }
+
+    @Override
+    public IAttackableManager getHealth() {
+        for(ICardType cardType: this.cardTypes){
+            if(cardType.getType() == ICardType.CardType.Creature){
+                CardTypeCreature cast = (CardTypeCreature) cardType;
+                return new Health(cast.getBaseHealth());
+            }
+        }
+        return new NoAttackable();
+    }
+
+    @Override
+    public List<IAttack> getAttacks() {
+        for(ICardType cardType: this.cardTypes){
+            if(cardType.getType() == ICardType.CardType.Creature){
+                CardTypeCreature cast = (CardTypeCreature) cardType;
+                return cast.getAttacks();
+            }
+        }
+        return new ArrayList<>();
+    }
+
 }

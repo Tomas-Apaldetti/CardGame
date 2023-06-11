@@ -9,7 +9,7 @@ import com.core.g3.Card.Type.Action.CardTypeAction;
 import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Creature.CardTypeCreature;
-import com.core.g3.Card.Type.Creature.IAttack;
+import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Type.Exceptions.CardTypeIsAlreadyContainedInCardException;
 import com.core.g3.Card.Type.Reaction.CardTypeReaction;
 import com.core.g3.Commons.Amount;

@@ -3,8 +3,12 @@ package com.core.g3.Card.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.Exceptions.CardTypeNeedsAtLeastOneEffectException;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
@@ -36,5 +40,15 @@ public abstract class CardType implements ICardType {
     @Override
     public boolean isSummonableIn(ActiveZoneType zoneType) {
         return this.allowedZones.contains(zoneType);
+    }
+
+    @Override
+    public boolean canAttack(){
+        return false;
+    }
+
+    @Override
+    public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival, int idx){
+        throw new CardCantAttackException();
     }
 }
