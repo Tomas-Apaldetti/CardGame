@@ -13,7 +13,7 @@ public class Health implements IAttackableManager{
     }
     @Override
     public void receiveAttack(Amount damage) {
-        this.current.subtract(damage);
+        this.current.subtractOrZero(damage);
     }
 
     @Override

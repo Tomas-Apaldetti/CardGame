@@ -1,5 +1,6 @@
 package com.core.g3.Card.Attack;
 
+import com.core.g3.Card.Attack.Mocks.AttackMock;
 import com.core.g3.Card.Attack.Mocks.ExpectedException;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
@@ -29,13 +30,6 @@ class AddEnergyAttackTest {
             return builder;
     }
 
-    private class attackMock implements IAttack{
-
-        @Override
-        public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival) {
-            throw new ExpectedException();
-        }
-    }
     @Test
     public void energyAddAttackAddCorrectAmount() {
         Player blue = new Player(null,null,null,null,null,null);
@@ -55,7 +49,7 @@ class AddEnergyAttackTest {
     public void executeInternalAttackException() {
         Player blue = new Player(null,null,null,null,null,null);
         Player green = new Player(null,null,null,null,null,null);
-        ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Plant,new Amount(3),new attackMock())).build();
+        ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Plant,new Amount(3),new AttackMock())).build();
         ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire,new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
