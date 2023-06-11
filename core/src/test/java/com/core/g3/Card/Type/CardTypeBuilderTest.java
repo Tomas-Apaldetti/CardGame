@@ -21,7 +21,7 @@ public class CardTypeBuilderTest {
     @Test
     public void createCardOfType() {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(this.effects);
+        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
         Card card = cardBuilder.build();
 
         ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
@@ -34,7 +34,7 @@ public class CardTypeBuilderTest {
     @Test
     public void createCardOfTwoTypes() {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(effects);
+        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
         cardBuilder.cardTypeBuilder.setTypeCreature(null, null, null);
         Card card = cardBuilder.build();
 
@@ -56,10 +56,10 @@ public class CardTypeBuilderTest {
         actual.add(ICardType.CardType.Artefact);
 
         cardBuilder.cardTypeBuilder.setTypeAction(null, this.effects);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(this.effects);
+        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
 
         assertThrows(CardTypeIsAlreadyContainedInCardException.class,
-                () -> cardBuilder.cardTypeBuilder.setTypeArtefact(this.effects));
+                () -> cardBuilder.cardTypeBuilder.setTypeArtefact(null));
     }
 
     private class TestEffects {

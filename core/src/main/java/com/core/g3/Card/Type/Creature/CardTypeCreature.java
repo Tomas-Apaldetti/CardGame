@@ -51,4 +51,12 @@ public class CardTypeCreature extends CardType {
     public int getBaseHealth(){
         return this.baseHP.value();
     }
+
+    @Override
+    public List<Attribute> getAttributes(){
+        if(this.attributes.isEmpty()){
+            return null;
+        }
+        return this.attributes;
+    }
 }

@@ -38,6 +38,7 @@ class AddEnergyAttackTest {
         ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire,new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
+        cig1.refreshUse();
         CardInGame cig2 = new CardInGame(green,card2,null);
         OriginalAction action = cig1.attack(cig2,blue,green, new Amount(0));
         action.apply();
@@ -53,6 +54,7 @@ class AddEnergyAttackTest {
         ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire,new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
+        cig1.refreshUse();
         CardInGame cig2 = new CardInGame(green,card2,null);
         assertThrows(ExpectedException.class,() -> cig1.attack(cig2,blue,green, new Amount(0)));
         assertEquals(3,cig2.getHealth());

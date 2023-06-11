@@ -1,5 +1,7 @@
 package com.core.g3.Match.Player;
 
+import com.core.g3.Card.Attack.IAttackable;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.CardContainer;
@@ -112,5 +114,13 @@ public class Player {
 
     public void discard(ICard base) {
         this.discard.add(base);
+    }
+
+    public List<IAttackable> getCreatures(Attribute attrFilter) {
+        List<IAttackable> total = new ArrayList<>();
+        total.addAll(this.artifactZone.getCreatures(attrFilter));
+        total.addAll(this.combatZone.getCreatures(attrFilter));
+        total.addAll(this.reserveZone.getCreatures(attrFilter));
+        return total;
     }
 }

@@ -38,6 +38,7 @@ class DrawCardAttackTest {
         ICard card1 = this.getCardBuilder(new DrawCardAttack()).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
+        cig1.refreshUse();
         OriginalAction action = cig1.attack(null,blue,null, new Amount(0));
         assertEquals(1,deck.size());
         assertEquals(0,blue.seeHand().size());
@@ -55,6 +56,7 @@ class DrawCardAttackTest {
         ICard card1 = this.getCardBuilder(new DrawCardAttack(new AttackMock())).build();
 
         CardInGame cig1 = new CardInGame(blue,card1,null);
+        cig1.refreshUse();
         assertThrows(ExpectedException.class,() -> cig1.attack(null,blue,null, new Amount(0)));
         assertEquals(1,deck.size());
         assertEquals(0,blue.seeHand().size());

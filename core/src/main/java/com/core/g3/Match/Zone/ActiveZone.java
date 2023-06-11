@@ -1,5 +1,7 @@
 package com.core.g3.Match.Zone;
 
+import com.core.g3.Card.Attack.IAttackable;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -9,6 +11,8 @@ import com.core.g3.Match.Zone.Exceptions.CardNotInZoneException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ActiveZone {
 
@@ -55,6 +59,13 @@ public class ActiveZone {
         this.cardsSize.subtract(size);
     }
 
+    public List<IAttackable> getCreatures(Attribute attrFilter){
+        return this.cards.stream()
+                .filter(card -> {
+                    Optional<List<Attribute>> cAttr = card.getCreatureAttributes();
+                    return cAttr.isPresent() && cAttr.get().contains(attrFilter);
+                }).map( c -> (IAttackable) c).collect(Collectors.toList());
+    }
     public int currentCardCount(){
         return this.cards.size();
     }

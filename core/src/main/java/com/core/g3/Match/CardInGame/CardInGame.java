@@ -1,21 +1,27 @@
 package com.core.g3.Match.CardInGame;
 
+import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttackable;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
-import com.core.g3.Match.CardInGame.AttackStateManager.AttackStateManager;
+import com.core.g3.Match.CardInGame.CardTypeStateManager.ArtefactStateManager;
+import com.core.g3.Match.CardInGame.CardTypeStateManager.AttackStateManager;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZone;
+
+import java.util.List;
+import java.util.Optional;
 
 public class CardInGame implements IAttackable {
 
     private final ICard base;
     private final Player owner;
     private final AttackStateManager attackState;
-    private boolean artefactUsed;
+    private ArtefactStateManager artefactState;
     private boolean reactionUsed;
     private ActiveZone currentZone;
     private final IAttackableManager health;
@@ -23,11 +29,15 @@ public class CardInGame implements IAttackable {
     public CardInGame(Player owner,  ICard base, ActiveZone summoningZone){
         this.base = base;
         this.health = this.base.getHealth();
+
         this.attackState = new AttackStateManager(this.base.getAttacks());
         this.attackState.deplete();
+
+        this.artefactState = new ArtefactStateManager(this.base.getArtefactEffects());
+        this.artefactState.deplete();
+
         this.owner = owner;
         this.currentZone = summoningZone;
-        this.refreshUse();
     }
     public void discard(){
         this.currentZone.remove(this);
@@ -52,9 +62,25 @@ public class CardInGame implements IAttackable {
         return this.base.attack(victim, user, rival, which.value());
     }
 
+    public OriginalAction artefact(Player user, Player rival){
+        if(!this.artefactState.canActivate()){
+            throw new ArtefactNotUsableException();
+        }
+        this.artefactState.deplete();
+        return this.base.artefact(user, rival);
+    }
+
+    public OriginalAction artefact(IAttackable affected, Player user, Player rival){
+        if(!this.artefactState.canActivate()){
+            throw new ArtefactNotUsableException();
+        }
+        this.artefactState.deplete();
+        return this.base.artefact(affected, user, rival);
+    }
+
     public void refreshUse(){
         this.attackState.reset();
-        this.artefactUsed = false;
+        this.artefactState.reset();
         this.reactionUsed = false;
     }
 
@@ -75,5 +101,9 @@ public class CardInGame implements IAttackable {
 
     public int getHealth(){
         return this.health.current();
+    }
+
+    public Optional<List<Attribute>> getCreatureAttributes(){
+        return this.base.getCreatureAttributes();
     }
 }

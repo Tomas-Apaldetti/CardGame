@@ -3,6 +3,7 @@ package com.core.g3.Card.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.Action.CardTypeAction;
@@ -36,7 +37,7 @@ public class CardTypeBuilder {
         this.cardTypes.add(creature);
     }
 
-    public void setTypeArtefact(List<IEffect> effects) {
+    public void setTypeArtefact(IArtefactEffect effects) {
         CardTypeArtefact artefact = new CardTypeArtefact(effects);
         checkType(artefact.getType());
         this.cardTypes.add(artefact);

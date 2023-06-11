@@ -28,4 +28,6 @@ public class DrawCardAttack implements IAttack{
         action.addEffect(new DrawCard(new Amount(1), user));
         return action;
     }
+
+
 }

@@ -1,6 +1,5 @@
-package com.core.g3.Match.CardInGame.AttackStateManager;
+package com.core.g3.Match.CardInGame.CardTypeStateManager;
 
-import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttack;
 
 import java.util.List;
@@ -17,10 +16,7 @@ public class AttackStateManager {
     }
 
     public boolean canAttack(int idx){
-        if (this.attacks.isEmpty() ||idx >= this.attacks.size() || this.alreadyMade){
-            return false;
-        }
-        return true;
+        return !this.attacks.isEmpty() && idx < this.attacks.size() && !this.alreadyMade;
     }
     public void reset(){
         this.alreadyMade = false;

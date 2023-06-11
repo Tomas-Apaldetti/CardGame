@@ -29,7 +29,7 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
         Card antimagic = builder.build();
 
         Player player = new Player(null, null, null, null,
@@ -44,7 +44,7 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(3));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
         builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
         Card antimagic = builder.build();
 
@@ -62,7 +62,7 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
 
         builder.setSummonableSpace(new Amount(2));
         Card antimagic = builder.build();
@@ -79,7 +79,7 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
         builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
@@ -96,7 +96,7 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Combat, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
 
@@ -112,13 +112,13 @@ public class ActiveZoneTest {
         ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(10));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder.cardTypeBuilder.setTypeArtefact(null);
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
 
         CardBuilder builder2 = new CardBuilder(CardName.Alchemist);
         builder2.invocationCost.addEnergyCost(EnergyType.Fire,new Amount(1));
-        builder2.cardTypeBuilder.setTypeArtefact(this.effects);
+        builder2.cardTypeBuilder.setTypeArtefact(null);
         Card alchemist = builder2.build();
 
         Player player = new Player(null, null, null, null,
