@@ -4,6 +4,7 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.AddEnergy;
+import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class AddEnergyAttack implements IAttack{
         if(this.next.isPresent()){
             this.next.get().attack(action,victim,user,rival);
         }
+        action.setType(ActionType.Attack);
         action.addEffect(new AddEnergy(this.energyToAdd, this.amountToAdd, user));
         return action;
     }

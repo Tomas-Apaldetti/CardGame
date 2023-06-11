@@ -1,7 +1,6 @@
 package com.core.g3.Card.Attack;
 
-import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
-import com.core.g3.Card.Card;
+import com.core.g3.Card.Attack.Mocks.ExpectedException;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.Creature.Attribute;
@@ -11,7 +10,6 @@ import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
-import jdk.jshell.spi.ExecutionControl;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
