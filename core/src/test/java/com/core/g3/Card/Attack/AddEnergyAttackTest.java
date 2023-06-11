@@ -1,0 +1,46 @@
+package com.core.g3.Card.Attack;
+
+import com.core.g3.Card.Card;
+import com.core.g3.Card.CardBuilder;
+import com.core.g3.Card.CardName;
+import com.core.g3.Card.Type.Creature.Attribute;
+import com.core.g3.Commons.Amount;
+import com.core.g3.Deck.ICard;
+import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Player.Resources.EnergyType;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AddEnergyAttackTest {
+
+    private Card getCard(IAttack attack){
+            CardBuilder builder = new CardBuilder(CardName.Alchemist);
+            List<Attribute> attributes = new ArrayList<>();
+            List<IAttack> attacks = new ArrayList<>();
+            attacks.add(attack);
+            builder.cardTypeBuilder.setTypeCreature(new Amount(3),attributes, attacks);
+            return builder.build();
+    }
+
+    @Test
+    public void energyCostReducesCorrectlyOk() {
+        Player blue = new Player(null,null,null,null,null,null);
+        Player green = new Player(null,null,null,null,null,null);
+        ICard card1 = this.getCard(new AddEnergyAttack(EnergyType.Water,new Amount(3)));
+        ICard card2 = this.getCard(new AddEnergyAttack(EnergyType.Fire,new Amount(3)));
+
+        CardInGame cig1 = new CardInGame(blue,card1,null);
+        CardInGame cig2 = new CardInGame(green,card2,null);
+        OriginalAction action = cig1.attack(cig2,blue,green, new Amount(0));
+        action.apply();
+        assertEquals(cig2.getHealth(),0);
+
+    }
+
+}

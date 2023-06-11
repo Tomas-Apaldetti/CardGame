@@ -33,4 +33,13 @@ public class OriginalAction {
     public void addEffect(IEffect effect){
         this.addEffect(effect);
     }
+
+    public void apply(){
+        if (this.damage.isPresent()){
+            this.damage.get().apply();
+        }
+        for (IEffect effect: effects){
+            effect.apply();
+        }
+    }
 }

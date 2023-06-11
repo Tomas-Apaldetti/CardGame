@@ -33,4 +33,9 @@ public class Health implements IAttackableManager{
     public boolean isAttackable() {
         return true;
     }
+
+    @Override
+    public int current() {
+        return this.current.value();
+    }
 }

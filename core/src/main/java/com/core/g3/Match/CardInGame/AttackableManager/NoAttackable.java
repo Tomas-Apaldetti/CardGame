@@ -23,4 +23,9 @@ public class NoAttackable implements IAttackableManager{
     public boolean isAttackable() {
         return false;
     }
+
+    @Override
+    public int current(){
+        throw new EntityIsNotAttackableException();
+    }
 }

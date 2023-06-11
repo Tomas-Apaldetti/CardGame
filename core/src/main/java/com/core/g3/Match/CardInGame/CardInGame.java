@@ -7,6 +7,7 @@ import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.AttackStateManager.AttackStateManager;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZone;
 
 public class CardInGame implements IAttackable {
@@ -43,12 +44,12 @@ public class CardInGame implements IAttackable {
         this.currentZone.addCard(this);
     }
 
-    public void attack(CardInGame victim, Player user, Player rival, Amount which){
+    public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount which){
         if(this.attackState.canAttack(which.value())){
             throw new CardCantAttackException();
         }
-        this.base.attack(victim, user, rival, which.value());
         this.attackState.deplete();
+        return this.base.attack(victim, user, rival, which.value());
     }
 
     public void refreshUse(){
@@ -70,5 +71,9 @@ public class CardInGame implements IAttackable {
     @Override
     public void heal(Amount heal) {
         this.health.heal(heal);
+    }
+
+    public int getHealth(){
+        return this.health.current();
     }
 }
