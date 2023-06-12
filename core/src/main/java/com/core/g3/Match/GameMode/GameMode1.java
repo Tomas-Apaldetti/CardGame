@@ -5,8 +5,6 @@ import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Player;
 
-import java.util.Optional;
-
 public class GameMode1 extends GameMode {
 
     public GameMode1() {
@@ -27,14 +25,5 @@ public class GameMode1 extends GameMode {
 
     public void initialStage(Player player) {
         player.drawCard();
-    }
-
-    public Optional<Player> getWinner(Player player1, Player player2) {
-        if (player1.matchEndConditionMet()) {
-            return Optional.of(player2);
-        } else if (player2.matchEndConditionMet()) {
-            return Optional.of(player1);
-        }
-        return Optional.empty();
     }
 }
