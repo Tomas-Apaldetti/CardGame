@@ -30,4 +30,8 @@ public class DriverMapper {
     public static PlayerZone toPlayerZone(DriverMatchSide matchSide) {
         return PlayerZone.valueOf(matchSide.name());
     }
+
+    public static DriverMatchSide toDriverMatchSide(PlayerZone playerZone) {
+        return DriverMatchSide.valueOf(playerZone.name());
+    }
 }
