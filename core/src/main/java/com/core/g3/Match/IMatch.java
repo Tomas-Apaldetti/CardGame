@@ -10,6 +10,7 @@ import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.DriverCardName;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IMatch {
     public void startMatch();
@@ -30,4 +31,6 @@ public interface IMatch {
     public IResource playerEnergy(Player player, EnergyType energyType);
 
     public Player getPlayer(PlayerZone side);
+
+    public Optional<PlayerZone> getWinner();
 }
