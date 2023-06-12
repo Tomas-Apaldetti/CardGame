@@ -2,7 +2,7 @@ package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
-import com.core.g3.Match.GameMode.GameMode;
+import com.core.g3.Match.GameMode.IGameMode;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -10,13 +10,14 @@ import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.DriverCardName;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Match implements IMatch {
     private Player bluePlayer;
     private Player greenPlayer;
-    private GameMode gameMode;
+    private IGameMode gameMode;
 
-    public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
+    public Match(Player bluePlayer, Player greenPlayer, IGameMode gameMode) {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
@@ -74,6 +75,23 @@ public class Match implements IMatch {
 
     private Player filterPlayer(PlayerZone side) {
         return side.equals(PlayerZone.Blue) ? bluePlayer : greenPlayer;
+    }
+
+    private PlayerZone getPlayerSide(Player player) {
+        return player.equals(bluePlayer) ? PlayerZone.Blue : PlayerZone.Green;
+    }
+
+    @Override
+    public Optional<PlayerZone> getWinner() {
+        Player bluePlayer = getPlayer(PlayerZone.Blue);
+        Player greenPlayer = getPlayer(PlayerZone.Green);
+        Optional<Player> winnerPlayer = this.gameMode.getWinner(greenPlayer, bluePlayer);
+
+        if (winnerPlayer.isPresent()) {
+            return Optional.of(this.getPlayerSide(winnerPlayer.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
