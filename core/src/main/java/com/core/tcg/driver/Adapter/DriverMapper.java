@@ -2,7 +2,6 @@ package com.core.tcg.driver.Adapter;
 
 
 import com.core.g3.Card.CardName;
-import com.core.g3.Deck.ICard;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.tcg.driver.DriverCardName;
 import com.core.tcg.driver.DriverMatchSide;

@@ -2,7 +2,6 @@ package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Match.IMatch;
-import com.core.g3.Match.Match;
 import com.core.tcg.driver.*;
 
 import java.util.List;
