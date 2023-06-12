@@ -1,7 +1,16 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.Card;
+import com.core.g3.Commons.Amount;
+import com.core.g3.Deck.Deck;
 import com.core.g3.Match.IMatch;
+import com.core.g3.Match.Match;
+import com.core.g3.Match.DeckPlayable.DeckPlayable;
+import com.core.g3.Match.GameMode.GameMode1;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Player.PlayerZone;
+import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
+import com.core.g3.User.User;
 import com.core.tcg.driver.*;
 
 import java.util.List;
@@ -114,8 +123,25 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public Optional<DriverMatchSide> winner() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'winner'");
+        Player playerBlue = this.createPlayer("blue", "test1", 100);
+        Player playerGreen = this.createPlayer("green", "test2", 0);
+        GameMode1 gameMode = new GameMode1();
+
+        Match match = new Match(playerBlue, playerGreen, gameMode);
+        Optional<PlayerZone> winner = match.getWinner();
+        if (winner.isPresent()) {
+            return Optional.of(DriverMapper.toDriverMatchSide(winner.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private Player createPlayer(String username, String deckName, Integer initialAmount) {
+        User user = new User(username);
+        Deck deck = new Deck(deckName);
+        DeckPlayable playableDeck = new DeckPlayable(deck);
+        PlainHP condition = new PlainHP(new Amount(initialAmount));
+        return new Player(user, playableDeck, condition, null, null, null);
     }
 
 }
