@@ -1,5 +1,6 @@
 package com.core.tcg.acceptance;
 
+import com.core.g3.Card.CardName;
 import com.core.tcg.driver.*;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,10 @@
 package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
+import com.core.g3.Card.CardName;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.DriverCardName;
@@ -27,9 +29,8 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void forceDeckOrder(Player player, List<DriverCardName> cards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'forceDeckOrder'");
+    public void forceDeckOrder(PlayerZone side, List<CardName> cards) {
+        filterPlayer(side).forceDeckOrder(cards);
     }
 
     @Override
@@ -64,6 +65,15 @@ public class Match implements IMatch {
     @Override
     public IResource playerEnergy(Player player, EnergyType energyType) {
         return player.getEnergy(energyType);
+    }
+
+    @Override
+    public Player getPlayer(PlayerZone side) {
+        return filterPlayer(side);
+    }
+
+    private Player filterPlayer(PlayerZone side) {
+        return side.equals(PlayerZone.Blue) ? bluePlayer : greenPlayer;
     }
 
 }

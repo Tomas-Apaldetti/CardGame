@@ -1,11 +1,9 @@
 package com.core.g3.Card;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
-import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Commons.Amount;
@@ -68,7 +66,7 @@ public class Card implements ITransactionable, ICard {
         return this.price.value();
     }
 
-    public List<ICardType.CardType> getTypes() {
+    public List<ICardType> getTypes() {
         return this.cardTypes;
     }
 

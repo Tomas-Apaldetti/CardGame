@@ -2,7 +2,6 @@ package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Match.IMatch;
-import com.core.g3.Match.Match;
 import com.core.tcg.driver.*;
 
 import java.util.List;
@@ -17,14 +16,12 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public List<DriverCardName> deckOrder(DriverMatchSide player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deckOrder'");
+        return match.getPlayer(DriverMapper.toPlayerZone(player)).retrieveDeckOrder();
     }
 
     @Override
     public void forceDeckOrder(DriverMatchSide player, List<DriverCardName> cards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'forceDeckOrder'");
+        match.forceDeckOrder(DriverMapper.toPlayerZone(player), DriverMapper.toDriverCardName(cards));
     }
 
     @Override

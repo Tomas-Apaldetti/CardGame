@@ -5,6 +5,9 @@ import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeckPlayableMock implements IDeckPlayable {
 
     @Override
@@ -20,5 +23,16 @@ public class DeckPlayableMock implements IDeckPlayable {
     @Override
     public int size() {
         return 0;
+    }
+
+    @Override
+    public List<CardName> getCards() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void forceOrder(List<CardName> cards) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'forceOrder'");
     }
 }

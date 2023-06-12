@@ -28,7 +28,7 @@ public class CardTypeBuilderTest {
         actual.add(ICardType.CardType.Artefact);
 
         assertEquals(CardName.Antimagic, card.getName());
-        assertEquals(true, card.getTypes().containsAll(actual));
+        assertEquals(true, card.getTypes().stream().map(ICardType::getType).allMatch(actual::contains));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class CardTypeBuilderTest {
         actual.add(ICardType.CardType.Creature);
 
         assertEquals(CardName.Antimagic, card.getName());
-        assertEquals(true, card.getTypes().containsAll(actual));
+        assertEquals(true, card.getTypes().stream().map(ICardType::getType).allMatch(actual::contains));
     }
 
     @Test
