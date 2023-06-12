@@ -6,24 +6,22 @@ import java.util.List;
 import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
-import com.core.g3.Card.Type.Zone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class CardTypeArtefact extends CardType {
 
     private final List<IEffect> effects;
-    protected List<Zone> allowedZones;
+    protected List<ActiveZoneType> allowedZones;
 
     public CardTypeArtefact(List<IEffect> effects) {
+        super(ICardType.CardType.Artefact, Arrays.asList(ActiveZoneType.Artefacts));
         assertEffects(effects);
-        this.type = ICardType.CardType.Artefact;
         this.effects = effects;
-        this.allowedZones = Arrays.asList(Zone.Artefacts);
     }
 
-    public CardTypeArtefact(List<IEffect> effects, List<Zone> allowedZones) {
+    public CardTypeArtefact(List<IEffect> effects, List<ActiveZoneType> allowedZones) {
+        super(ICardType.CardType.Artefact, allowedZones);
         assertEffects(effects);
-        this.type = ICardType.CardType.Artefact;
         this.effects = effects;
-        this.allowedZones = allowedZones;
     }
 }

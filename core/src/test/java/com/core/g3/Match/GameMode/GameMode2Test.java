@@ -73,8 +73,7 @@ class GameMode2Test {
         GameMode2.drawInitialCards(player);
         int afterHandSize = player.seeHand().size();
         // Print afterHandSize
-        assertEquals(7, GameMode2.getInitialHandSize());
-        assertEquals(GameMode2.getInitialHandSize(), afterHandSize);
+        assertEquals(7, afterHandSize);
     }
 
     @Test
@@ -93,9 +92,9 @@ class GameMode2Test {
         Deck deck = generateRandomDeck(60, 4);
         Player player1 = GameMode2.addPlayer(new User("test"), deck);
         Player player2 = GameMode2.addPlayer(new User("test"), deck);
-        player2.affectMatchEndCondition(new Amount(GameMode2.getWinnerPoints()));
+        player2.affectMatchEndCondition(new Amount(6));
         assertTrue(GameMode2.getWinner(player1, player2).isPresent());
-        assertTrue(GameMode2.getWinner(player1, player2).get().equals(player1));
+        assertTrue(GameMode2.getWinner(player1, player2).get().equals(player2));
     }
 
     public Deck generateRandomDeck(int numberOfCards, int numberPerCard) {

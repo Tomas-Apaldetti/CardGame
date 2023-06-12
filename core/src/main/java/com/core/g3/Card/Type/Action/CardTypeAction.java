@@ -14,15 +14,15 @@ public class CardTypeAction extends CardType {
     private final List<IEffect> effects;
 
     public CardTypeAction(List<IEffect> effects) {
+        super(ICardType.CardType.Action);
         assertEffects(effects);
-        this.type = ICardType.CardType.Action;
         this.useCost = new NullInvocationCost();
         this.effects = effects;
     }
 
     public CardTypeAction(ICost useCost, List<IEffect> effects) {
+        super(ICardType.CardType.Action);
         assertEffects(effects);
-        this.type = ICardType.CardType.Action;
         this.useCost = useCost;
         this.effects = effects;
     }

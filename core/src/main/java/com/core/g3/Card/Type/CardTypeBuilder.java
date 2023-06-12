@@ -19,7 +19,7 @@ public class CardTypeBuilder {
     private List<ICardType> cardTypes;
 
     public CardTypeBuilder() {
-        this.cardTypes = new ArrayList<ICardType>();
+        this.cardTypes = new ArrayList<>();
     }
 
     private void checkType(ICardType.CardType type) {
@@ -54,22 +54,18 @@ public class CardTypeBuilder {
         this.cardTypes.add(action);
     }
 
-    public void setTypeReaccion(List<IEffect> effects) {
+    public void setTypeReaction(List<IEffect> effects) {
         CardTypeReaction reaction = new CardTypeReaction(effects);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
 
-    public void setTypeReaccion(ICost useCost, List<IEffect> effects) {
+    public void setTypeReaction(ICost useCost, List<IEffect> effects) {
         CardTypeReaction reaction = new CardTypeReaction(useCost, effects);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
-
-    // TODO -> refactor of setTypes?
-
-    public List<ICardType.CardType> getTypes() {
-        return this.cardTypes.stream().map(cardType -> cardType.getType())
-                .collect(java.util.stream.Collectors.toList());
+    public List<ICardType> getTypes() {
+        return this.cardTypes;
     }
 }

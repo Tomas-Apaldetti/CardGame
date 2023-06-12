@@ -12,6 +12,7 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.Adapter.DriverMapper;
 import com.core.tcg.driver.DriverCardName;
+import com.core.g3.Match.Zone.ActiveZone;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,15 +23,21 @@ public class Player {
     private final IDeckPlayable deck;
     private final CardContainer hand;
     private final CardContainer discard;
+    private ActiveZone artifactZone;
+    private ActiveZone combatZone;
+    private ActiveZone reserveZone;
     private PlayerEnergies energies;
 
-    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition) {
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
+            ActiveZone combatZone, ActiveZone reserveZone) {
         this.account = account;
         this.condition = condition;
         this.deck = deck;
-        this.deck.shuffle();
         this.hand = new CardContainer();
         this.discard = new CardContainer();
+        this.artifactZone = artifactZone;
+        this.combatZone = combatZone;
+        this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
     }
 
@@ -112,5 +119,9 @@ public class Player {
 
     public void forceDeckOrder(List<CardName> cards) {
         deck.forceOrder(cards);
+    }
+
+    public void pay(ICard card) {
+        card.applySummonCost(this);
     }
 }

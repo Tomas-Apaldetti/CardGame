@@ -16,7 +16,7 @@ public class HandDiscardCostTest {
     public void discardOneCardOk() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)), null, null, null);
         player.drawCard();
 
         cost.apply(player);
@@ -29,7 +29,7 @@ public class HandDiscardCostTest {
     public void discardOneCardWithThreeOnHandOk() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)), null, null, null);
         player.drawCard();
         player.drawCard();
         player.drawCard();
@@ -44,7 +44,7 @@ public class HandDiscardCostTest {
     public void discardWithNoCardOnHandThrows() {
         ICost cost = new HandDiscardCost();
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)), null, null, null);
 
         assertThrows(CanNotPayException.class, () -> cost.apply(player));
 
@@ -56,7 +56,7 @@ public class HandDiscardCostTest {
     public void discardWithOtherCostFailsThrowsHandStayTheSame() {
         ICost cost = new HandDiscardCost(new ErrorCost());
         User user = TestUserRegister.createUser("a", "a");
-        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)));
+        Player player = new Player(user, new DeckPlayableMock(), new PlainHP(new Amount(40)), null, null, null);
         player.drawCard();
         assertThrows(CanNotPayException.class, () -> cost.apply(player));
 
