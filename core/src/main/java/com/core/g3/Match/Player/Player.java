@@ -123,4 +123,19 @@ public class Player {
         total.addAll(this.reserveZone.getCreatures(attrFilter));
         return total;
     }
+
+    public List<IAttackable> getCreatures(){
+        List<IAttackable> total = new ArrayList<>();
+        total.addAll(this.artifactZone.getCreatures());
+        total.addAll(this.combatZone.getCreatures());
+        total.addAll(this.reserveZone.getCreatures());
+        return total;
+    }
+    public void destroyCreatures(int upTo) {
+        List<IAttackable> allCreatures = this.getCreatures();
+        Collections.shuffle(allCreatures);
+        for (int i = 0; i < Math.min(allCreatures.size(), upTo); i++) {
+            allCreatures.get(i).destroy();
+        }
+    }
 }

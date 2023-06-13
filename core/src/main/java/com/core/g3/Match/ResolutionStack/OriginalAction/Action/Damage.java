@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Damage implements IEffect{
-    private final Amount value;
+    private Amount value;
     private final List<IAttackable> victims;
 
     public Damage(Amount value, IAttackable victim){
@@ -23,5 +23,12 @@ public class Damage implements IEffect{
 
     public void apply(){
         this.victims.forEach((victim) -> victim.receiveAttack(this.value));
+    }
+
+    public void setMaxDamage(Amount value){
+        if(this.value.gte(value)){
+            return;
+        }
+        this.value = value;
     }
 }

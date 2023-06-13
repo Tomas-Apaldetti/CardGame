@@ -78,6 +78,8 @@ public class CardInGame implements IAttackable {
         return this.base.artefact(affected, user, rival);
     }
 
+
+
     public void refreshUse(){
         this.attackState.reset();
         this.artefactState.reset();

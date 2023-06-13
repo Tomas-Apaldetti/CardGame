@@ -10,6 +10,7 @@ import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
 import com.core.g3.Match.Zone.Exceptions.CardNotInZoneException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,5 +69,11 @@ public class ActiveZone {
     }
     public int currentCardCount(){
         return this.cards.size();
+    }
+
+    public List<IAttackable> getCreatures() {
+        return this.cards.stream().filter(card -> {
+            return card.getCreatureAttributes().isPresent();
+        }).map( c -> (IAttackable) c).collect(Collectors.toList());
     }
 }
