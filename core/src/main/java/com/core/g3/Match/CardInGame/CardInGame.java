@@ -26,7 +26,7 @@ public class CardInGame implements IAttackable {
     private ActiveZone currentZone;
     private final IAttackableManager health;
 
-    public CardInGame(Player owner,  ICard base, ActiveZone summoningZone){
+    public CardInGame(Player owner, ICard base, ActiveZone summoningZone) {
         this.base = base;
         this.health = this.base.getHealth();
 
@@ -39,46 +39,51 @@ public class CardInGame implements IAttackable {
         this.owner = owner;
         this.currentZone = summoningZone;
     }
-    public void discard(){
+
+    public void discard() {
         this.currentZone.remove(this);
         this.owner.discard(this.base);
     }
 
-    public ICard getBase(){
+    public ICard getBase() {
         return this.base;
     }
 
-    public void moveTo(ActiveZone zone){
+    public void moveTo(ActiveZone zone) {
         this.currentZone.remove(this);
         this.currentZone = zone;
         this.currentZone.addCard(this);
     }
 
-    public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount which){
-        if(!this.attackState.canAttack(which.value())){
+    public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount which) {
+        if (!this.attackState.canAttack(which.value())) {
             throw new CardCantAttackException();
         }
         this.attackState.deplete();
         return this.base.attack(victim, user, rival, which.value());
     }
 
-    public OriginalAction artefact(Player user, Player rival){
-        if(!this.artefactState.canActivate()){
+    public OriginalAction artefact(Player user, Player rival) {
+        if (!this.artefactState.canActivate()) {
             throw new ArtefactNotUsableException();
         }
         this.artefactState.deplete();
         return this.base.artefact(user, rival);
     }
 
-    public OriginalAction artefact(IAttackable affected, Player user, Player rival){
-        if(!this.artefactState.canActivate()){
+    public OriginalAction artefact(IAttackable affected, Player user, Player rival) {
+        if (!this.artefactState.canActivate()) {
             throw new ArtefactNotUsableException();
         }
         this.artefactState.deplete();
         return this.base.artefact(affected, user, rival);
     }
 
-    public void refreshUse(){
+    public OriginalAction action(List<IAttackable> victims, Player user, Player rival) {
+        return this.base.action(victims, user, rival);
+    }
+
+    public void refreshUse() {
         this.attackState.reset();
         this.artefactState.reset();
         this.reactionUsed = false;
@@ -99,11 +104,11 @@ public class CardInGame implements IAttackable {
         this.health.heal(heal);
     }
 
-    public int getHealth(){
+    public int getHealth() {
         return this.health.current();
     }
 
-    public Optional<List<Attribute>> getCreatureAttributes(){
+    public Optional<List<Attribute>> getCreatureAttributes() {
         return this.base.getCreatureAttributes();
     }
 }

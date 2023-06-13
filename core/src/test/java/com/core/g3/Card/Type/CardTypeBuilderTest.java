@@ -55,7 +55,7 @@ public class CardTypeBuilderTest {
         actual.add(ICardType.CardType.Artefact);
         actual.add(ICardType.CardType.Artefact);
 
-        cardBuilder.cardTypeBuilder.setTypeAction(null, this.effects);
+        cardBuilder.cardTypeBuilder.setTypeAction(null);
         cardBuilder.cardTypeBuilder.setTypeArtefact(null);
 
         assertThrows(CardTypeIsAlreadyContainedInCardException.class,

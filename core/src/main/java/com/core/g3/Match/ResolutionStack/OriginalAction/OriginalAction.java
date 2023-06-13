@@ -17,28 +17,29 @@ public class OriginalAction {
     private ActionType type;
     private Optional<Damage> damage = Optional.empty();
     private List<IEffect> effects;
-    public OriginalAction(ICard source){
+
+    public OriginalAction(ICard source) {
         this.source = source;
         this.effects = new ArrayList<>();
     }
 
-    public void setType(ActionType type){
+    public void setType(ActionType type) {
         this.type = type;
     }
 
     public void addAttack(Amount damage, IAttackable victim) {
-       this.damage = Optional.of(new Damage(damage, victim));
+        this.damage = Optional.of(new Damage(damage, victim));
     }
 
-    public void addEffect(IEffect effect){
+    public void addEffect(IEffect effect) {
         this.effects.add(effect);
     }
 
-    public void apply(){
-        if (this.damage.isPresent()){
+    public void apply() {
+        if (this.damage.isPresent()) {
             this.damage.get().apply();
         }
-        for (IEffect effect: effects){
+        for (IEffect effect : effects) {
             effect.apply();
         }
     }

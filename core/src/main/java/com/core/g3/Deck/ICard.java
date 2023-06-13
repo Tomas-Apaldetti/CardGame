@@ -39,5 +39,8 @@ public interface ICard {
 
     OriginalAction artefact(IAttackable affected, Player user, Player rival);
 
+    public OriginalAction action(List<IAttackable> victims, Player user, Player rival);
+
     Optional<List<Attribute>> getCreatureAttributes();
+
 }

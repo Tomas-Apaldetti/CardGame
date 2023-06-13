@@ -7,15 +7,16 @@ import java.util.Optional;
 import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
+import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Creature.CardTypeCreature;
 import com.core.g3.Card.Type.ICardType;
+import com.core.g3.Card.Type.Action.CardTypeAction;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
@@ -106,8 +107,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public OriginalAction attack(IAttackable victim, Player user, Player rival, int idx) {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.canAttack()){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.canAttack()) {
                 OriginalAction action = new OriginalAction(this);
                 return cardType.attack(action, victim, user, rival, idx);
             }
@@ -117,8 +118,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public IAttackableManager getHealth() {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.getType() == ICardType.CardType.Creature){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.getType() == ICardType.CardType.Creature) {
                 CardTypeCreature cast = (CardTypeCreature) cardType;
                 return new Health(cast.getBaseHealth());
             }
@@ -128,8 +129,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public List<IAttack> getAttacks() {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.getType() == ICardType.CardType.Creature){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.getType() == ICardType.CardType.Creature) {
                 CardTypeCreature cast = (CardTypeCreature) cardType;
                 return cast.getAttacks();
             }
@@ -139,8 +140,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public Optional<IArtefactEffect> getArtefactEffects() {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.getType() == ICardType.CardType.Artefact){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.getType() == ICardType.CardType.Artefact) {
                 CardTypeArtefact cast = (CardTypeArtefact) cardType;
                 return cast.getEffects();
             }
@@ -150,8 +151,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public OriginalAction artefact(Player user, Player rival) {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.isArtefact()){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.isArtefact()) {
                 OriginalAction action = new OriginalAction(this);
                 return cardType.artefact(action, user, rival);
             }
@@ -161,8 +162,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public OriginalAction artefact(IAttackable affected, Player user, Player rival) {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.isArtefact()){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.isArtefact()) {
                 OriginalAction action = new OriginalAction(this);
                 return cardType.artefact(action, affected, user, rival);
             }
@@ -171,15 +172,27 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
+    public OriginalAction action(List<IAttackable> victims, Player user, Player rival) {
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.isAction()) {
+                CardTypeAction cast = (CardTypeAction) cardType;
+                user.consume(null, (Amount) cast.getEnergyCost());
+                OriginalAction action = new OriginalAction(this);
+                return cardType.action(action, victims, user, rival);
+            }
+        }
+        throw new ActionNotUsableException();
+    }
+
+    @Override
     public Optional<List<Attribute>> getCreatureAttributes() {
         for (ICardType cardType : this.cardTypes) {
-            if(cardType.getType() == ICardType.CardType.Creature){
+            if (cardType.getType() == ICardType.CardType.Creature) {
                 return Optional.ofNullable(cardType.getAttributes());
             }
         }
 
         return Optional.empty();
     }
-    
 
 }
