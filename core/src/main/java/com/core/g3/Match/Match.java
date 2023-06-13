@@ -2,11 +2,14 @@ package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
+import com.core.g3.Commons.Amount;
+import com.core.g3.Deck.ICard;
 import com.core.g3.Match.GameMode.IGameMode;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.tcg.driver.DriverCardName;
 
 import java.util.List;
@@ -16,17 +19,20 @@ public class Match implements IMatch {
     private Player bluePlayer;
     private Player greenPlayer;
     private IGameMode gameMode;
+    private Player turn;
 
     public Match(Player bluePlayer, Player greenPlayer, IGameMode gameMode) {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
+        this.turn = null;
     }
 
     @Override
-    public void startMatch() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startMatch'");
+    public void startMatch(PlayerZone firstTurn) {
+        this.gameMode.drawInitialCards(bluePlayer);
+        this.gameMode.drawInitialCards(greenPlayer);
+        this.turn = this.getPlayer(firstTurn);
     }
 
     @Override
@@ -35,9 +41,9 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void summon(Player player, DriverCardName card, String zone) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'summon'");
+    public void summon(PlayerZone side, ICard card, ActiveZoneType zone) {
+        Player player = filterPlayer(side);
+        player.summonInZone(card, zone);
     }
 
     @Override
@@ -59,12 +65,14 @@ public class Match implements IMatch {
     }
 
     @Override
-    public int playerHealth(Player player) {
+    public int playerHealth(PlayerZone side) {
+        Player player = filterPlayer(side);
         return player.matchEndConditionPoints();
     }
 
     @Override
-    public IResource playerEnergy(Player player, EnergyType energyType) {
+    public IResource playerEnergy(PlayerZone side, EnergyType energyType) {
+        Player player = filterPlayer(side);
         return player.getEnergy(energyType);
     }
 
