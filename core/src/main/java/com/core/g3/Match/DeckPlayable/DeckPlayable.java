@@ -44,6 +44,10 @@ public class DeckPlayable implements IDeckPlayable {
         return names;
     }
 
+    public void putCardOnTop(ICard card) {
+        this.cards.add(0, card);
+    }
+
     public void forceOrder(List<CardName> names) {
 
         // creating a map of cards as key card name and value list of ICards
@@ -60,7 +64,7 @@ public class DeckPlayable implements IDeckPlayable {
                 orderedList.add(cardMap.get(cardName).remove(0));
             }
         }
-    
+
         this.cards = orderedList;
     }
 }

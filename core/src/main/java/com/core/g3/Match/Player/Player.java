@@ -42,6 +42,14 @@ public class Player {
         this.energies = new PlayerEnergies();
     }
 
+    public void addCardToHand(ICard card) {
+        this.hand.add(card);
+    }
+
+    public IDeckPlayable getDeck() {
+        return this.deck;
+    }
+
     public void summonInZone(ICard card, ActiveZone zone) {
         zone.addCard(card, this);
     }

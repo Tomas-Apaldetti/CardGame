@@ -35,4 +35,10 @@ public class DeckPlayableMock implements IDeckPlayable {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'forceOrder'");
     }
+
+    @Override
+    public void putCardOnTop(ICard card) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'putCardOnTop'");
+    }
 }

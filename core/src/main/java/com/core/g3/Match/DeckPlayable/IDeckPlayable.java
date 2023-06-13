@@ -16,4 +16,6 @@ public interface IDeckPlayable {
     public List<CardName> getCards();
 
     public void forceOrder(List<CardName> cards);
+
+    public void putCardOnTop(ICard card);
 }
