@@ -3,6 +3,7 @@ package com.core.g3.Match;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Match.Phase.Phase;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -32,4 +33,6 @@ public interface IMatch {
     public Player getPlayer(PlayerZone side);
 
     public Optional<PlayerZone> getWinner();
+
+    public void skipToPhase(PlayerZone toPlayerZone, Phase phase);
 }

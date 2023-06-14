@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public abstract class GameMode implements IGameMode {
+public abstract class GameMode {
     protected int initialPoints;
     protected int maxDeckCards;
     protected int minDeckCards;
@@ -74,13 +74,6 @@ public abstract class GameMode implements IGameMode {
         IntStream.range(0, this.initialHandSize).forEach(i -> player.drawCard());
     }
 
-    public Optional<Player> getWinner(Player player1, Player player2) {
-        if (player1.matchEndConditionMet()) {
-            return Optional.of(player2);
-        } else if (player2.matchEndConditionMet()) {
-            return Optional.of(player1);
-        }
-        return Optional.empty();
-    }
+     public abstract Optional<Player> getWinner(Player player1, Player player2);
     
 }

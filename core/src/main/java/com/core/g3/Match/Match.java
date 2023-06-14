@@ -2,9 +2,8 @@ package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
-import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
-import com.core.g3.Match.GameMode.IGameMode;
+import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Phase.Phase;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
@@ -18,11 +17,11 @@ import java.util.Optional;
 public class Match implements IMatch {
     private Player bluePlayer;
     private Player greenPlayer;
-    private IGameMode gameMode;
+    private GameMode gameMode;
     private Player turn;
     private Phase phase;
 
-    public Match(Player bluePlayer, Player greenPlayer, IGameMode gameMode) {
+    public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
@@ -128,6 +127,11 @@ public class Match implements IMatch {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void skipToPhase(PlayerZone toPlayerZone, Phase phase) {
+
     }
 
 }
