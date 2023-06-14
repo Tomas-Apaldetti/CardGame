@@ -35,14 +35,12 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public void start() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'start'");
+        this.match.startMatch(PlayerZone.Blue);
     }
 
     @Override
     public void skipToPhase(DriverMatchSide player, DriverTurnPhase phase) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'skipToPhase'");
+        this.match.skipToPhase(DriverMapper.toPlayerZone(player), DriverMapper.toPhase(phase));
     }
 
     @Override
