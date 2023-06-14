@@ -30,17 +30,16 @@ public class OriginalAction implements IOriginal {
         this.discardOnUse = false;
     }
 
-    public void setType(ActionType type){
+    public void setType(ActionType type) {
         this.type = type;
     }
 
     public void addAttack(Amount damage, IAttackable victim) {
-
         this.damage = Optional.of(new Damage(damage, victim));
         this.attackObjective = Optional.of(victim);
     }
 
-    public void addEffect(IEffect effect){
+    public void addEffect(IEffect effect) {
         this.effects.add(effect);
     }
 
