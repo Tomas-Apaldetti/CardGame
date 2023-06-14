@@ -1,4 +1,4 @@
-package com.core.g3.Card.Attack.Mocks;
+package com.core.g3.Mock.Exceptions;
 
 public class ExpectedException extends RuntimeException {
 }

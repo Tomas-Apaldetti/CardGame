@@ -42,7 +42,6 @@ public class CardInGame implements IAttackable {
         this.reactionState.deplete();
 
         this.owner = owner;
-        this.currentZone = summoningZone;
     }
 
     public void discard() {
