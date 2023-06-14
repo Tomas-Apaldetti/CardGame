@@ -7,7 +7,6 @@ import com.core.g3.Card.Cost.Exception.CanNotPayException;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import com.core.g3.Card.Card;

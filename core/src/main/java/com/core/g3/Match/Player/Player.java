@@ -1,5 +1,6 @@
 package com.core.g3.Match.Player;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
@@ -12,7 +13,10 @@ import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.tcg.driver.Adapter.DriverMapper;
+import com.core.tcg.driver.DriverCardName;
 import com.core.g3.Match.Zone.ActiveZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +43,33 @@ public class Player implements IAttackable {
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
+    }
+
+    public void addCardToHand(ICard card) {
+        this.hand.add(card);
+    }
+
+    public IDeckPlayable getDeck() {
+        return this.deck;
+    }
+
+    public void summonInZone(ICard card, ActiveZone zone) {
+        zone.addCard(card, this);
+    }
+
+    public void summonInZone(ICard card, ActiveZoneType zone) {
+        if (this.hand.peek().contains(card)) {
+            if (zone.equals(ActiveZoneType.Combat)) {
+                this.summonInZone(card, this.combatZone);
+            } else if (zone.equals(ActiveZoneType.Reserve)) {
+                this.summonInZone(card, this.reserveZone);
+            } else if (zone.equals(ActiveZoneType.Artefacts)) {
+                this.summonInZone(card, this.artifactZone);
+            }
+        } else {
+            throw new RuntimeException("Card not in hand");
+
+        }
     }
 
     public void affectMatchEndCondition(Amount value) {
@@ -117,6 +148,18 @@ public class Player implements IAttackable {
         return card;
     }
 
+    public List<DriverCardName> retrieveDeckOrder() {
+        List<DriverCardName> cards = new ArrayList<>();
+        for (CardName name : this.deck.getCards()) {
+            cards.add(DriverMapper.toDriverCardName(name));
+        }
+        return cards;
+    }
+
+    public void forceDeckOrder(List<CardName> cards) {
+        deck.forceOrder(cards);
+    }
+
     public void pay(ICard card) {
         card.applySummonCost(this);
     }
@@ -174,5 +217,16 @@ public class Player implements IAttackable {
     @Override
     public void heal(Amount heal) {
         this.condition.heal(heal);
+    }
+
+    public ActiveZone seeActiveZone(ActiveZoneType activeZoneType) {
+        if (activeZoneType.equals(ActiveZoneType.Combat)) {
+            return this.combatZone;
+        } else if (activeZoneType.equals(ActiveZoneType.Reserve)) {
+            return this.reserveZone;
+        } else if (activeZoneType.equals(ActiveZoneType.Artefacts)) {
+            return this.artifactZone;
+        }
+        throw new RuntimeException("Invalid active zone type");
     }
 }

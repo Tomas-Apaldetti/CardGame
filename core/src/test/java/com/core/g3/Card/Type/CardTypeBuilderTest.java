@@ -28,7 +28,7 @@ public class CardTypeBuilderTest {
         actual.add(CardTypeName.Artefact);
 
         assertEquals(CardName.Antimagic, card.getName());
-        assertEquals(true, card.getTypes().containsAll(actual));
+        assertEquals(true, actual.containsAll(card.getTypes()));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class CardTypeBuilderTest {
         actual.add(CardTypeName.Creature);
 
         assertEquals(CardName.Antimagic, card.getName());
-        assertEquals(true, card.getTypes().containsAll(actual));
+        assertEquals(true, actual.containsAll(card.getTypes()));
     }
 
     @Test

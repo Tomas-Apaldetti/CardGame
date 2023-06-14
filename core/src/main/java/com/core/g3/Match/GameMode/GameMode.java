@@ -12,6 +12,7 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public abstract class GameMode {
@@ -23,6 +24,18 @@ public abstract class GameMode {
     protected int artifactZoneLimit;
     protected int reserveZoneLimit;
     protected int initialHandSize;
+
+    public int CombatZoneLimit() {
+        return this.combatZoneLimit;
+    }
+
+    public int ArtifactZoneLimit() {
+        return this.artifactZoneLimit;
+    }
+
+    public int ReserveZoneLimit() {
+        return this.reserveZoneLimit;
+    }
 
     protected abstract IMatchEndCondition getCondition();
 
@@ -60,4 +73,7 @@ public abstract class GameMode {
     public void drawInitialCards(Player player) {
         IntStream.range(0, this.initialHandSize).forEach(i -> player.drawCard());
     }
+
+     public abstract Optional<Player> getWinner(Player player1, Player player2);
+    
 }
