@@ -1,15 +1,18 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.Card;
+import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
 import com.core.g3.Match.IMatch;
 import com.core.g3.Match.Match;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.GameMode1;
+import com.core.g3.Match.Phase.Phase;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
+import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 import com.core.tcg.driver.*;
 
@@ -40,13 +43,17 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public void skipToPhase(DriverMatchSide player, DriverTurnPhase phase) {
-        this.match.skipToPhase(DriverMapper.toPlayerZone(player), DriverMapper.toPhase(phase));
+        PlayerZone playerZone = DriverMapper.toPlayerZone(player);
+        Phase turnPhase = DriverMapper.toTurnPhase(phase);
+        this.match.skipToPhase(playerZone, turnPhase);
     }
 
     @Override
     public Card summon(DriverMatchSide player, DriverCardName card, DriverActiveZone zone) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'summon'");
+        PlayerZone playerZone = DriverMapper.toPlayerZone(player);
+        CardName cardName = DriverMapper.toCardName(card);
+        ActiveZoneType activeZoneType = DriverMapper.toActiveZoneType(zone);
+        return null;
     }
 
     @Override
@@ -76,7 +83,7 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public void activateAction(DriverMatchSide player, DriverCardName card, int index,
-                               Optional<DriverMatchSide> targetPlayer, List<Card> targetCards) {
+            Optional<DriverMatchSide> targetPlayer, List<Card> targetCards) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'activateAction'");
     }
@@ -95,14 +102,14 @@ public class MatchDriverClass implements MatchDriver<Card> {
 
     @Override
     public void activateReactionFromHand(DriverMatchSide player, DriverCardName card,
-                                         Optional<DriverMatchSide> targetPlayer, List<Card> targetCards) {
+            Optional<DriverMatchSide> targetPlayer, List<Card> targetCards) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'activateReactionFromHand'");
     }
 
     @Override
     public void activateReactionFromActiveZone(Card card, Optional<DriverMatchSide> targetPlayer,
-                                               List<Card> targetCards) {
+            List<Card> targetCards) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'activateReactionFromActiveZone'");
     }
@@ -143,4 +150,3 @@ public class MatchDriverClass implements MatchDriver<Card> {
     }
 
 }
-

@@ -2,7 +2,7 @@ package com.core.g3.Match.Phase;
 
 public enum Phase {
     Initial,
-    Principal,
+    Main,
     Attack,
-    Final
+    End
 }

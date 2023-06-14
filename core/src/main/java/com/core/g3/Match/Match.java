@@ -39,15 +39,20 @@ public class Match implements IMatch {
 
     public void moveToNextPhase() {
         if (this.phase.equals(Phase.Initial)) {
-            this.phase = Phase.Principal;
-        } else if (this.phase.equals(Phase.Principal)) {
+            this.phase = Phase.Initial;
+        } else if (this.phase.equals(Phase.Main)) {
             this.phase = Phase.Attack;
         } else if (this.phase.equals(Phase.Attack)) {
-            this.phase = Phase.Final;
-        } else if (this.phase.equals(Phase.Final)) {
+            this.phase = Phase.End;
+        } else if (this.phase.equals(Phase.End)) {
             this.phase = Phase.Initial;
             this.moveToNextTurn();
         }
+    }
+
+    public void skipToPhase(PlayerZone player, Phase phase) {
+        this.turn = this.getPlayer(player);
+        this.phase = phase;
     }
 
     public void moveToNextTurn() {
@@ -127,11 +132,6 @@ public class Match implements IMatch {
         } else {
             return Optional.empty();
         }
-    }
-
-    @Override
-    public void skipToPhase(PlayerZone toPlayerZone, Phase phase) {
-
     }
 
 }

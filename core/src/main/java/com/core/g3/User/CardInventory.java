@@ -50,6 +50,16 @@ public class CardInventory {
         throw new NotEnoughCardsException();
     }
 
+    public Collection<ICard> getCardsByName(CardName name) {
+        Collection<ICard> cards = new HashSet<>();
+        for (ICard card : this.cards) {
+            if (card.getName().equals(name)) {
+                cards.add(card);
+            }
+        }
+        return cards;
+    }
+
     public int countCards(CardName name) {
         int size = 0;
         for (ICard card : this.cards) {

@@ -34,5 +34,5 @@ public interface IMatch {
 
     public Optional<PlayerZone> getWinner();
 
-    public void skipToPhase(PlayerZone toPlayerZone, Phase phase);
+    public void skipToPhase(PlayerZone player, Phase phase);
 }

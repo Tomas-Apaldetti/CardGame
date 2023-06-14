@@ -69,6 +69,8 @@ public class User implements IBuyer, ISeller, IAccount {
         } else {
             throw new InsufficientMoneyException();
         }
+        System.out.println("Cards in inventory" + this.cardInventory.getCards());
+        System.out.println("Number" + this.cardInventory.getCards().size());
     }
 
     @Override
@@ -106,9 +108,22 @@ public class User implements IBuyer, ISeller, IAccount {
 
     public void addCardToDeck(String deckName, CardName name, int amount) {
         IDeck deck = deckInventory.getOrCreateDeck(deckName);
-
-        Collection<ICard> cards = cardInventory.getCardsByName(name, amount);
-        deck.addCards(cards);
-
+        System.out.println("Trying to add card to deck " + deckName + " " + name + " " + amount);
+        Collection<ICard> cards = cardInventory.getCardsByName(name);
+        // Find the first card from cards that are not in deck cards
+        int cardsAdded = 0;
+        for (ICard card : cards) {
+            try {
+                System.out.println("Adding card to deck" + card.getName());
+                deck.addCard(card);
+                cardsAdded++;
+                if (cardsAdded == amount) {
+                    break;
+                }
+            } catch (Exception e) {
+                // Card already in deck
+                System.out.println("Error adding card " + card.getName());
+            }
+        }
     }
 }
