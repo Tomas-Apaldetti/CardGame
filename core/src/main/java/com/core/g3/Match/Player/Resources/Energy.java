@@ -1,6 +1,7 @@
 package com.core.g3.Match.Player.Resources;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import com.core.g3.Commons.Amount;
 
@@ -10,8 +11,8 @@ public class Energy implements IModifiableResource {
     private final EnergyType type;
 
     public Energy(EnergyType type, Amount initialValue) {
-        this.currentAmount = initialValue;
         this.type = type;
+        this.currentAmount = initialValue;
     }
 
     @Override
@@ -48,5 +49,13 @@ public class Energy implements IModifiableResource {
     @Override
     public int available() {
         return this.currentAmount.value();
+    }
+
+    public boolean gt(Energy max) {
+        return false;
+    }
+
+    public EnergyType getType() {
+        return this.type;
     }
 }

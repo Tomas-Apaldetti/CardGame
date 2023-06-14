@@ -1,5 +1,6 @@
 package com.core.g3.Match.Player.MatchEndCondition;
 
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.MatchEndCondition.Exception.HPAlreadyDepletedException;
 
@@ -28,5 +29,20 @@ public class PlainHP implements IMatchEndCondition {
     @Override
     public int getNumeric() {
         return this.currentHP.value();
+    }
+
+    @Override
+    public void receiveAttack(Amount damage) {
+        this.currentHP.subtractOrZero(damage);
+    }
+
+    @Override
+    public void destroy() {
+        this.currentHP.subtractOrZero(this.currentHP);
+    }
+
+    @Override
+    public void heal(Amount heal) {
+        this.currentHP.add(heal);
     }
 }
