@@ -9,4 +9,8 @@ public interface IAttackable {
     void destroy();
 
     void heal(Amount heal);
+
+    default boolean isAttackable() {
+        return true;
+    };
 }

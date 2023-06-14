@@ -27,10 +27,10 @@ public interface ICardType {
     OriginalAction artefact(OriginalAction action, IAttackable affected, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival);
-    
+
     OriginalAction action(OriginalAction action, Player user, Player rival);
 
-    OriginalAction action(OriginalAction action, List<IAttackable> victims, Player user, Player rival);
+    OriginalAction action(OriginalAction action, IAttackable affected, Player user, Player rival);
 
     List<Attribute> getAttributes();
 

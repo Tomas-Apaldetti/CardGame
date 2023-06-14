@@ -6,11 +6,11 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.Action.StealEnergy;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
-public class DrainEnergy implements IAction {
+public class DrainEnergyAction implements IAction {
 
     private final Amount value;
 
-    public DrainEnergy(Amount energy) {
+    public DrainEnergyAction(Amount energy) {
         this.value = energy;
     }
 

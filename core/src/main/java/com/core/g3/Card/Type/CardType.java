@@ -66,7 +66,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, List<IAttackable> victims, Player user, Player rival) {
+    public OriginalAction action(OriginalAction action, IAttackable affected, Player user, Player rival) {
         throw new ActionNotUsableException();
     }
 
@@ -76,7 +76,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival){
+    public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival) {
         throw new ReactionNotUsableException();
     }
 

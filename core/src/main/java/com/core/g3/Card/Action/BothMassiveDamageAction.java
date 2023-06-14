@@ -11,12 +11,12 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import java.util.Arrays;
 import java.util.List;
 
-public class BothMassiveDamage implements IAction {
+public class BothMassiveDamageAction implements IAction {
 
     private final Amount value;
     private final Attribute attrFilter;
 
-    public BothMassiveDamage(Amount value, Attribute attrFilter) {
+    public BothMassiveDamageAction(Amount value, Attribute attrFilter) {
         this.value = value;
         this.attrFilter = attrFilter;
     }

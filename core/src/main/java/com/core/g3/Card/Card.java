@@ -196,10 +196,20 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public OriginalAction action(OriginalAction og, List<IAttackable> victims, Player user, Player rival) {
+    public OriginalAction action(OriginalAction og, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Action)) {
-                return cardType.action(og, victims, user, rival);
+                return cardType.action(og, user, rival);
+            }
+        }
+        throw new ActionNotUsableException();
+    }
+
+    @Override
+    public OriginalAction action(OriginalAction og, IAttackable affected, Player user, Player rival) {
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.is(CardTypeName.Action)) {
+                return cardType.action(og, affected, user, rival);
             }
         }
         throw new ActionNotUsableException();

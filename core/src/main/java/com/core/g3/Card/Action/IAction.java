@@ -8,7 +8,7 @@ public interface IAction {
 
     OriginalAction apply(OriginalAction action, Player user, Player rival);
 
-    default OriginalAction apply(OriginalAction action, IAttackable victims, Player user, Player rival) {
+    default OriginalAction apply(OriginalAction action, IAttackable affected, Player user, Player rival) {
         return this.apply(action, user, rival);
     }
 }

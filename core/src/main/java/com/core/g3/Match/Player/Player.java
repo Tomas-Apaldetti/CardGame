@@ -9,6 +9,7 @@ import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
+import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.Zone.ActiveZone;
@@ -16,7 +17,7 @@ import com.core.g3.Match.Zone.ActiveZone;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Player {
+public class Player implements IAttackable {
     private final IAccount account;
     private IMatchEndCondition condition;
     private final IDeckPlayable deck;
@@ -154,5 +155,24 @@ public class Player {
 
     public void addToHand(ICard card) {
         this.hand.add(card);
+    }
+
+    public boolean isAttackable() {
+        return false;
+    }
+
+    @Override
+    public void receiveAttack(Amount damage) {
+        this.condition.receiveAttack(damage);
+    }
+
+    @Override
+    public void destroy() {
+        this.condition.destroy();
+    }
+
+    @Override
+    public void heal(Amount heal) {
+        this.condition.heal(heal);
     }
 }

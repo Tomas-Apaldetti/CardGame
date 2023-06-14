@@ -88,7 +88,7 @@ public class CardInGame implements IAttackable {
         if (!rival.isAttackable()) { // @TODO -> repeat for attack & artefact
             throw new ActionNotUsableException();
         }
-        return this.base.action(new OriginalAction(this), victims, user, rival);
+        return this.base.action(new OriginalAction(this), user, rival);
     }
 
     public OriginalAction action(IAttackable victim, Player user, Player rival) {
