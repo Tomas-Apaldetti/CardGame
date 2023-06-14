@@ -53,6 +53,10 @@ public class Player implements IAttackable {
         return this.deck;
     }
 
+    public ICard getCardByCardName(CardName cardName) {
+        return this.hand.getCardByName(cardName);
+    }
+
     public void summonInZone(ICard card, ActiveZone zone) {
         zone.addCard(card, this);
     }

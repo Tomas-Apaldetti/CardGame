@@ -110,6 +110,15 @@ public class Card implements ITransactionable, ICard {
         this.invocationCost.apply(player);
     }
 
+
+    public List<ActiveZoneType> getAllowableZones() {
+        List<ActiveZoneType> allowableZones = new ArrayList<>();
+        for (ICardType cardType : this.cardTypes) {
+            allowableZones.addAll(cardType.getAllowableZones());
+        }
+        return allowableZones;
+    }
+
     @Override
     public IAttackableManager getHealth() {
         for (ICardType cardType : this.cardTypes) {

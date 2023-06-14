@@ -17,6 +17,7 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
 
+    public static final Object Artefacts = null;
     protected CardTypeName type;
     protected List<ActiveZoneType> allowedZones;
 
@@ -38,6 +39,11 @@ public abstract class CardType implements ICardType {
     @Override
     public boolean isSummonableIn(ActiveZoneType zoneType) {
         return this.allowedZones.contains(zoneType);
+    }
+
+    @Override
+    public List<ActiveZoneType> getAllowableZones() {
+        return this.allowedZones;
     }
 
     @Override
@@ -79,5 +85,4 @@ public abstract class CardType implements ICardType {
     public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival) {
         throw new ReactionNotUsableException();
     }
-
 }

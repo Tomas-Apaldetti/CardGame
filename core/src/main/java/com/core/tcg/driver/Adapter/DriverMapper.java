@@ -1,9 +1,11 @@
 package com.core.tcg.driver.Adapter;
 
-
 import com.core.g3.Card.CardName;
-import com.core.g3.Match.Phase.Phase;
+import com.core.g3.Match.Phase.IPhase;
+import com.core.g3.Match.Phase.IPhase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
+import com.core.tcg.driver.DriverActiveZone;
 import com.core.tcg.driver.DriverCardName;
 import com.core.tcg.driver.DriverMatchSide;
 import com.core.tcg.driver.DriverTurnPhase;
@@ -23,7 +25,7 @@ public class DriverMapper {
 
     public static List<CardName> toDriverCardName(List<DriverCardName> cards) {
         List<CardName> names = new ArrayList<>();
-        for (DriverCardName card: cards){
+        for (DriverCardName card : cards) {
             names.add(CardName.valueOf(card.name()));
         }
         return names;
@@ -37,8 +39,17 @@ public class DriverMapper {
         return DriverMatchSide.valueOf(playerZone.name());
     }
 
-    public static Phase toPhase(DriverTurnPhase phase) {
-        return Phase.valueOf(phase.name());
+    public static PhaseType toTurnPhase(DriverTurnPhase phase) {
+        return PhaseType.valueOf(phase.name());
     }
 
+    public static ActiveZoneType toActiveZoneType(DriverActiveZone zone) {
+        if (zone == DriverActiveZone.Combat) {
+            return ActiveZoneType.Combat;
+        } else if (zone == DriverActiveZone.Reserve) {
+            return ActiveZoneType.Reserve;
+        } else {
+            return ActiveZoneType.Artefacts;
+        }
+    }
 }

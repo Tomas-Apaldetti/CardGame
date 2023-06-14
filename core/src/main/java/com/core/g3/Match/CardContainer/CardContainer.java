@@ -1,5 +1,6 @@
 package com.core.g3.Match.CardContainer;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.Exception.CardAlreadyOnPlaceException;
 import com.core.g3.Match.CardContainer.Exception.CardNotOnPlaceException;
@@ -38,5 +39,15 @@ public class CardContainer {
             throw new CardNotOnPlaceException();
         }
         return card;
+    }
+
+    public ICard getCardByName(CardName cardName) {
+        // Returns the first card of type cardName in hand
+        for (ICard card : this.cards) {
+            if (card.getName().equals(cardName)) {
+                return card;
+            }
+        }
+        throw new CardNotOnPlaceException();
     }
 }

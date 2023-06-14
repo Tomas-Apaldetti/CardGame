@@ -212,6 +212,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         List<DriverCardName> deck = loopedCardNames(40, prefix);
         Account blue = accountWithDeck(deck);
         Account green = accountWithDeck(deck);
+
         MatchDriver<Card> match = testDriver.startMatch(HitpointLoss, blue, "main", green, "main");
 
         match.forceDeckOrder(Blue, deck);

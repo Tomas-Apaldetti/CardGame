@@ -1,6 +1,7 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.Card;
+import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.GameMode.GameMode;
@@ -40,17 +41,20 @@ public class DriverClass implements Driver<User, Card> {
 
     @Override
     public void buyCards(User account, DriverCardName cardName, int amount) {
-        account.buyCards(DriverMapper.toCardName(cardName),amount);
-    }
+        CardName cardNameToBuy = DriverMapper.toCardName(cardName);
+        account.buyCards(cardNameToBuy, amount);
 
-    @Override
-    public int countDeckCards(User account, String deckName, DriverCardName cardName) {
-        return  account.countDeckSpecificCards(deckName, DriverMapper.toCardName(cardName));
     }
 
     @Override
     public void addDeckCards(User account, String deckName, DriverCardName cardName, int amount) {
-        account.addCardToDeck(deckName, DriverMapper.toCardName(cardName),amount);
+        CardName cardNameToAddToDeck = DriverMapper.toCardName(cardName);
+        account.addCardToDeck(deckName, cardNameToAddToDeck, amount);
+    }
+
+    @Override
+    public int countDeckCards(User account, String deckName, DriverCardName cardName) {
+        return account.countDeckSpecificCards(deckName, DriverMapper.toCardName(cardName));
     }
 
     @Override
@@ -60,14 +64,15 @@ public class DriverClass implements Driver<User, Card> {
             GameMode gamemode = new GameMode1();
             return getDriverClass(blue, blueDeck, green, greenDeck, gamemode);
         }
-        if(mode.equals(DriverGameMode.CreatureSlayer)){
+        if (mode.equals(DriverGameMode.CreatureSlayer)) {
             GameMode gamemode = new GameMode2();
             return getDriverClass(blue, blueDeck, green, greenDeck, gamemode);
         }
         return null;
     }
 
-    private MatchDriver<Card> getDriverClass(User blue, String blueDeck, User green, String greenDeck, GameMode gamemode) {
+    private MatchDriver<Card> getDriverClass(User blue, String blueDeck, User green, String greenDeck,
+            GameMode gamemode) {
         IDeck gDeck = green.getDeckInventory().getDeck(greenDeck);
         Player greenPlayer = gamemode.addPlayer(green, gDeck);
 
@@ -77,4 +82,3 @@ public class DriverClass implements Driver<User, Card> {
         return new MatchDriverClass(match);
     }
 }
-
