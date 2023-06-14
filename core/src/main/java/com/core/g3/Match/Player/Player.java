@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Player {
-    private final IAccount account; // TODO -> remove?
+    private final IAccount account;
     private IMatchEndCondition condition;
     private final IDeckPlayable deck;
     private final CardContainer hand;
@@ -79,6 +79,14 @@ public class Player {
         return this.energies.consumeAny(value);
     }
 
+    public void consumeMax(Amount value) {
+        this.consume(this.getMaxEnergyType(), value);
+    }
+
+    private Optional<EnergyType> getMaxEnergyType() {
+        return this.energies.getMaxType();
+    }
+
     public void drawCard() {
         this.hand.add(this.deck.getCard());
     }
@@ -124,13 +132,14 @@ public class Player {
         return total;
     }
 
-    public List<IAttackable> getCreatures(){
+    public List<IAttackable> getCreatures() {
         List<IAttackable> total = new ArrayList<>();
         total.addAll(this.artifactZone.getCreatures());
         total.addAll(this.combatZone.getCreatures());
         total.addAll(this.reserveZone.getCreatures());
         return total;
     }
+
     public void destroyCreatures(int upTo) {
         List<IAttackable> allCreatures = this.getCreatures();
         Collections.shuffle(allCreatures);
@@ -138,10 +147,12 @@ public class Player {
             allCreatures.get(i).destroy();
         }
     }
+
     public void moveFromHand(ICard card) {
         this.hand.remove(card);
     }
-    public void addToHand(ICard card){
+
+    public void addToHand(ICard card) {
         this.hand.add(card);
     }
 }

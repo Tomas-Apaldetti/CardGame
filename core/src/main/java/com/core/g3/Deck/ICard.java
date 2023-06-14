@@ -4,7 +4,6 @@ import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
@@ -30,8 +29,6 @@ public interface ICard {
 
     public void applySummonCost(Player player);
 
-
-
     IAttackableManager getHealth();
 
     List<IAttack> getAttacks();
@@ -41,15 +38,17 @@ public interface ICard {
     Optional<IReaction> getReactionEffects();
 
     OriginalAction attack(OriginalAction og, IAttackable victim, Player user, Player rival, int whichAttack);
+
     OriginalAction artefact(OriginalAction og, Player user, Player rival);
 
-    OriginalAction artefact(OriginalAction og,IAttackable affected, Player user, Player rival);
+    OriginalAction artefact(OriginalAction og, IAttackable affected, Player user, Player rival);
 
-    OriginalAction action(OriginalAction og,List<IAttackable> victims, Player user, Player rival);
+    OriginalAction action(OriginalAction og, Player user, Player rival);
+
+    OriginalAction action(OriginalAction og, IAttackable victims, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 
     Optional<List<Attribute>> getCreatureAttributes();
-
 
 }

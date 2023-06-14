@@ -23,7 +23,7 @@ public class BothMassiveDamage implements IAction {
 
     @Override
     public OriginalAction apply(OriginalAction action, Player user, Player rival) {
-        action.setType(ActionType.ArtefactEffect);
+        action.setType(ActionType.Action);
         List<IAttackable> userCreatures = user.getCreatures(this.attrFilter);
         List<IAttackable> rivalCreatures = rival.getCreatures(this.attrFilter);
         action.addEffect(new Damage(this.value, (IAttackable) Arrays.asList(userCreatures, rivalCreatures)));

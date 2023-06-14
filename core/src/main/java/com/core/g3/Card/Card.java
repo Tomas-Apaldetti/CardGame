@@ -145,8 +145,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public Optional<IReaction> getReactionEffects() {
-        for(ICardType cardType: this.cardTypes){
-            if(cardType.is(CardTypeName.Reaction)){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.is(CardTypeName.Reaction)) {
                 CardTypeReaction cast = (CardTypeReaction) cardType;
                 return cast.getEffect();
             }
@@ -163,6 +163,7 @@ public class Card implements ITransactionable, ICard {
         }
         throw new CardCantAttackException();
     }
+
     @Override
     public OriginalAction artefact(OriginalAction og, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
@@ -185,19 +186,19 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack) {
-        for(ICardType cardType: this.cardTypes){
-            if (cardType.is(CardTypeName.Reaction)){
+        for (ICardType cardType : this.cardTypes) {
+            if (cardType.is(CardTypeName.Reaction)) {
                 cardType.reaction(cardInGame, stack, user, rival);
                 return;
             }
         }
         throw new ReactionNotUsableException();
     }
-    
+
     @Override
     public OriginalAction action(OriginalAction og, List<IAttackable> victims, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
-            if(cardType.is(CardTypeName.Action)) {
+            if (cardType.is(CardTypeName.Action)) {
                 return cardType.action(og, victims, user, rival);
             }
         }
