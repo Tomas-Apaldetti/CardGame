@@ -6,6 +6,7 @@ import java.util.List;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.Action.CardTypeAction;
 import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
 import com.core.g3.Card.Type.Creature.Attribute;
@@ -55,14 +56,14 @@ public class CardTypeBuilder {
         this.cardTypes.add(action);
     }
 
-    public void setTypeReaction(List<IEffect> effects) {
-        CardTypeReaction reaction = new CardTypeReaction(effects);
+    public void setTypeReaction(IReaction effect) {
+        CardTypeReaction reaction = new CardTypeReaction(effect);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
 
-    public void setTypeReaction(ICost useCost, List<IEffect> effects) {
-        CardTypeReaction reaction = new CardTypeReaction(useCost, effects);
+    public void setTypeReaction(ICost useCost, IReaction effect) {
+        CardTypeReaction reaction = new CardTypeReaction(useCost, effect);
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }

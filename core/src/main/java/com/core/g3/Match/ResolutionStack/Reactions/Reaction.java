@@ -1,26 +1,31 @@
 package com.core.g3.Match.ResolutionStack.Reactions;
 
 import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 
 public class Reaction {
 
     private final CardInGame source;
     private final IReactionEffect effect;
+    private final Player user;
+    private final Player rival;
     private boolean discardOnUse;
 
     private boolean isCanceled;
 
-    public Reaction(CardInGame source, IReactionEffect reactionEffect, boolean discardOnUse){
+    public Reaction(CardInGame source, IReactionEffect reactionEffect, Player user, Player rival, boolean discardOnUse){
         this.source = source;
         this.effect = reactionEffect;
+        this.user = user;
+        this.rival = rival;
         this.discardOnUse = discardOnUse;
         this.isCanceled = false;
     }
 
     public void apply(ResolutionStack stack){
         if(!this.isCanceled) {
-            this.effect.apply(this, this.source, stack, , );
+            this.effect.apply(this, this.source, stack, user, rival );
         }
         this.onUse();
     }

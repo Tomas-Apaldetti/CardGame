@@ -12,11 +12,14 @@ import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
 import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
+import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Creature.CardTypeCreature;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
+import com.core.g3.Card.Type.Reaction.CardTypeReaction;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Transactions.IBuyer;
@@ -25,8 +28,11 @@ import com.core.g3.Market.Transactions.ITransactionable;
 import com.core.g3.Match.CardInGame.AttackableManager.Health;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.CardInGame.AttackableManager.NoAttackable;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import com.core.g3.Match.ResolutionStack.Reactions.Reaction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class Card implements ITransactionable, ICard {
@@ -149,6 +155,17 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
+    public Optional<IReaction> getReactionEffects() {
+        for(ICardType cardType: this.cardTypes){
+            if(cardType.getType() == ICardType.CardType.Artefact){
+                CardTypeReaction cast = (CardTypeReaction) cardType;
+                return cast.getEffect();
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public OriginalAction artefact(Player user, Player rival) {
         for(ICardType cardType: this.cardTypes){
             if(cardType.isArtefact()){
@@ -171,6 +188,17 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
+    public void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack) {
+        for(ICardType cardType: this.cardTypes){
+            if(cardType.isArtefact()){
+                cardType.reaction(cardInGame, stack, user, rival);
+                return;
+            }
+        }
+        throw new ReactionNotUsableException();
+    }
+
+    @Override
     public Optional<List<Attribute>> getCreatureAttributes() {
         for (ICardType cardType : this.cardTypes) {
             if(cardType.getType() == ICardType.CardType.Creature){
@@ -180,6 +208,8 @@ public class Card implements ITransactionable, ICard {
 
         return Optional.empty();
     }
-    
+
+
+
 
 }

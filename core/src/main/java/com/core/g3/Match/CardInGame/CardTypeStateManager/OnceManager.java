@@ -1,17 +1,13 @@
 package com.core.g3.Match.CardInGame.CardTypeStateManager;
 
-import com.core.g3.Card.Artefact.IArtefactEffect;
-import com.core.g3.Card.Effects.IEffect;
-
-import java.util.List;
 import java.util.Optional;
 
-public class ArtefactStateManager {
+public class OnceManager<T> {
 
-    private final Optional<IArtefactEffect> effect;
+    private final Optional<T> effect;
     private boolean alreadyUsed;
 
-    public ArtefactStateManager(Optional<IArtefactEffect> effect){
+    public OnceManager(Optional<T> effect){
         this.effect = effect;
         this.alreadyUsed = true;
     }

@@ -21,12 +21,18 @@ public class ActiveZone {
     private Amount limit;
     private Amount cardsSize;
     private List<CardInGame> cards;
+    private boolean isActive;
 
     public ActiveZone(ActiveZoneType zoneType, Amount limit) {
+        this(zoneType,limit,true);
+    }
+
+    public ActiveZone(ActiveZoneType zoneType, Amount limit, boolean isActive) {
         this.zoneType = zoneType;
         this.limit = limit;
         this.cardsSize = new Amount(0);
         this.cards = new ArrayList<>();
+        this.isActive = isActive;
     }
 
     public void addCard(ICard card, Player player) {
@@ -75,5 +81,9 @@ public class ActiveZone {
         return this.cards.stream().filter(card -> {
             return card.getCreatureAttributes().isPresent();
         }).map( c -> (IAttackable) c).collect(Collectors.toList());
+    }
+
+    public boolean countsAsActive() {
+        return this.isActive;
     }
 }

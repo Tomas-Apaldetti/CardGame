@@ -7,10 +7,13 @@ import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Exceptions.CardTypeNeedsAtLeastOneEffectException;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
@@ -71,5 +74,10 @@ public abstract class CardType implements ICardType {
     @Override
     public List<Attribute> getAttributes(){
         return null;
+    }
+
+    @Override
+    public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival){
+        throw new ReactionNotUsableException();
     }
 }

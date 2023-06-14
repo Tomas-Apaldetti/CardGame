@@ -5,11 +5,14 @@ import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.List;
@@ -35,9 +38,13 @@ public interface ICard {
 
     Optional<IArtefactEffect> getArtefactEffects();
 
+    Optional<IReaction> getReactionEffects();
+
     OriginalAction artefact(Player user, Player rival);
 
     OriginalAction artefact(IAttackable affected, Player user, Player rival);
 
     Optional<List<Attribute>> getCreatureAttributes();
+
+    void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 }

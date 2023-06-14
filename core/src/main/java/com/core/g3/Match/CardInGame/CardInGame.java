@@ -6,11 +6,12 @@ import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
-import com.core.g3.Match.CardInGame.CardTypeStateManager.ArtefactStateManager;
+import com.core.g3.Match.CardInGame.CardTypeStateManager.OnceManager;
 import com.core.g3.Match.CardInGame.CardTypeStateManager.AttackStateManager;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZone;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class CardInGame implements IAttackable {
     private final ICard base;
     private final Player owner;
     private final AttackStateManager attackState;
-    private ArtefactStateManager artefactState;
-    private boolean reactionUsed;
+    private final OnceManager reactionState;
+    private OnceManager artefactState;
     private ActiveZone currentZone;
     private final IAttackableManager health;
 
@@ -33,8 +34,11 @@ public class CardInGame implements IAttackable {
         this.attackState = new AttackStateManager(this.base.getAttacks());
         this.attackState.deplete();
 
-        this.artefactState = new ArtefactStateManager(this.base.getArtefactEffects());
+        this.artefactState = new OnceManager(this.base.getArtefactEffects());
         this.artefactState.deplete();
+
+        this.reactionState = new OnceManager(this.base.getReactionEffects());
+        this.reactionState.deplete();
 
         this.owner = owner;
         this.currentZone = summoningZone;
@@ -78,12 +82,14 @@ public class CardInGame implements IAttackable {
         return this.base.artefact(affected, user, rival);
     }
 
-
+    public void reaction(Player user, Player rival, ResolutionStack stack){
+        this.base.reaction(this, user, rival, stack);
+    }
 
     public void refreshUse(){
         this.attackState.reset();
         this.artefactState.reset();
-        this.reactionUsed = false;
+        this.reactionState.reset();
     }
 
     @Override
@@ -107,5 +113,9 @@ public class CardInGame implements IAttackable {
 
     public Optional<List<Attribute>> getCreatureAttributes(){
         return this.base.getCreatureAttributes();
+    }
+
+    public boolean isInActiveZone() {
+        return this.currentZone.countsAsActive();
     }
 }

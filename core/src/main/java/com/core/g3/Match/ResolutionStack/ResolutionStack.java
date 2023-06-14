@@ -50,4 +50,8 @@ public class ResolutionStack {
     public IOriginal original(){
         return this.original;
     }
+
+    public void addReaction(Reaction reaction) {
+        this.reactionStack.add(reaction);
+    }
 }

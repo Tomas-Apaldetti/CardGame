@@ -1,28 +1,45 @@
 package com.core.g3.Card.Type.Reaction;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
-import com.core.g3.Card.Effects.IEffect;
+import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.ICardType;
+import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.Reactions.IReactionEffect;
+import com.core.g3.Match.ResolutionStack.Reactions.Reaction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 
 public class CardTypeReaction extends CardType {
 
     private final ICost useCost;
-    private final List<IEffect> effects;
+    private final IReaction effect;
 
-    public CardTypeReaction(List<IEffect> effects) {
+    public CardTypeReaction(IReaction effect) {
         super(ICardType.CardType.Reaction);
         this.useCost = new NullInvocationCost();
-        this.effects = effects;
+        this.effect = effect;
     }
 
-    public CardTypeReaction(ICost useCost, List<IEffect> effects) {
+    public CardTypeReaction(ICost useCost, IReaction effect) {
         super(ICardType.CardType.Reaction);
         this.useCost = useCost;
-        this.effects = effects;
+        this.effect = effect;
     }
 
+    public Optional<IReaction> getEffect(){
+        return Optional.ofNullable(this.effect);
+    }
+
+    @Override
+    public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival){
+        this.effect.assertApplicability(cardInGame, stack, user, rival);
+        useCost.apply(user);
+        IReactionEffect effect = this.effect.getEffect();
+        Reaction reaction = new Reaction(cardInGame, effect, user, rival, this.effect.discardOnUse(cardInGame));
+        stack.addReaction(reaction);
+    }
 }
