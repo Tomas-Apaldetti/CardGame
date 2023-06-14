@@ -25,18 +25,6 @@ public abstract class GameMode {
     protected int reserveZoneLimit;
     protected int initialHandSize;
 
-    public int CombatZoneLimit() {
-        return this.combatZoneLimit;
-    }
-
-    public int ArtifactZoneLimit() {
-        return this.artifactZoneLimit;
-    }
-
-    public int ReserveZoneLimit() {
-        return this.reserveZoneLimit;
-    }
-
     protected abstract IMatchEndCondition getCondition();
 
     public Player addPlayer(User user, IDeck deck) {
@@ -75,5 +63,17 @@ public abstract class GameMode {
     }
 
      public abstract Optional<Player> getWinner(Player player1, Player player2);
+
+    public int getCombatZoneLimit() {
+        return this.combatZoneLimit;
+    }
+
+    public int getArtifactZoneLimit() {
+        return this.artifactZoneLimit;
+    }
+
+    public int getReserveZoneLimit() {
+        return this.reserveZoneLimit;
+    }
     
 }

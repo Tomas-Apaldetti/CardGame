@@ -49,8 +49,6 @@ public class DeckPlayable implements IDeckPlayable {
     }
 
     public void forceOrder(List<CardName> names) {
-
-        // creating a map of cards as key card name and value list of ICards
         Map<CardName, List<ICard>> cardMap = new HashMap<>();
         for (ICard card : this.cards) {
             CardName name = card.getName();
