@@ -24,8 +24,8 @@ public class CardTypeBuilderTest {
         cardBuilder.cardTypeBuilder.setTypeArtefact(null);
         Card card = cardBuilder.build();
 
-        ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Artefact);
+        ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
+        actual.add(CardTypeName.Artefact);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, card.getTypes().containsAll(actual));
@@ -38,9 +38,9 @@ public class CardTypeBuilderTest {
         cardBuilder.cardTypeBuilder.setTypeCreature(null, null, null);
         Card card = cardBuilder.build();
 
-        ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Artefact);
-        actual.add(ICardType.CardType.Creature);
+        ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
+        actual.add(CardTypeName.Artefact);
+        actual.add(CardTypeName.Creature);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, card.getTypes().containsAll(actual));
@@ -50,10 +50,10 @@ public class CardTypeBuilderTest {
     public void createCardOfDuplicatedTypesThrows() {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
 
-        ArrayList<ICardType.CardType> actual = new ArrayList<ICardType.CardType>();
-        actual.add(ICardType.CardType.Action);
-        actual.add(ICardType.CardType.Artefact);
-        actual.add(ICardType.CardType.Artefact);
+        ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
+        actual.add(CardTypeName.Action);
+        actual.add(CardTypeName.Artefact);
+        actual.add(CardTypeName.Artefact);
 
         cardBuilder.cardTypeBuilder.setTypeAction(null);
         cardBuilder.cardTypeBuilder.setTypeArtefact(null);

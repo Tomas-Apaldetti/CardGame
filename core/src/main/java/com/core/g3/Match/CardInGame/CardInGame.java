@@ -64,7 +64,7 @@ public class CardInGame implements IAttackable {
             throw new CardCantAttackException();
         }
         this.attackState.deplete();
-        return this.base.attack(victim, user, rival, which.value());
+        return this.base.attack(new OriginalAction(this), victim, user, rival, which.value());
     }
 
     public OriginalAction artefact(Player user, Player rival) {
@@ -72,7 +72,7 @@ public class CardInGame implements IAttackable {
             throw new ArtefactNotUsableException();
         }
         this.artefactState.deplete();
-        return this.base.artefact(user, rival);
+        return this.base.artefact(new OriginalAction(this),user, rival);
     }
 
     public OriginalAction artefact(IAttackable affected, Player user, Player rival) {
@@ -80,15 +80,15 @@ public class CardInGame implements IAttackable {
             throw new ArtefactNotUsableException();
         }
         this.artefactState.deplete();
-        return this.base.artefact(affected, user, rival);
+        return this.base.artefact(new OriginalAction(this),affected, user, rival);
+    }
+
+    public OriginalAction action(List<IAttackable> victims, Player user, Player rival) {
+        return this.base.action(new OriginalAction(this), victims, user, rival);
     }
 
     public void reaction(Player user, Player rival, ResolutionStack stack){
         this.base.reaction(this, user, rival, stack);
-    }
-
-    public OriginalAction action(List<IAttackable> victims, Player user, Player rival) {
-        return this.base.action(victims, user, rival);
     }
 
     public void refreshUse() {

@@ -6,15 +6,10 @@ import java.util.List;
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
 import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
-import com.core.g3.Card.Cost.CostEnergy;
-import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Attack.IAttackable;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
 import com.core.g3.Card.Type.Creature.Attribute;
-import com.core.g3.Card.Type.Exceptions.CardTypeNeedsAtLeastOneEffectException;
 import com.core.g3.Match.CardInGame.CardInGame;
-import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
@@ -22,21 +17,21 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
 
-    protected ICardType.CardType type;
+    protected CardTypeName type;
     protected List<ActiveZoneType> allowedZones;
 
-    protected CardType(CardType type) {
+    protected CardType(CardTypeName type) {
         this.type = type;
         this.allowedZones = new ArrayList<>();
     }
 
-    protected CardType(CardType type, List<ActiveZoneType> allowedZones) {
+    protected CardType(CardTypeName type, List<ActiveZoneType> allowedZones) {
         this.type = type;
         this.allowedZones = allowedZones;
     }
 
     @Override
-    public ICardType.CardType getType() {
+    public CardTypeName getType() {
         return this.type;
     }
 
@@ -53,16 +48,6 @@ public abstract class CardType implements ICardType {
     @Override
     public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival, int idx) {
         throw new CardCantAttackException();
-    }
-
-    @Override
-    public boolean isArtefact() {
-        return false;
-    }
-
-    @Override
-    public boolean isAction() {
-        return false;
     }
 
     @Override
@@ -94,8 +79,5 @@ public abstract class CardType implements ICardType {
     public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival){
         throw new ReactionNotUsableException();
     }
-    
-    public ICost getEnergyCost() {
-        return new CostEnergy(java.util.Optional.empty(), new Amount(0));
-    }
+
 }

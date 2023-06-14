@@ -6,7 +6,6 @@ import java.util.List;
 import com.core.g3.Card.Action.IAction;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Cost.ICost;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Type.Action.CardTypeAction;
 import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
@@ -25,7 +24,7 @@ public class CardTypeBuilder {
         this.cardTypes = new ArrayList<>();
     }
 
-    private void checkType(ICardType.CardType type) {
+    private void checkType(CardTypeName type) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.getType().equals(type)) {
                 throw new CardTypeIsAlreadyContainedInCardException();

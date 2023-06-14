@@ -1,8 +1,6 @@
 package com.core.g3.Card.Type;
 
 import com.core.g3.Card.Attack.IAttackable;
-import com.core.g3.Card.Cost.ICost;
-import com.core.g3.Card.Type.Action.CardTypeAction;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
@@ -13,18 +11,10 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 import java.util.List;
 
 public interface ICardType {
-    public enum CardType {
-        Creature,
-        Artefact,
-        Action,
-        Reaction,
-    }
 
-    boolean isArtefact();
+    boolean is(CardTypeName cardType);
 
-    boolean isAction();
-
-    CardType getType();
+    CardTypeName getType();
 
     boolean isSummonableIn(ActiveZoneType zoneType);
 
@@ -44,5 +34,4 @@ public interface ICardType {
 
     List<Attribute> getAttributes();
 
-    ICost getEnergyCost();
 }

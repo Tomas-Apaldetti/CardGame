@@ -138,4 +138,10 @@ public class Player {
             allCreatures.get(i).destroy();
         }
     }
+    public void moveFromHand(ICard card) {
+        this.hand.remove(card);
+    }
+    public void addToHand(ICard card){
+        this.hand.add(card);
+    }
 }

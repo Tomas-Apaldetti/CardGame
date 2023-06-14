@@ -7,7 +7,7 @@ import java.util.List;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.CardType;
-import com.core.g3.Card.Type.ICardType;
+import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -20,7 +20,7 @@ public class CardTypeCreature extends CardType {
     private final List<IAttack> attacks;
 
     public CardTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks) {
-        super(ICardType.CardType.Creature, Arrays.asList(ActiveZoneType.Combat, ActiveZoneType.Reserve));
+        super(CardTypeName.Creature, Arrays.asList(ActiveZoneType.Combat, ActiveZoneType.Reserve));
         this.baseHP = baseHP;
         this.attributes = attributes;
         this.attacks = attacks;
@@ -28,10 +28,15 @@ public class CardTypeCreature extends CardType {
 
     public CardTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks,
             List<ActiveZoneType> allowedZones) {
-        super(ICardType.CardType.Creature, allowedZones);
+        super(CardTypeName.Creature, allowedZones);
         this.baseHP = baseHP;
         this.attributes = attributes;
         this.attacks = attacks;
+    }
+
+    @Override
+    public boolean is(CardTypeName cardType) {
+        return CardTypeName.Creature == cardType;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.core.g3.Match.ResolutionStack.OriginalAction;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
-import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.Damage;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.IEffect;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 public class OriginalAction implements IOriginal {
 
-    private final ICard source;
+    private final CardInGame source;
     private boolean isCanceled;
     private ActionType type;
     private Optional<Damage> damage = Optional.empty();
@@ -23,7 +22,7 @@ public class OriginalAction implements IOriginal {
     private List<IEffect> effects;
     private boolean discardOnUse;
 
-    public OriginalAction(ICard source){
+    public OriginalAction(CardInGame source){
         this.source = source;
         this.effects = new ArrayList<>();
         this.isCanceled = false;
@@ -53,12 +52,12 @@ public class OriginalAction implements IOriginal {
             }
         }
         if(this.discardOnUse){
-            //@TODO
+            this.source.discard();
         }
     }
     @Override
     public boolean isSource(CardInGame questioner){
-        return this.source.equals(questioner.getBase());
+        return this.source.getBase().equals(questioner.getBase());
     }
     @Override
     public boolean is(ActionType other){
@@ -80,7 +79,7 @@ public class OriginalAction implements IOriginal {
 
     @Override
     public boolean sourceIs(CardName cardName) {
-        return this.source.getName() == cardName;
+        return this.source.getBase().getName() == cardName;
     }
 
     @Override

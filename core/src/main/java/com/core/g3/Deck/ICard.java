@@ -30,7 +30,7 @@ public interface ICard {
 
     public void applySummonCost(Player player);
 
-    OriginalAction attack(IAttackable victim, Player user, Player rival, int whichAttack);
+
 
     IAttackableManager getHealth();
 
@@ -40,13 +40,16 @@ public interface ICard {
 
     Optional<IReaction> getReactionEffects();
 
-    OriginalAction artefact(Player user, Player rival);
+    OriginalAction attack(OriginalAction og, IAttackable victim, Player user, Player rival, int whichAttack);
+    OriginalAction artefact(OriginalAction og, Player user, Player rival);
 
-    OriginalAction artefact(IAttackable affected, Player user, Player rival);
+    OriginalAction artefact(OriginalAction og,IAttackable affected, Player user, Player rival);
 
-    public OriginalAction action(List<IAttackable> victims, Player user, Player rival);
+    OriginalAction action(OriginalAction og,List<IAttackable> victims, Player user, Player rival);
+
+    void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 
     Optional<List<Attribute>> getCreatureAttributes();
 
-    void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
+
 }

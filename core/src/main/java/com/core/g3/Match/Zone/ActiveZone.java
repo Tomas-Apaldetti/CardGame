@@ -44,6 +44,7 @@ public class ActiveZone {
         }
 
         player.pay(card);
+        player.moveFromHand(card);
 
         CardInGame livingCard = new CardInGame(player, card, this);
 
