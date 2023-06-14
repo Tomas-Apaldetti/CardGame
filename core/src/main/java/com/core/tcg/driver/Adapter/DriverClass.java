@@ -47,14 +47,14 @@ public class DriverClass implements Driver<User, Card> {
     }
 
     @Override
-    public int countDeckCards(User account, String deckName, DriverCardName cardName) {
-        return account.countDeckSpecificCards(deckName, DriverMapper.toCardName(cardName));
-    }
-
-    @Override
     public void addDeckCards(User account, String deckName, DriverCardName cardName, int amount) {
         CardName cardNameToAddToDeck = DriverMapper.toCardName(cardName);
         account.addCardToDeck(deckName, cardNameToAddToDeck, amount);
+    }
+
+    @Override
+    public int countDeckCards(User account, String deckName, DriverCardName cardName) {
+        return account.countDeckSpecificCards(deckName, DriverMapper.toCardName(cardName));
     }
 
     @Override

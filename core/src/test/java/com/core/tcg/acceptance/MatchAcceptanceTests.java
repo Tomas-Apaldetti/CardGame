@@ -210,7 +210,6 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
 
     private MatchDriver<Card> commonMatch(Stream<DriverCardName> prefix) {
         List<DriverCardName> deck = loopedCardNames(40, prefix);
-        System.out.println(deck.size());
         Account blue = accountWithDeck(deck);
         Account green = accountWithDeck(deck);
 

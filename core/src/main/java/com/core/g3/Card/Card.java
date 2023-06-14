@@ -1,5 +1,6 @@
 package com.core.g3.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.core.g3.Card.Cost.ICost;
@@ -83,5 +84,14 @@ public class Card implements ITransactionable, ICard {
     @Override
     public void applySummonCost(Player player) {
         this.invocationCost.apply(player);
+    }
+
+    public List<ActiveZoneType> getAllowableZones() {
+        // Create a empty list of activeZoneType
+        List<ActiveZoneType> allowableZones = new ArrayList<>();
+        for (ICardType cardType : this.cardTypes) {
+            allowableZones.addAll(cardType.getAllowableZones());
+        }
+        return allowableZones;
     }
 }

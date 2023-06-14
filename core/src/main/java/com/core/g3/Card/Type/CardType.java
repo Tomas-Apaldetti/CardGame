@@ -9,6 +9,7 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
 
+    public static final Object Artefacts = null;
     protected ICardType.CardType type;
     protected List<ActiveZoneType> allowedZones;
 
@@ -36,5 +37,10 @@ public abstract class CardType implements ICardType {
     @Override
     public boolean isSummonableIn(ActiveZoneType zoneType) {
         return this.allowedZones.contains(zoneType);
+    }
+
+    @Override
+    public List<ActiveZoneType> getAllowableZones() {
+        return this.allowedZones;
     }
 }

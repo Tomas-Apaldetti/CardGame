@@ -65,6 +65,7 @@ public class CardTypeBuilder {
         checkType(reaction.getType());
         this.cardTypes.add(reaction);
     }
+
     public List<ICardType> getTypes() {
         return this.cardTypes;
     }

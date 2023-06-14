@@ -1,7 +1,8 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.CardName;
-import com.core.g3.Match.Phase.Phase;
+import com.core.g3.Match.Phase.IPhase;
+import com.core.g3.Match.Phase.IPhase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.tcg.driver.DriverActiveZone;
@@ -38,8 +39,8 @@ public class DriverMapper {
         return DriverMatchSide.valueOf(playerZone.name());
     }
 
-    public static Phase toTurnPhase(DriverTurnPhase phase) {
-        return Phase.valueOf(phase.name());
+    public static PhaseType toTurnPhase(DriverTurnPhase phase) {
+        return PhaseType.valueOf(phase.name());
     }
 
     public static ActiveZoneType toActiveZoneType(DriverActiveZone zone) {

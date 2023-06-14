@@ -7,6 +7,7 @@ import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.Exceptions.CardTypeIsAlreadyContainedInCardException;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,6 +61,15 @@ public class CardTypeBuilderTest {
 
         assertThrows(CardTypeIsAlreadyContainedInCardException.class,
                 () -> cardBuilder.cardTypeBuilder.setTypeArtefact(this.effects));
+    }
+
+    @Test
+    public void testAllowedZones() {
+        CardBuilder cardBuilder = new CardBuilder(CardName.WaterEnergy);
+        cardBuilder.cardTypeBuilder.setTypeArtefact(this.effects);
+        Card card = cardBuilder.build();
+
+        assertEquals(true, card.getAllowableZones().contains(ActiveZoneType.Artefacts));
     }
 
     private class TestEffects {

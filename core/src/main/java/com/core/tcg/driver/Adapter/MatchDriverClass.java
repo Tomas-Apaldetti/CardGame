@@ -8,7 +8,8 @@ import com.core.g3.Match.IMatch;
 import com.core.g3.Match.Match;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.GameMode1;
-import com.core.g3.Match.Phase.Phase;
+import com.core.g3.Match.Phase.IPhase;
+import com.core.g3.Match.Phase.IPhase.PhaseType;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
@@ -44,7 +45,7 @@ public class MatchDriverClass implements MatchDriver<Card> {
     @Override
     public void skipToPhase(DriverMatchSide player, DriverTurnPhase phase) {
         PlayerZone playerZone = DriverMapper.toPlayerZone(player);
-        Phase turnPhase = DriverMapper.toTurnPhase(phase);
+        PhaseType turnPhase = DriverMapper.toTurnPhase(phase);
         this.match.skipToPhase(playerZone, turnPhase);
     }
 
@@ -53,6 +54,8 @@ public class MatchDriverClass implements MatchDriver<Card> {
         PlayerZone playerZone = DriverMapper.toPlayerZone(player);
         CardName cardName = DriverMapper.toCardName(card);
         ActiveZoneType activeZoneType = DriverMapper.toActiveZoneType(zone);
+
+        this.match.summon(playerZone, cardName, activeZoneType);
         return null;
     }
 
