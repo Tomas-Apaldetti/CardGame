@@ -29,6 +29,7 @@ public class GameMode2 extends GameMode {
         player.drawCard();
     }
 
+    @Override
     public Optional<Player> getWinner(Player player1, Player player2) {
         if (player1.matchEndConditionMet()) {
             return Optional.of(player1);

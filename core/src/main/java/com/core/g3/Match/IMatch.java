@@ -1,23 +1,24 @@
 package com.core.g3.Match;
 
-
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
+import com.core.g3.Deck.ICard;
+import com.core.g3.Match.Phase.Phase;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
-import com.core.tcg.driver.DriverCardName;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IMatch {
-    public void startMatch();
+    public void startMatch(PlayerZone firstTurn);
 
     public void forceDeckOrder(PlayerZone player, List<CardName> cards);
 
-    // @TODO: Remove zone String type. Create a Zone Class
-    public void summon(Player player, DriverCardName card, String zone);
+    public void summon(PlayerZone player, ICard card, ActiveZoneType zone);
 
     public int getCreatureHitpoints(Card card);
 
@@ -25,9 +26,13 @@ public interface IMatch {
 
     public void attackPlayer(Card creature, int index);
 
-    public int playerHealth(Player player);
+    public int playerHealth(PlayerZone side);
 
-    public IResource playerEnergy(Player player, EnergyType energyType);
+    public IResource playerEnergy(PlayerZone player, EnergyType energyType);
 
     public Player getPlayer(PlayerZone side);
+
+    public Optional<PlayerZone> getWinner();
+
+    public void skipToPhase(PlayerZone toPlayerZone, Phase phase);
 }

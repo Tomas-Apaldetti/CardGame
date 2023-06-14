@@ -13,6 +13,7 @@ import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.Adapter.DriverMapper;
 import com.core.tcg.driver.DriverCardName;
 import com.core.g3.Match.Zone.ActiveZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +40,34 @@ public class Player {
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
+    }
+
+    public void addCardToHand(ICard card) {
+        this.hand.add(card);
+    }
+
+    public IDeckPlayable getDeck() {
+        return this.deck;
+    }
+
+    public void summonInZone(ICard card, ActiveZone zone) {
+        zone.addCard(card, this);
+    }
+
+    public void summonInZone(ICard card, ActiveZoneType zone) {
+        if (this.hand.peek().contains(card)) {
+            if (zone.equals(ActiveZoneType.Combat)) {
+                this.summonInZone(card, this.combatZone);
+            } else if (zone.equals(ActiveZoneType.Reserve)) {
+                this.summonInZone(card, this.reserveZone);
+            } else if (zone.equals(ActiveZoneType.Artefacts)) {
+                this.summonInZone(card, this.artifactZone);
+            }
+        } else {
+            throw new RuntimeException("Card not in hand");
+
+        }
+        this.hand.remove(card);
     }
 
     public void affectMatchEndCondition(Amount value) {
@@ -111,7 +140,7 @@ public class Player {
 
     public List<DriverCardName> retrieveDeckOrder() {
         List<DriverCardName> cards = new ArrayList<>();
-        for (CardName name: this.deck.getCards()){
+        for (CardName name : this.deck.getCards()) {
             cards.add(DriverMapper.toDriverCardName(name));
         }
         return cards;
@@ -123,5 +152,16 @@ public class Player {
 
     public void pay(ICard card) {
         card.applySummonCost(this);
+    }
+
+    public ActiveZone seeActiveZone(ActiveZoneType activeZoneType) {
+        if (activeZoneType.equals(ActiveZoneType.Combat)) {
+            return this.combatZone;
+        } else if (activeZoneType.equals(ActiveZoneType.Reserve)) {
+            return this.reserveZone;
+        } else if (activeZoneType.equals(ActiveZoneType.Artefacts)) {
+            return this.artifactZone;
+        }
+        throw new RuntimeException("Invalid active zone type");
     }
 }

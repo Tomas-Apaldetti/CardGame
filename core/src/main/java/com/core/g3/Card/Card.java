@@ -32,12 +32,12 @@ public class Card implements ITransactionable, ICard {
     }
 
     public Card(CardName name, boolean shouldCount, ICost invocationCost, List<ICardType> cardTypes,
-            Amount summonableSpace) {
+            Amount summonableSpace, Amount price) {
         this.name = name;
         this.shouldCount = shouldCount;
         this.invocationCost = invocationCost;
         this.cardTypes = cardTypes;
-        this.price = new Amount(0);
+        this.price = price;
         this.summonableSpace = summonableSpace;
     }
 

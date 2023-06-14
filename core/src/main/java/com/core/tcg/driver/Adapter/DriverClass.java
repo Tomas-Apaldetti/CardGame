@@ -17,7 +17,7 @@ import java.util.Random;
 public class DriverClass implements Driver<User, Card> {
     @Override
     public User newAccount() {
-        byte[] array = new byte[7]; // length is bounded by 7
+        byte[] array = new byte[7];
         new Random().nextBytes(array);
         String generatedString = new String(array, Charset.forName("UTF-8"));
         return new User(generatedString);
@@ -58,25 +58,23 @@ public class DriverClass implements Driver<User, Card> {
 
         if (mode.equals(DriverGameMode.HitpointLoss)) {
             GameMode gamemode = new GameMode1();
-            IDeck gDeck = green.getDeckInventory().getDeck(greenDeck);
-            Player greenPlayer = gamemode.addPlayer(green,gDeck);
-
-            IDeck bDeck = green.getDeckInventory().getDeck(blueDeck);
-            Player bluePlayer = gamemode.addPlayer(blue,bDeck);
-            Match match = new Match(bluePlayer, greenPlayer, gamemode);
-            return new MatchDriverClass(match);
+            return getDriverClass(blue, blueDeck, green, greenDeck, gamemode);
         }
         if(mode.equals(DriverGameMode.CreatureSlayer)){
             GameMode gamemode = new GameMode2();
-            IDeck gDeck = green.getDeckInventory().getDeck(greenDeck);
-            Player greenPlayer = gamemode.addPlayer(green,gDeck);
-
-            IDeck bDeck = green.getDeckInventory().getDeck(blueDeck);
-            Player bluePlayer = gamemode.addPlayer(blue,bDeck);
-            Match match = new Match(bluePlayer, greenPlayer, gamemode);
-            return new MatchDriverClass(match);
+            return getDriverClass(blue, blueDeck, green, greenDeck, gamemode);
         }
         return null;
+    }
+
+    private MatchDriver<Card> getDriverClass(User blue, String blueDeck, User green, String greenDeck, GameMode gamemode) {
+        IDeck gDeck = green.getDeckInventory().getDeck(greenDeck);
+        Player greenPlayer = gamemode.addPlayer(green, gDeck);
+
+        IDeck bDeck = green.getDeckInventory().getDeck(blueDeck);
+        Player bluePlayer = gamemode.addPlayer(blue, bDeck);
+        Match match = new Match(bluePlayer, greenPlayer, gamemode);
+        return new MatchDriverClass(match);
     }
 }
 

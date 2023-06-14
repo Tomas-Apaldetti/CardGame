@@ -1,13 +1,13 @@
 package com.core.g3.Card.Cost;
 
-import java.util.Optional;
-
 import com.core.g3.Card.Cost.Exception.CanNotPayException;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Commons.Exception.InvalidAmountException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+
+import java.util.Optional;
 
 public class CostEnergy implements ICost {
 
