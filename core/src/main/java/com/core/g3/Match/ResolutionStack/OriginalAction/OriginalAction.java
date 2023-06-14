@@ -17,12 +17,11 @@ public class OriginalAction implements IOriginal {
     private boolean isCanceled;
     private ActionType type;
     private Optional<Damage> damage = Optional.empty();
-
     private Optional<IAttackable> attackObjective = Optional.empty();
     private List<IEffect> effects;
     private boolean discardOnUse;
 
-    public OriginalAction(CardInGame source){
+    public OriginalAction(CardInGame source) {
         this.source = source;
         this.effects = new ArrayList<>();
         this.isCanceled = false;
@@ -42,31 +41,33 @@ public class OriginalAction implements IOriginal {
         this.effects.add(effect);
     }
 
-    public void apply(){
-        if(!this.isCanceled){
-            if (this.damage.isPresent()){
+    public void apply() {
+        if (!this.isCanceled) {
+            if (this.damage.isPresent()) {
                 this.damage.get().apply();
             }
-            for (IEffect effect: effects){
+            for (IEffect effect : effects) {
                 effect.apply();
             }
         }
-        if(this.discardOnUse){
+        if (this.discardOnUse) {
             this.source.discard();
         }
     }
+
     @Override
-    public boolean isSource(CardInGame questioner){
+    public boolean isSource(CardInGame questioner) {
         return this.source.getBase().equals(questioner.getBase());
     }
+
     @Override
-    public boolean is(ActionType other){
+    public boolean is(ActionType other) {
         return this.type == other;
     }
 
     @Override
     public void setMaxDamage(Amount value) {
-        if(!this.damage.isPresent()){
+        if (!this.damage.isPresent()) {
             return;
         }
         this.damage.get().setMaxDamage(value);
@@ -74,7 +75,7 @@ public class OriginalAction implements IOriginal {
 
     @Override
     public void duplicate() {
-        //@TODO
+        // @TODO
     }
 
     @Override
@@ -93,8 +94,8 @@ public class OriginalAction implements IOriginal {
     }
 
     @Override
-    public boolean isObjective(CardInGame questioner){
-        if(!this.attackObjective.isPresent()){
+    public boolean isObjective(CardInGame questioner) {
+        if (!this.attackObjective.isPresent()) {
             return false;
         }
         return this.attackObjective.get().equals(questioner);
