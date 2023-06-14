@@ -123,10 +123,10 @@ public class MatchTest {
     }
 
     public Card createCard() {
-        List<IEffect> effects = new TestEffects().effects;
+        // List<IEffect> effects = new TestEffects().effects;
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(effects);
-        cardBuilder.cardTypeBuilder.setTypeCreature(null, null, null);
+        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
+        cardBuilder.cardTypeBuilder.setTypeCreature(new Amount(3), null, new ArrayList<>());
         Card card = cardBuilder.build();
 
         return card;

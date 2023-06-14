@@ -1,6 +1,8 @@
 package com.core.g3.Match.Player;
 
 import com.core.g3.Card.CardName;
+import com.core.g3.Card.Attack.IAttackable;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.CardContainer;
@@ -8,6 +10,7 @@ import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
+import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.Adapter.DriverMapper;
@@ -18,8 +21,8 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Player {
-    private final IAccount account; // TODO -> remove?
+public class Player implements IAttackable {
+    private final IAccount account;
     private IMatchEndCondition condition;
     private final IDeckPlayable deck;
     private final CardContainer hand;
@@ -67,7 +70,6 @@ public class Player {
             throw new RuntimeException("Card not in hand");
 
         }
-        this.hand.remove(card);
     }
 
     public void affectMatchEndCondition(Amount value) {
@@ -107,6 +109,14 @@ public class Player {
             return this.energies.consume(energyType.get(), value);
         }
         return this.energies.consumeAny(value);
+    }
+
+    public void consumeMax(Amount value) {
+        this.consume(this.getMaxEnergyType(), value);
+    }
+
+    private Optional<EnergyType> getMaxEnergyType() {
+        return this.energies.getMaxType();
     }
 
     public void drawCard() {
@@ -152,6 +162,61 @@ public class Player {
 
     public void pay(ICard card) {
         card.applySummonCost(this);
+    }
+
+    public void discard(ICard base) {
+        this.discard.add(base);
+    }
+
+    public List<IAttackable> getCreatures(Attribute attrFilter) {
+        List<IAttackable> total = new ArrayList<>();
+        total.addAll(this.artifactZone.getCreatures(attrFilter));
+        total.addAll(this.combatZone.getCreatures(attrFilter));
+        total.addAll(this.reserveZone.getCreatures(attrFilter));
+        return total;
+    }
+
+    public List<IAttackable> getCreatures() {
+        List<IAttackable> total = new ArrayList<>();
+        total.addAll(this.artifactZone.getCreatures());
+        total.addAll(this.combatZone.getCreatures());
+        total.addAll(this.reserveZone.getCreatures());
+        return total;
+    }
+
+    public void destroyCreatures(int upTo) {
+        List<IAttackable> allCreatures = this.getCreatures();
+        Collections.shuffle(allCreatures);
+        for (int i = 0; i < Math.min(allCreatures.size(), upTo); i++) {
+            allCreatures.get(i).destroy();
+        }
+    }
+
+    public void moveFromHand(ICard card) {
+        this.hand.remove(card);
+    }
+
+    public void addToHand(ICard card) {
+        this.hand.add(card);
+    }
+
+    public boolean isAttackable() {
+        return false;
+    }
+
+    @Override
+    public void receiveAttack(Amount damage) {
+        this.condition.receiveAttack(damage);
+    }
+
+    @Override
+    public void destroy() {
+        this.condition.destroy();
+    }
+
+    @Override
+    public void heal(Amount heal) {
+        this.condition.heal(heal);
     }
 
     public ActiveZone seeActiveZone(ActiveZoneType activeZoneType) {
