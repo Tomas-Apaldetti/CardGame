@@ -106,7 +106,6 @@ public class MatchTest {
         Deck deck = new Deck("test_deck");
         HashMap<CardName, Integer> cards = new HashMap<CardName, Integer>();
         for (int i = 0; i < numberOfCards; i++) {
-            // Add a random card from CardName only if it is not already 3 in the deck
             CardName randomCard = CardName.values()[(int) (Math.random() * CardName.values().length)];
             if (cards.containsKey(randomCard)) {
                 if (cards.get(randomCard) < numberPerCard) {

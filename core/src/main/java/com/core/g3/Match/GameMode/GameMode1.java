@@ -11,7 +11,6 @@ public class GameMode1 extends GameMode {
 
     public GameMode1() {
         this.initialPoints = 20;
-
         this.maxDeckCards = 60;
         this.minDeckCards = 40;
         this.maxRepeatedCards = 3;

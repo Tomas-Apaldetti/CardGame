@@ -109,6 +109,5 @@ public class User implements IBuyer, ISeller, IAccount {
 
         Collection<ICard> cards = cardInventory.getCardsByName(name, amount);
         deck.addCards(cards);
-
     }
 }
