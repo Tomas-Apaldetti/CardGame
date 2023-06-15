@@ -40,4 +40,11 @@ public class TurnManager {
     public Player getPlayerFrom(PlayerZone playerZone) {
         return playerZone == PlayerZone.Blue ? this.bluePlayer : this.greenPlayer;
     }
+
+    public Player getRivalTo(Player to){
+        if(this.bluePlayer.equals(to)){
+            return this.greenPlayer;
+        }
+        return this.bluePlayer;
+    }
 }

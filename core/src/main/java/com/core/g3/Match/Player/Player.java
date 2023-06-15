@@ -7,7 +7,9 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.CardContainer;
 import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.CardInGame.IDeathSub;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
+import com.core.g3.Match.GameMode.GameMode2;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
@@ -285,5 +287,11 @@ public class Player implements IAttackable {
         a.addAll(this.combatZone.getCardsInGame(cards));
         a.addAll(this.artifactZone.getCardsInGame(cards));
         return a;
+    }
+
+    public void subscribeToCardDeath(IDeathSub sub) {
+        this.reserveZone.add(sub);
+        this.combatZone.add(sub);
+        this.artifactZone.add(sub);
     }
 }

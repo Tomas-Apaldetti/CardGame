@@ -5,6 +5,8 @@ import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.CardInGame.IDeathPub;
+import com.core.g3.Match.CardInGame.IDeathSub;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
 import com.core.g3.Match.Zone.Exceptions.CardNotInZoneException;
@@ -14,12 +16,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ActiveZone {
+public class ActiveZone implements IDeathSub, IDeathPub {
 
     private ActiveZoneType zoneType;
     private Amount limit;
     private Amount cardsSize;
     private List<CardInGame> cards;
+    private final List<IDeathSub> subs = new ArrayList<>();
     private boolean isActive;
 
     public ActiveZone(ActiveZoneType zoneType, Amount limit) {
@@ -107,5 +110,20 @@ public class ActiveZone {
 
     public List<CardInGame> getCardsInGame() {
         return this.cards;
+    }
+
+    @Override
+    public void notify(CardInGame card) {
+        this.remove(card);
+    }
+
+    @Override
+    public void add(IDeathSub sub) {
+        this.subs.add(sub);
+    }
+
+    @Override
+    public void remove(IDeathSub sub) {
+        this.subs.remove(subs);
     }
 }

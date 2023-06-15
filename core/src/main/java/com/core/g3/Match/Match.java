@@ -29,6 +29,7 @@ public class Match {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
+        this.gameMode.setMatch(this);
         this.phase = new NotPlayable();
         this.turnManager = new TurnManager(this.bluePlayer, this.greenPlayer);
     }
@@ -139,5 +140,9 @@ public class Match {
 
     public Player getPlayer(PlayerZone playerZone) {
         return this.turnManager.getPlayerFrom(playerZone);
+    }
+
+    public Player getRival(Player owner) {
+        return this.turnManager.getRivalTo(owner);
     }
 }

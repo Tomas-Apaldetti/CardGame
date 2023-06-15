@@ -18,16 +18,18 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZone;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CardInGame implements IAttackable {
+public class CardInGame implements IAttackable, IDeathPub {
 
     private final ICard base;
     private final Player owner;
     private final AttackStateManager attackState;
     private final OnceManager<IReaction> reactionState;
-    private OnceManager<IArtifactEffect> artifactState;
+    private final OnceManager<IArtifactEffect> artifactState;
+    private final List<IDeathSub> interested = new ArrayList<>();
     private ActiveZone currentZone;
     private final IAttackableManager health;
 
@@ -38,18 +40,24 @@ public class CardInGame implements IAttackable {
         this.attackState = new AttackStateManager(this.base.getAttacks());
         this.attackState.deplete();
 
-        this.artifactState = new OnceManager<IArtifactEffect>(this.base.getArtifactEffects());
+        this.artifactState = new OnceManager<>(this.base.getArtifactEffects());
         this.artifactState.deplete();
 
-        this.reactionState = new OnceManager<IReaction>(this.base.getReactionEffects());
+        this.reactionState = new OnceManager<>(this.base.getReactionEffects());
         this.reactionState.deplete();
+
+        this.currentZone = summoningZone;
+
+        this.interested.add(summoningZone);
 
         this.owner = owner;
     }
-
+    public void putInDiscard(){
+        this.owner.discard(this.base);
+    }
     public void discard() {
         this.currentZone.remove(this);
-        this.owner.discard(this.base);
+        this.putInDiscard();
     }
 
     public ICard getBase() {
@@ -115,14 +123,22 @@ public class CardInGame implements IAttackable {
         this.reactionState.reset();
     }
 
+    private void notifyDeath(){
+        this.interested.forEach(i -> i.notify(this));
+    }
+
     @Override
     public void receiveAttack(Amount damage) {
         this.health.receiveAttack(damage);
+        if(this.isDead()){
+            this.notifyDeath();
+        }
     }
 
     @Override
     public void destroy() {
         this.health.destroy();
+        this.notifyDeath();
     }
 
     @Override
@@ -140,5 +156,19 @@ public class CardInGame implements IAttackable {
 
     public boolean isInActiveZone() {
         return this.currentZone.countsAsActive();
+    }
+
+    @Override
+    public void add(IDeathSub sub) {
+        this.interested.add(sub);
+    }
+
+    @Override
+    public void remove(IDeathSub sub) {
+        this.interested.remove(sub);
+    }
+
+    public Player getOwner(){
+        return this.owner;
     }
 }

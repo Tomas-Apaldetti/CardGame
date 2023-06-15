@@ -5,6 +5,7 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
+import com.core.g3.Match.Match;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Zone.ActiveZone;
@@ -24,6 +25,7 @@ public abstract class GameMode {
     protected int artifactZoneLimit;
     protected int reserveZoneLimit;
     protected int initialHandSize;
+    protected Match match;
 
     protected abstract IMatchEndCondition getCondition();
 
@@ -64,16 +66,7 @@ public abstract class GameMode {
 
     public abstract Optional<Player> getWinner(Player player1, Player player2);
 
-    public int getCombatZoneLimit() {
-        return this.combatZoneLimit;
+    public void setMatch(Match match){
+        this.match = match;
     }
-
-    public int getArtifactZoneLimit() {
-        return this.artifactZoneLimit;
-    }
-
-    public int getReserveZoneLimit() {
-        return this.reserveZoneLimit;
-    }
-
 }
