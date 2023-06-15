@@ -11,7 +11,7 @@ import com.core.g3.Match.ResolutionStack.ResolutionStack;
 public class Duplicate implements IReactionEffect {
     @Override
     public void apply(Reaction reaction, CardInGame source, ResolutionStack stack, Player user, Player rival) {
-        if(stack.original().is(ActionType.ArtefactEffect)){
+        if (stack.original().is(ActionType.ArtifactEffect)) {
             stack.original().duplicate();
         }
     }

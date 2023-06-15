@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
-import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
+import com.core.g3.Card.Artifact.Exceptions.ArtifactNotUsableException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
@@ -58,13 +58,13 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction artefact(OriginalAction action, Player user, Player rival) {
-        throw new ArtefactNotUsableException();
+    public OriginalAction artifact(OriginalAction action, Player user, Player rival) {
+        throw new ArtifactNotUsableException();
     }
 
     @Override
-    public OriginalAction artefact(OriginalAction action, IAttackable affected, Player user, Player rival) {
-        throw new ArtefactNotUsableException();
+    public OriginalAction artifact(OriginalAction action, IAttackable affected, Player user, Player rival) {
+        throw new ArtifactNotUsableException();
     }
 
     @Override
@@ -88,7 +88,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public int getCreatureHP(){
+    public int getCreatureHP() {
         throw new CardIsNotCreatureException();
     }
 }

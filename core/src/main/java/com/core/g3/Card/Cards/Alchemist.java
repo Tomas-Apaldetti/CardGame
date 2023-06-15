@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Artefact.DrawCardArtefact;
+import com.core.g3.Card.Artifact.DrawCardArtifact;
 import com.core.g3.Card.Attack.AddEnergyAttack;
 import com.core.g3.Card.Attack.DrawCardAttack;
 import com.core.g3.Card.Attack.IAttack;
@@ -34,8 +34,8 @@ public class Alchemist {
 
                 builder.cardTypeBuilder.setTypeCreature(new Amount(3), creatureAttributes, creatureAttacks);
 
-                DrawCardArtefact drawCardArtifact = new DrawCardArtefact(Optional.of(new Amount(1)));
-                builder.cardTypeBuilder.setTypeArtefact(drawCardArtifact);
+                DrawCardArtifact drawCardArtifact = new DrawCardArtifact(Optional.of(new Amount(1)));
+                builder.cardTypeBuilder.setTypeArtifact(drawCardArtifact);
 
                 builder.setSummonableSpace(new Amount(0));
                 return builder.build();

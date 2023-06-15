@@ -25,10 +25,10 @@ public class ActiveZoneTest {
 
     @Test
     public void addCardNoCostEmptyZoneOk() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
         Card antimagic = builder.build();
 
         Player player = new Player(null, null, null, null,
@@ -36,16 +36,16 @@ public class ActiveZoneTest {
 
         player.addToHand(antimagic);
 
-        artefactsZone.addCard(antimagic, player);
-        assertEquals(1, artefactsZone.currentCardCount());
+        artifactsZone.addCard(antimagic, player);
+        assertEquals(1, artifactsZone.currentCardCount());
     }
 
     @Test
     public void addCardCostCanPayEmptyZoneOk() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(3));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(3));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
         builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
         Card antimagic = builder.build();
 
@@ -54,17 +54,17 @@ public class ActiveZoneTest {
         player.add(EnergyType.Fire, new Amount(1));
         player.addToHand(antimagic);
 
-        artefactsZone.addCard(antimagic, player);
-        assertEquals(1, artefactsZone.currentCardCount());
+        artifactsZone.addCard(antimagic, player);
+        assertEquals(1, artifactsZone.currentCardCount());
         assertEquals(0, player.getEnergy(EnergyType.Fire).available());
     }
 
     @Test
     public void addCardSummonableSpaceNotAvailableThrows() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
 
         builder.setSummonableSpace(new Amount(2));
         Card antimagic = builder.build();
@@ -72,16 +72,16 @@ public class ActiveZoneTest {
         Player player = new Player(null, null, null, null,
                 null, null);
 
-        assertThrows(CardLimitReachedException.class, () -> artefactsZone.addCard(antimagic, player));
-        assertEquals(0, artefactsZone.currentCardCount());
+        assertThrows(CardLimitReachedException.class, () -> artifactsZone.addCard(antimagic, player));
+        assertEquals(0, artifactsZone.currentCardCount());
     }
 
     @Test
     public void addCardCantPayEnoughSpaceThrows() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
         builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
@@ -89,38 +89,38 @@ public class ActiveZoneTest {
         Player player = new Player(null, null, null, null,
                 null, null);
 
-        assertThrows(CanNotPayException.class, () -> artefactsZone.addCard(antimagic, player));
-        assertEquals(0, artefactsZone.currentCardCount());
+        assertThrows(CanNotPayException.class, () -> artifactsZone.addCard(antimagic, player));
+        assertEquals(0, artifactsZone.currentCardCount());
     }
 
     @Test
     public void addCardNotForThatZoneTypeThrows() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Combat, new Amount(1));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Combat, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
 
         Player player = new Player(null, null, null, null,
                 null, null);
 
-        assertThrows(CardTypeNoSummonableInZoneException.class, () -> artefactsZone.addCard(antimagic, player));
-        assertEquals(0, artefactsZone.currentCardCount());
+        assertThrows(CardTypeNoSummonableInZoneException.class, () -> artifactsZone.addCard(antimagic, player));
+        assertEquals(0, artifactsZone.currentCardCount());
     }
 
     @Test
     public void addMultipleCardsOneFailsZoneStaysTheSame() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(10));
+        ActiveZone artifactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(10));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
-        builder.cardTypeBuilder.setTypeArtefact(null);
+        builder.cardTypeBuilder.setTypeArtifact(null);
         builder.setSummonableSpace(new Amount(1));
         Card antimagic = builder.build();
 
         CardBuilder builder2 = new CardBuilder(CardName.Alchemist);
         builder2.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
-        builder2.cardTypeBuilder.setTypeArtefact(null);
+        builder2.cardTypeBuilder.setTypeArtifact(null);
         Card alchemist = builder2.build();
 
         Player player = new Player(null, null, null, null,
@@ -128,9 +128,9 @@ public class ActiveZoneTest {
 
         player.addToHand(antimagic);
 
-        artefactsZone.addCard(antimagic, player);
-        assertThrows(CanNotPayException.class, () -> artefactsZone.addCard(alchemist, player));
-        assertEquals(1, artefactsZone.currentCardCount());
+        artifactsZone.addCard(antimagic, player);
+        assertThrows(CanNotPayException.class, () -> artifactsZone.addCard(alchemist, player));
+        assertEquals(1, artifactsZone.currentCardCount());
     }
 
     private class TestEffects {

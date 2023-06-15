@@ -24,9 +24,9 @@ public interface ICardType {
 
     OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival, int idx);
 
-    OriginalAction artefact(OriginalAction action, Player user, Player rival);
+    OriginalAction artifact(OriginalAction action, Player user, Player rival);
 
-    OriginalAction artefact(OriginalAction action, IAttackable affected, Player user, Player rival);
+    OriginalAction artifact(OriginalAction action, IAttackable affected, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival);
 

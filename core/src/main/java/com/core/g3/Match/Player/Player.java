@@ -27,34 +27,34 @@ public class Player implements IAttackable {
     private final IDeckPlayable deck;
     private final CardContainer hand;
     private final CardContainer discard;
-    private ActiveZone artefactZone;
+    private ActiveZone artifactZone;
     private ActiveZone combatZone;
     private ActiveZone reserveZone;
     private PlayerEnergies energies;
     private PlayerZone zone;
 
-    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artefactZone,
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone) {
         this.account = account;
         this.condition = condition;
         this.deck = deck;
         this.hand = new CardContainer();
         this.discard = new CardContainer();
-        this.artefactZone = artefactZone;
+        this.artifactZone = artifactZone;
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
         this.zone = null; // @TODO: change imp
     }
 
-    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artefactZone,
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone, PlayerZone zone) {
         this.account = account;
         this.condition = condition;
         this.deck = deck;
         this.hand = new CardContainer();
         this.discard = new CardContainer();
-        this.artefactZone = artefactZone;
+        this.artifactZone = artifactZone;
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
@@ -84,7 +84,7 @@ public class Player implements IAttackable {
             } else if (zone.equals(ActiveZoneType.Reserve)) {
                 this.summonInZone(card, this.reserveZone);
             } else if (zone.equals(ActiveZoneType.Artifacts)) {
-                this.summonInZone(card, this.artefactZone);
+                this.summonInZone(card, this.artifactZone);
             }
         } else {
             throw new RuntimeException("Card not in hand");
@@ -201,7 +201,7 @@ public class Player implements IAttackable {
 
     public List<IAttackable> getCreatures(Attribute attrFilter) {
         List<IAttackable> total = new ArrayList<>();
-        total.addAll(this.artefactZone.getCreatures(attrFilter));
+        total.addAll(this.artifactZone.getCreatures(attrFilter));
         total.addAll(this.combatZone.getCreatures(attrFilter));
         total.addAll(this.reserveZone.getCreatures(attrFilter));
         return total;
@@ -209,14 +209,14 @@ public class Player implements IAttackable {
 
     public List<IAttackable> getCreatures() {
         List<IAttackable> total = new ArrayList<>();
-        total.addAll(this.artefactZone.getCreatures());
+        total.addAll(this.artifactZone.getCreatures());
         total.addAll(this.combatZone.getCreatures());
         total.addAll(this.reserveZone.getCreatures());
         return total;
     }
 
     public CardInGame getCardInGame(ICard card) {
-        CardInGame cig = this.artefactZone.getCardInGame(card);
+        CardInGame cig = this.artifactZone.getCardInGame(card);
         if (cig != null) {
             return cig;
         }
@@ -270,7 +270,7 @@ public class Player implements IAttackable {
         } else if (activeZoneType.equals(ActiveZoneType.Reserve)) {
             return this.reserveZone;
         } else if (activeZoneType.equals(ActiveZoneType.Artifacts)) {
-            return this.artefactZone;
+            return this.artifactZone;
         }
         throw new RuntimeException("Invalid active zone type");
     }
@@ -283,7 +283,7 @@ public class Player implements IAttackable {
         List<CardInGame> a = new ArrayList<>();
         a.addAll(this.reserveZone.getCardsInGame(cards));
         a.addAll(this.combatZone.getCardsInGame(cards));
-        a.addAll(this.artefactZone.getCardsInGame(cards));
+        a.addAll(this.artifactZone.getCardsInGame(cards));
         return a;
     }
 }
