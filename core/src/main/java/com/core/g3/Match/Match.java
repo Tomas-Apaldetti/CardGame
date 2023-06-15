@@ -15,6 +15,7 @@ import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.TurnManager.TurnManager;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.ArrayList;

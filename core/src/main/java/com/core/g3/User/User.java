@@ -56,6 +56,16 @@ public class User implements IBuyer, ISeller, IAccount {
         return wallet.hasEnoughFounds(value);
     }
 
+    public void buyCard(Card card) {
+        Amount amountToSubstract = new Amount(card.getPrice());
+        if (wallet.hasEnoughFounds(amountToSubstract)) {
+            wallet.subtract(amountToSubstract.value());
+            this.cardInventory.addCard(card);
+        } else {
+            throw new InsufficientMoneyException();
+        }
+    }
+
     @Override
     public void buyCards(CardName name, int amount) {
         Card card = new CardBuilder(name).build();
@@ -110,6 +120,7 @@ public class User implements IBuyer, ISeller, IAccount {
         int cardsAdded = 0;
         for (ICard card : cards) {
             try {
+
                 deck.addCard(card);
                 cardsAdded++;
                 if (cardsAdded == amount) {

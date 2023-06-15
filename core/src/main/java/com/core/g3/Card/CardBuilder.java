@@ -10,6 +10,7 @@ public class CardBuilder {
     public CardTypeBuilder cardTypeBuilder;
     private Amount summonableSpace;
     private Amount price;
+    private boolean shouldCount = false;
 
     public CardBuilder(CardName cardName) {
         this.cardName = cardName;
@@ -20,8 +21,12 @@ public class CardBuilder {
     }
 
     public Card build() {
-        return new Card(cardName, false, this.invocationCost.getCost(), this.cardTypeBuilder.getTypes(),
-                this.summonableSpace,this.price);
+        return new Card(cardName, this.shouldCount, this.invocationCost.getCost(), this.cardTypeBuilder.getTypes(),
+                this.summonableSpace, this.price);
+    }
+
+    public void setShouldCount(boolean shouldCount) {
+        this.shouldCount = shouldCount;
     }
 
     public void setSummonableSpace(Amount summonableSpace) {
@@ -31,4 +36,5 @@ public class CardBuilder {
     public void setPrice(Amount price) {
         this.price = price;
     }
+
 }

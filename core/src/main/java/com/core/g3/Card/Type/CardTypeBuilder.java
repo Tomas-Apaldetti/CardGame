@@ -15,6 +15,7 @@ import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Type.Exceptions.CardTypeIsAlreadyContainedInCardException;
 import com.core.g3.Card.Type.Reaction.CardTypeReaction;
 import com.core.g3.Commons.Amount;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class CardTypeBuilder {
 
@@ -34,6 +35,13 @@ public class CardTypeBuilder {
 
     public void setTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks) {
         CardTypeCreature creature = new CardTypeCreature(baseHP, attributes, attacks);
+        checkType(creature.getType());
+        this.cardTypes.add(creature);
+    }
+
+    public void setTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks,
+            List<ActiveZoneType> allowedZones) {
+        CardTypeCreature creature = new CardTypeCreature(baseHP, attributes, attacks, allowedZones);
         checkType(creature.getType());
         this.cardTypes.add(creature);
     }

@@ -51,17 +51,17 @@ public class CardTypeCreature extends CardType {
         return this.attacks.get(idx).attack(action, victim, user, rival);
     }
 
-    public List<IAttack> getAttacks(){
+    public List<IAttack> getAttacks() {
         return Collections.unmodifiableList(this.attacks);
     }
 
-    public int getBaseHealth(){
+    public int getBaseHealth() {
         return this.baseHP.value();
     }
 
     @Override
-    public List<Attribute> getAttributes(){
-        if(this.attributes.isEmpty()){
+    public List<Attribute> getAttributes() {
+        if (this.attributes.isEmpty()) {
             return null;
         }
         return this.attributes;
