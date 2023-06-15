@@ -18,7 +18,7 @@ public class CardTypeArtefact extends CardType {
     protected List<ActiveZoneType> allowedZones;
 
     public CardTypeArtefact(IArtefactEffect effect) {
-        super(CardTypeName.Artefact, Arrays.asList(ActiveZoneType.Artefacts));
+        super(CardTypeName.Artefact, Arrays.asList(ActiveZoneType.Artifacts));
         this.effect = effect;
     }
 

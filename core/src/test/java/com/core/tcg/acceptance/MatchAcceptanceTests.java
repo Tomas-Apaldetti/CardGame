@@ -1,18 +1,18 @@
 package com.core.tcg.acceptance;
 
-import com.core.g3.Card.CardName;
 import com.core.tcg.driver.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.core.tcg.driver.DriverCardName.*;
 import static com.core.tcg.driver.DriverGameMode.*;
 import static com.core.tcg.driver.DriverMatchSide.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Account, Card> {
 
@@ -37,9 +37,40 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     }
 
     @Test
+    void repeatedCardLimit() {
+        assertThrows(RuntimeException.class, () -> {
+            commonMatch(Stream.iterate(Alchemist, x -> x));
+        });
+    }
+
+    @Test
+    void energiesDontCountAgainstRepeatedCardLimit() {
+        assertDoesNotThrow(() -> {
+            commonMatch(Stream.iterate(FireEnergy, x -> x));
+        });
+    }
+
+    @Test
+    void cantSummonTooManyForZone() {
+        MatchDriver<Card> match = commonMatch(Stream.of(
+                MagicBarrier
+        ));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        match.activateArtifact(energy);
+        assertThrows(Throwable.class, () -> {
+            match.summon(Blue, MagicBarrier, DriverActiveZone.Reserve);
+        });
+    }
+
+    @Test
     void cantSummonWithoutEnergy() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                MagicSword));
+                MagicSword
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         assertThrows(Throwable.class, () -> {
@@ -50,25 +81,27 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     @Test
     void cantSummonInWrongZone() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Inventor));
+                Inventor
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artefact);
+        Card energy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
         assertThrows(Throwable.class, () -> {
-            match.summon(Blue, Inventor, DriverActiveZone.Artefact);
+            match.summon(Blue, Inventor, DriverActiveZone.Artifact);
         });
     }
 
     @Test
     void cantSummonInWrongPhase() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Alchemist));
+                MagicSword
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
@@ -80,30 +113,127 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     }
 
     @Test
-    void useAction() {
+    void cantAttackTwiceWithSameCreature() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                MagicSword));
+                FireEnergy,
+                MagicSword
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        match.activateArtifact(energy);
+        Card sword = match.summon(Blue, MagicSword, DriverActiveZone.Combat);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Attack);
+        match.attackPlayer(sword, 0);
+        assertThrows(RuntimeException.class, () ->
+                match.attackPlayer(sword, 0)
+        );
+    }
+
+    @Test
+    void canAttackTwiceWithDifferentCreatures() {
+        MatchDriver<Card> match = commonMatch(Stream.of(
+                MagicSword,
+                MagicDrill,
+                FireEnergy,
+                FireEnergy
+        ));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        List<Card> energies = new ArrayList<>();
+        energies.add(match.summon(Blue, FireEnergy, DriverActiveZone.Artifact));
+        energies.add(match.summon(Blue, FireEnergy, DriverActiveZone.Artifact));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        energies.forEach(match::activateArtifact);
+        List<Card> creatures = new ArrayList<>();
+        creatures.add(match.summon(Blue, MagicSword, DriverActiveZone.Combat));
+        creatures.add(match.summon(Blue, MagicDrill, DriverActiveZone.Combat));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Attack);
+        assertDoesNotThrow(() -> {
+            creatures.forEach(creature -> match.attackPlayer(creature, 0));
+        });
+    }
+
+    @Test
+    void canUseBothAttacks() {
+        MatchDriver<Card> match = commonMatch(Stream.of(
+                Alchemist
+        ));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        Card fireEnergy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+        Card plantEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artifact);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        match.activateArtifact(fireEnergy);
+        match.activateArtifact(plantEnergy);
+        Card alchemist = match.summon(Blue, Alchemist, DriverActiveZone.Combat);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Attack);
+        match.attackPlayer(alchemist, 0);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Attack);
+        match.attackPlayer(alchemist, 1);
+
+        assertEquals(1, match.playerEnergy(Blue, DriverEnergyType.Fire));
+    }
+
+    @Test
+    void canActivateAsBothTypes() {
+        MatchDriver<Card> match = commonMatch(Stream.of(
+                Alchemist
+        ));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        Card fireEnergy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
+        Card plantEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artifact);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        match.activateArtifact(fireEnergy);
+        match.activateArtifact(plantEnergy);
+        Card alchemist = match.summon(Blue, Alchemist, DriverActiveZone.Combat);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        match.activateArtifact(alchemist);
+
+        match.skipToPhase(Blue, DriverTurnPhase.Attack);
+        assertDoesNotThrow(() -> {
+            match.attackPlayer(alchemist, 0);
+        });
+    }
+
+    @Test
+    void useAction() {
+        MatchDriver<Card> match = commonMatch(Stream.of(
+                MagicSword
+        ));
+
+        match.skipToPhase(Blue, DriverTurnPhase.Main);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
 
-        match.activateAction(Blue, MagicSword, 0, Optional.of(Green), List.of());
+        match.activateAction(Blue, MagicSword, 0, Optional.of(Green), new ArrayList<>());
         assertEquals(17, match.playerHealth(Green));
     }
 
     @Test
     void useReaction() {
         MatchDriver<Card> match = commonMatch(Stream.of(
-                Saboteur));
+                Saboteur
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card blueEnergy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artefact);
+        Card blueEnergy = match.summon(Blue, WaterEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Green, DriverTurnPhase.Main);
-        Card greenEnergy = match.summon(Green, WaterEnergy, DriverActiveZone.Artefact);
+        Card greenEnergy = match.summon(Green, WaterEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(blueEnergy);
@@ -111,7 +241,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         match.skipToPhase(Green, DriverTurnPhase.Main);
         match.withReactionWindow(() -> {
             match.activateArtifact(greenEnergy);
-            match.activateReactionFromHand(Blue, Saboteur, Optional.empty(), List.of());
+            match.activateReactionFromHand(Blue, Saboteur, Optional.empty(), new ArrayList<>());
         });
         assertEquals(0, match.playerEnergy(Green, DriverEnergyType.Water));
     }
@@ -120,10 +250,11 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     void hitpointLossVictoryCondition() {
         MatchDriver<Card> match = commonMatch(Stream.of(
                 FireEnergy,
-                MagicSword));
+                MagicSword
+        ));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artefact);
+        Card energy = match.summon(Blue, FireEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(energy);
@@ -139,23 +270,27 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
 
     @Test
     void creatureSlayerVictoryCondition() {
-        List<DriverCardName> greenCreatures = List.of(
+        List<DriverCardName> greenCreatures = Stream.of(
                 Alchemist,
                 Inventor,
                 Inventor,
                 Goblin,
                 Saboteur,
                 Saboteur,
-                MagicSword);
+                MagicSword
+        ).collect(Collectors.toList());
         List<DriverCardName> blueDeck = loopedCardNames(60, Stream.of(
                 PlantEnergy,
-                Orc));
+                Orc
+        ));
         List<DriverCardName> greenDeck = loopedCardNames(60, Stream.concat(
                 Stream.of(
                         FireEnergy,
                         WaterEnergy,
-                        PlantEnergy),
-                greenCreatures.stream()));
+                        PlantEnergy
+                ),
+                greenCreatures.stream()
+        ));
 
         Account blue = accountWithDeck(blueDeck);
         Account green = accountWithDeck(greenDeck);
@@ -166,19 +301,19 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         match.start();
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
-        Card blueEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artefact);
+        Card blueEnergy = match.summon(Blue, PlantEnergy, DriverActiveZone.Artifact);
 
         match.skipToPhase(Green, DriverTurnPhase.Main);
-        List<Card> greenEnergies = List.of(
-                match.summon(Green, FireEnergy, DriverActiveZone.Artefact),
-                match.summon(Green, WaterEnergy, DriverActiveZone.Artefact),
-                match.summon(Green, PlantEnergy, DriverActiveZone.Artefact));
+        List<Card> greenEnergies = new ArrayList<>();
+        greenEnergies.add(match.summon(Green, FireEnergy, DriverActiveZone.Artifact));
+        greenEnergies.add(match.summon(Green, WaterEnergy, DriverActiveZone.Artifact));
+        greenEnergies.add(match.summon(Green, PlantEnergy, DriverActiveZone.Artifact));
 
         match.skipToPhase(Blue, DriverTurnPhase.Main);
         match.activateArtifact(blueEnergy);
         Card orc = match.summon(Blue, Orc, DriverActiveZone.Combat);
 
-        for (DriverCardName creature : greenCreatures) {
+        for (DriverCardName creature: greenCreatures) {
             assertEquals(Optional.empty(), match.winner());
 
             match.skipToPhase(Green, DriverTurnPhase.Main);
@@ -201,7 +336,7 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
     private Account accountWithDeck(List<DriverCardName> cardList) {
         Account account = testDriver.newAccount();
         testDriver.addCurrency(account, Integer.MAX_VALUE);
-        for (DriverCardName cardName : cardList) {
+        for (DriverCardName cardName: cardList) {
             testDriver.buyCards(account, cardName, 1);
             testDriver.addDeckCards(account, "main", cardName, 1);
         }
@@ -212,7 +347,6 @@ public class MatchAcceptanceTests<Account, Card> extends AcceptanceTestRoot<Acco
         List<DriverCardName> deck = loopedCardNames(40, prefix);
         Account blue = accountWithDeck(deck);
         Account green = accountWithDeck(deck);
-
         MatchDriver<Card> match = testDriver.startMatch(HitpointLoss, blue, "main", green, "main");
 
         match.forceDeckOrder(Blue, deck);

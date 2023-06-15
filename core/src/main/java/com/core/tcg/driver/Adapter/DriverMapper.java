@@ -49,7 +49,7 @@ public class DriverMapper {
         } else if (zone == DriverActiveZone.Reserve) {
             return ActiveZoneType.Reserve;
         } else {
-            return ActiveZoneType.Artefacts;
+            return ActiveZoneType.Artifacts;
         }
     }
 }

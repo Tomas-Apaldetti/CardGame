@@ -25,7 +25,7 @@ public class ActiveZoneTest {
 
     @Test
     public void addCardNoCostEmptyZoneOk() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
+        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
         builder.cardTypeBuilder.setTypeArtefact(null);
@@ -42,7 +42,7 @@ public class ActiveZoneTest {
 
     @Test
     public void addCardCostCanPayEmptyZoneOk() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(3));
+        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(3));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
         builder.cardTypeBuilder.setTypeArtefact(null);
@@ -61,7 +61,7 @@ public class ActiveZoneTest {
 
     @Test
     public void addCardSummonableSpaceNotAvailableThrows() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
+        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
         builder.cardTypeBuilder.setTypeArtefact(null);
@@ -78,7 +78,7 @@ public class ActiveZoneTest {
 
     @Test
     public void addCardCantPayEnoughSpaceThrows() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(1));
+        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(1));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
         builder.cardTypeBuilder.setTypeArtefact(null);
@@ -111,7 +111,7 @@ public class ActiveZoneTest {
 
     @Test
     public void addMultipleCardsOneFailsZoneStaysTheSame() {
-        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(10));
+        ActiveZone artefactsZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(10));
 
         CardBuilder builder = new CardBuilder(CardName.Antimagic);
         builder.cardTypeBuilder.setTypeArtefact(null);

@@ -70,7 +70,7 @@ public class CardTypeBuilderTest {
         cardBuilder.cardTypeBuilder.setTypeArtefact(new AddEnergyArtefact(EnergyType.Fire, new Amount(10)));
         Card card = cardBuilder.build();
 
-        assertEquals(true, card.getAllowableZones().contains(ActiveZoneType.Artefacts));
+        assertEquals(true, card.getAllowableZones().contains(ActiveZoneType.Artifacts));
     }
 
 }
