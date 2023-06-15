@@ -110,6 +110,10 @@ public class Match {
         this.phase = this.phase.useArtifact(cig, cigs);
     }
 
+    public void skipReaction(){
+        this.phase = this.phase.skipReaction();
+    }
+
     public void activateReactionFromHand(PlayerZone side, CardName cardName, Optional<PlayerZone> targetPlayer, List<ICard> targetCards){
         this.assertCurrentPlayer(side);
         Player player = this.turnManager.getPlayer();

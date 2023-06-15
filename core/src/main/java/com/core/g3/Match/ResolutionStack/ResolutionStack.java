@@ -42,7 +42,7 @@ public class ResolutionStack {
         List<ILingeringEffect> effects = new ArrayList<>();
 
         effects.addAll(this.original.apply());
-        for(int i = this.reactionStack.size() - 1; i < 0; i--){
+        for(int i = this.reactionStack.size() - 1; i > 0; i--){
             effects.addAll(this.reactionStack.get(i).apply(this));
         }
 

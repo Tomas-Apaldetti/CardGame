@@ -23,8 +23,8 @@ public class GameMode2 extends GameMode implements IDeathSub{
         this.minDeckCards = 60;
         this.maxRepeatedCards = 4;
         this.combatZoneLimit = 1;
-        this.artifactZoneLimit = 5;
-        this.reserveZoneLimit = 3;
+        this.artifactZoneLimit = 3;
+        this.reserveZoneLimit = 5;
         this.initialHandSize = 7;
     }
 
