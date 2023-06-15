@@ -97,15 +97,16 @@ public class Match {
     }
 
     public void attackCreature(ICard creature, int index, ICard target) {
+        this.assertCurrentPlayer();
         CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
         CardInGame targetCIG = this.turnManager.getRival().getCardInGame(target);
         this.phase.attack(playerCIG, new Amount(index), targetCIG);
     }
 
     public void attackPlayer(ICard creature, int index) {
+        this.assertCurrentPlayer();
         CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
-        this.phase.attack(playerCIG, new Amount(index));
-
+        this.phase.attack(playerCIG, new Amount(index), this.turnManager.getRival());
     }
 
     public int playerHealth(PlayerZone side) {
@@ -126,8 +127,14 @@ public class Match {
         }
     }
 
-    private void assertCurrentPlayer(PlayerZone zone) {
+    private void assertCurrentPlayer() {
         if (!this.turnManager.getPlayer().equals(this.phase.activePlayer())) {
+            throw new CurrentPhaseDoesNotBelongToUserException();
+        }
+    }
+
+    private void assertCurrentPlayer(PlayerZone zone) {
+        if (!this.turnManager.getPlayerFrom(zone).equals(this.phase.activePlayer())) {
             throw new CurrentPhaseDoesNotBelongToUserException();
         }
     }
