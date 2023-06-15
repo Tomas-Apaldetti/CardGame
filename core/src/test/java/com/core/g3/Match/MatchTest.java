@@ -81,7 +81,7 @@ public class MatchTest {
         match.startMatch(PlayerZone.Blue);
         match.skipToPhase(PlayerZone.Blue, PhaseType.Main);
 
-        match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat);
+        match.summon(PlayerZone.Blue, CardName.Antimagic, ActiveZoneType.Combat);
 
         assertEquals(1,
                 playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
@@ -123,24 +123,11 @@ public class MatchTest {
     }
 
     public Card createCard() {
-        // List<IEffect> effects = new TestEffects().effects;
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
         cardBuilder.cardTypeBuilder.setTypeArtifact(null);
         cardBuilder.cardTypeBuilder.setTypeCreature(new Amount(3), null, new ArrayList<>());
         Card card = cardBuilder.build();
 
         return card;
-    }
-
-    private class TestEffects {
-        public List<IEffect> effects;
-
-        public TestEffects() {
-            this.effects = new ArrayList<IEffect>();
-            this.effects.add(new TestEffect());
-        }
-    }
-
-    private class TestEffect implements IEffect {
     }
 }

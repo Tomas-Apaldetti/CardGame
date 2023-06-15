@@ -63,6 +63,6 @@ public class MainPhase implements IPhase {
 
     @Override
     public Player activePlayer() {
-        return null;
+        return this.current;
     }
 }

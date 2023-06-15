@@ -25,12 +25,12 @@ public class TurnManager {
 
     public Player getPlayer() {
         assertSide();
-        return this.side.get() == this.bluePlayer.getZone() ? this.bluePlayer : this.greenPlayer;
+        return this.side.get() == PlayerZone.Blue ? this.bluePlayer : this.greenPlayer;
     }
 
     public Player getRival() {
         assertSide();
-        return this.side.get() == this.bluePlayer.getZone() ? this.greenPlayer : this.bluePlayer;
+        return this.side.get() == PlayerZone.Blue ? this.greenPlayer : this.bluePlayer;
     }
 
     public void setSide(PlayerZone side) {
@@ -38,6 +38,6 @@ public class TurnManager {
     }
 
     public Player getPlayerFrom(PlayerZone playerZone) {
-        return playerZone == this.bluePlayer.getZone() ? this.bluePlayer : this.greenPlayer;
+        return playerZone == PlayerZone.Blue ? this.bluePlayer : this.greenPlayer;
     }
 }

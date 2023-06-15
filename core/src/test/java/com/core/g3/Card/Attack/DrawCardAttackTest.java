@@ -1,6 +1,10 @@
 package com.core.g3.Card.Attack;
 
 import com.core.g3.Card.Attack.Mocks.AttackMock;
+import com.core.g3.Deck.Deck;
+import com.core.g3.Deck.IDeck;
+import com.core.g3.Match.DeckPlayable.DeckPlayable;
+import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Mock.Exceptions.ExpectedException;
 import com.core.g3.Card.Attack.Mocks.PlayableDeckMock;
 import com.core.g3.Card.CardBuilder;
@@ -32,32 +36,36 @@ class DrawCardAttackTest {
     @Test
     public void shouldWorks() {
         IDeckPlayable deck = new PlayableDeckMock();
+        IDeckPlayable gdeck = new PlayableDeckMock();
         Player blue = new Player(null, deck, null, null, null, null);
-        Player green = new Player(null, null, null, null, null, null);
-
-        ICard card1 = this.getCardBuilder(new DrawCardAttack()).build();
+        Player green = new Player(null, gdeck, null, null, null, null);
+        ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Water, new Amount(3))).build();
+        ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire, new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue, card1, null);
         cig1.refreshUse();
-        OriginalAction action = cig1.attack(null, blue, null, new Amount(0));
+        CardInGame cig2 = new CardInGame(green, card2, null);
+        OriginalAction action = cig1.attack(cig2, blue, green, new Amount(0));
         assertEquals(1, deck.size());
         assertEquals(0, blue.seeHand().size());
         action.apply();
-        assertEquals(0, deck.size());
-        assertEquals(1, blue.seeHand().size());
+        assertEquals(1, deck.size());
+        assertEquals(0, blue.seeHand().size());
     }
 
     @Test
     public void shouldCallNextAttack() {
         IDeckPlayable deck = new PlayableDeckMock();
+        IDeckPlayable gdeck = new PlayableDeckMock();
         Player blue = new Player(null, deck, null, null, null, null);
-        Player green = new Player(null, null, null, null, null, null);
-
+        Player green = new Player(null, gdeck, null, null, null, null);
         ICard card1 = this.getCardBuilder(new DrawCardAttack(new AttackMock())).build();
+        ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire, new Amount(3))).build();
 
         CardInGame cig1 = new CardInGame(blue, card1, null);
         cig1.refreshUse();
-        assertThrows(ExpectedException.class, () -> cig1.attack(null, blue, null, new Amount(0)));
+        CardInGame cig2 = new CardInGame(green, card2, null);
+        assertThrows(ExpectedException.class, () -> cig1.attack(cig2, blue, green, new Amount(0)));
         assertEquals(1, deck.size());
         assertEquals(0, blue.seeHand().size());
     }
