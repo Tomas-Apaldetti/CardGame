@@ -1,4 +1,4 @@
-package com.core.g3.Card.Artefact;
+package com.core.g3.Card.Artifact;
 
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
@@ -10,7 +10,7 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.List;
 
-public class MassiveDamage implements IArtefactEffect {
+public class MassiveDamage implements IArtifactEffect {
 
     private final Amount value;
     private final Attribute attrFilter;
@@ -22,7 +22,7 @@ public class MassiveDamage implements IArtefactEffect {
 
     @Override
     public OriginalAction apply(OriginalAction action, Player user, Player rival) {
-        action.setType(ActionType.ArtefactEffect);
+        action.setType(ActionType.ArtifactEffect);
         List<IAttackable> creatures = rival.getCreatures(this.attrFilter);
         action.addEffect(new Damage(this.value, creatures));
         return action;

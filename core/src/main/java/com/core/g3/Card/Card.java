@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
-import com.core.g3.Card.Artefact.IArtefactEffect;
+import com.core.g3.Card.Artifact.Exceptions.ArtifactNotUsableException;
+import com.core.g3.Card.Artifact.IArtifactEffect;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
 import com.core.g3.Card.Attack.IAttack;
@@ -14,7 +14,7 @@ import com.core.g3.Card.Cost.ICost;
 import com.core.g3.Card.Cost.NullInvocationCost;
 import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
 import com.core.g3.Card.Reaction.IReaction;
-import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
+import com.core.g3.Card.Type.Artifact.CardTypeArtifact;
 import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Creature.CardTypeCreature;
@@ -142,10 +142,10 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public Optional<IArtefactEffect> getArtefactEffects() {
+    public Optional<IArtifactEffect> getArtifactEffects() {
         for (ICardType cardType : this.cardTypes) {
-            if (cardType.is(CardTypeName.Artefact)) {
-                CardTypeArtefact cast = (CardTypeArtefact) cardType;
+            if (cardType.is(CardTypeName.Artifact)) {
+                CardTypeArtifact cast = (CardTypeArtifact) cardType;
                 return cast.getEffects();
             }
         }
@@ -174,23 +174,23 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public OriginalAction artefact(OriginalAction og, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction og, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
-            if (cardType.is(CardTypeName.Artefact)) {
-                return cardType.artefact(og, user, rival);
+            if (cardType.is(CardTypeName.Artifact)) {
+                return cardType.artifact(og, user, rival);
             }
         }
-        throw new ArtefactNotUsableException();
+        throw new ArtifactNotUsableException();
     }
 
     @Override
-    public OriginalAction artefact(OriginalAction og, IAttackable affected, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction og, IAttackable affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
-            if (cardType.is(CardTypeName.Artefact)) {
-                return cardType.artefact(og, affected, user, rival);
+            if (cardType.is(CardTypeName.Artifact)) {
+                return cardType.artifact(og, affected, user, rival);
             }
         }
-        throw new ArtefactNotUsableException();
+        throw new ArtifactNotUsableException();
     }
 
     @Override
@@ -237,9 +237,8 @@ public class Card implements ITransactionable, ICard {
 
     @Override
     public int getCreatureHP() {
-        for (ICardType type:
-             this.cardTypes) {
-            if( type.is(CardTypeName.Creature)){
+        for (ICardType type : this.cardTypes) {
+            if (type.is(CardTypeName.Creature)) {
                 return type.getCreatureHP();
             }
         }

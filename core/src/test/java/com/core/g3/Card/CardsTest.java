@@ -14,7 +14,7 @@ public class CardsTest {
         Card card = FireEnergy.create();
         assertEquals(CardName.FireEnergy, card.getName());
         assertEquals(0, card.getAttacks().size());
-        assertEquals(true, card.getArtefactEffects().isPresent());
+        assertEquals(true, card.getArtifactEffects().isPresent());
     }
 
     @Test
@@ -22,7 +22,7 @@ public class CardsTest {
         Card card = WaterEnergy.create();
         assertEquals(CardName.WaterEnergy, card.getName());
         assertEquals(0, card.getAttacks().size());
-        assertEquals(true, card.getArtefactEffects().isPresent());
+        assertEquals(true, card.getArtifactEffects().isPresent());
     }
 
     @Test
@@ -30,9 +30,8 @@ public class CardsTest {
         Card card = WaterEnergy.create();
         assertEquals(CardName.WaterEnergy, card.getName());
         assertEquals(0, card.getAttacks().size());
-        assertEquals(true, card.getArtefactEffects().isPresent());
+        assertEquals(true, card.getArtifactEffects().isPresent());
     }
-    
 
     @Test
     public void testAlchemist() {

@@ -17,7 +17,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useArtefact(CardInGame card, Player player) {
+    default IPhase useArtifact(CardInGame card, Player player) {
         throw new AcctionNotPossibleException();
     }
 
