@@ -22,6 +22,8 @@ public class Alchemist {
                 builder.invocationCost.addEnergyCost(EnergyType.Water, new Amount(1));
                 builder.invocationCost.addEnergyCost(EnergyType.Plant, new Amount(1));
 
+                builder.setShouldCount(true);
+
                 ArrayList<Attribute> creatureAttributes = new ArrayList<>();
                 creatureAttributes.add(Attribute.Science);
 
