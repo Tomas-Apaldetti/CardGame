@@ -31,12 +31,6 @@ public class MainPhase implements IPhase {
     }
 
     @Override
-    public IPhase useArtifact(CardInGame card, Player player) {
-
-        throw new AcctionNotPossibleException();
-    }
-
-    @Override
     public IPhase useAction(ICard card, Player targetPlayer) {
         ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
         CardInGame cig = temporal.addCard(card, this.current);
@@ -45,15 +39,36 @@ public class MainPhase implements IPhase {
         return new ReactionPhase(this.current, this.rival, rstack, this, temporal);
     }
 
+    @Override
     public IPhase useAction(ICard card, List<CardInGame> targetCards) {
         ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
         CardInGame cig = temporal.addCard(card, this.current);
 
-        List<IAttackable> attackables = targetCards.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
+        List<IAttackable> attackables = this.getAttackables(targetCards);
 
         OriginalAction og = cig.action(attackables, this.current, this.rival);
         ResolutionStack rstack = new ResolutionStack(og);
         return new ReactionPhase(this.current, this.rival, rstack, this, temporal);
+    }
+
+    @Override
+    public IPhase useArtifact(CardInGame card, Player player) {
+        OriginalAction og = card.artifact(this.current, player);
+        ResolutionStack rStack = new ResolutionStack(og);
+        return new ReactionPhase(this.current, this.rival, rStack, this);
+    }
+
+    @Override
+    public IPhase useArtifact(CardInGame card, List<CardInGame> targets){
+        List<IAttackable> attackables = this.getAttackables(targets);
+
+        OriginalAction og = card.artifact(attackables, this.current, this.rival);
+        ResolutionStack rStack = new ResolutionStack(og);
+        return new ReactionPhase(this.current, this.rival, rStack, this);
+    }
+
+    private List<IAttackable> getAttackables(List<CardInGame> from){
+        return from.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
     }
 
     @Override

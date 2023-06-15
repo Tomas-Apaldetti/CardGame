@@ -8,6 +8,8 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.Action.HealCard;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
+import java.util.List;
+
 public class HealCardArtifact implements IArtifactEffect {
 
     private final Amount healAmount;
@@ -22,9 +24,9 @@ public class HealCardArtifact implements IArtifactEffect {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
         action.setType(ActionType.ArtifactEffect);
-        action.addEffect(new HealCard(this.healAmount, affected));
+        action.addEffect(new HealCard(this.healAmount, affected.get(0)));
         return action;
     }
 }

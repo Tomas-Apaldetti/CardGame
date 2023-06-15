@@ -14,20 +14,29 @@ public class ReactionPhase implements IPhase {
     private ResolutionStack rstak;
     private MainPhase previous;
     private Optional<ActiveZone> zone;
+    private Player activePlayer;
 
     public ReactionPhase(Player current, Player rival, ResolutionStack rstack, MainPhase previous,
             ActiveZone zone) {
         this.current = current;
-        this.rival = current;
+        this.rival = rival;
+        this.activePlayer = rival;
         this.rstak = rstack;
         this.previous = previous;
         this.zone = Optional.of(zone);
     }
 
+    public ReactionPhase(Player current, Player rival, ResolutionStack rStack, MainPhase previous) {
+        this.current = current;
+        this.rival = rival;
+        this.activePlayer = rival;
+        this.rstak = rStack;
+        this.previous = previous;
+        this.zone = Optional.empty();
+    }
+
     void switchPlayers() {
-        Player aux = this.current;
-        this.current = this.rival;
-        this.rival = aux;
+        this.activePlayer = this.activePlayer.equals(current) ? this.rival : this.current;
     }
 
     void acceptReaction(CardInGame cig) {
@@ -37,7 +46,7 @@ public class ReactionPhase implements IPhase {
 
     @Override
     public Player activePlayer() {
-        return this.current;
+        return this.activePlayer;
     }
 
 }

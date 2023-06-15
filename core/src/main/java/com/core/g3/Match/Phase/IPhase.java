@@ -21,6 +21,10 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
+    default IPhase useArtifact(CardInGame card, List<CardInGame> targets){
+        throw new AcctionNotPossibleException();
+    }
+
     default IPhase useAction(ICard card, Player targetPlayer) {
         throw new AcctionNotPossibleException();
     }

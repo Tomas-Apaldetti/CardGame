@@ -46,7 +46,7 @@ public interface ICard {
 
     OriginalAction artifact(OriginalAction og, Player user, Player rival);
 
-    OriginalAction artifact(OriginalAction og, IAttackable affected, Player user, Player rival);
+    OriginalAction artifact(OriginalAction og, List<IAttackable> affected, Player user, Player rival);
 
     OriginalAction action(OriginalAction og, Player user, Player rival);
 

@@ -44,6 +44,7 @@ public class Match {
     public void skipToPhase(PlayerZone playerSide, PhaseType phase) {
         this.turnManager.setSide(playerSide);
         this.phase = PhaseFactory.createNewPhase(phase, this.turnManager.getPlayer(), this.turnManager.getRival());
+        this.phase.activePlayer().resetCards();
     }
 
     public Player getCurrentPlayerTurn() {
@@ -87,6 +88,22 @@ public class Match {
 
     public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone,
             List<ICard> targets) {
+
+        Player player = this.turnManager.getPlayer();
+        CardInGame cig = player.getCardInGame(artifact);
+
+        if(cig == null){
+            throw new RuntimeException();
+        }
+
+        if(toOptionalPlayerZone.isPresent()){
+            this.phase = this.phase.useArtifact(cig, this.turnManager.getPlayerFrom(toOptionalPlayerZone.get()));
+            return;
+        }
+
+        List<CardInGame> cigs = this.getCardsInGame(targets);
+
+        this.phase = this.phase.useArtifact(cig, cigs);
     }
 
     public int getCreatureHitpoints(ICard card) {

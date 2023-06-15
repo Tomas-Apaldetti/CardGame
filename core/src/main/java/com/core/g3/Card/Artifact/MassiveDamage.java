@@ -27,4 +27,11 @@ public class MassiveDamage implements IArtifactEffect {
         action.addEffect(new Damage(this.value, creatures));
         return action;
     }
+
+    @Override
+    public OriginalAction apply(OriginalAction action, List<IAttackable> targets, Player user, Player rival) {
+        action.setType(ActionType.ArtifactEffect);
+        action.addEffect(new Damage(this.value, targets));
+        return action;
+    }
 }

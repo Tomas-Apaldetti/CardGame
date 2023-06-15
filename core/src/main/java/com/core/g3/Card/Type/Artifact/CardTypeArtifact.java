@@ -42,7 +42,7 @@ public class CardTypeArtifact extends CardType {
     }
 
     @Override
-    public OriginalAction artifact(OriginalAction action, IAttackable affected, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
         return this.effect.apply(action, affected, user, rival);
     }
 }
