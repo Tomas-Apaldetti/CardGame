@@ -14,6 +14,8 @@ import java.util.Optional;
 public class MatchDriverClass implements MatchDriver<ICard> {
     private Match match;
 
+    private boolean shouldSkipReactions = true;
+
     public MatchDriverClass(Match match) {
         this.match = match;
     }
@@ -69,6 +71,10 @@ public class MatchDriverClass implements MatchDriver<ICard> {
     public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer,
             List<ICard> targets) {
         this.match.activateArtifact(artifact, index, DriverMapper.toOptionalPlayerZone(targetPlayer), targets);
+        if(this.shouldSkipReactions){
+            this.match.skipReaction();
+            this.match.skipReaction();
+        }
     }
 
     @Override
@@ -78,32 +84,36 @@ public class MatchDriverClass implements MatchDriver<ICard> {
         CardName cardName = DriverMapper.toCardName(card);
         this.match.activateAction(playerZone, cardName, index, DriverMapper.toOptionalPlayerZone(targetPlayer),
                 targetCards);
+        if(this.shouldSkipReactions){
+            this.match.skipReaction();
+            this.match.skipReaction();
+        }
     }
 
     @Override
     public void startReactionWindow() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startReactionWindow'");
+        this.shouldSkipReactions = false;
     }
 
     @Override
     public void endReactionWindow() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'endReactionWindow'");
+        this.match.skipReaction();
+        this.match.skipReaction();
+        this.shouldSkipReactions = true;
     }
 
     @Override
     public void activateReactionFromHand(DriverMatchSide player, DriverCardName card,
             Optional<DriverMatchSide> targetPlayer, List<ICard> targetCards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'activateReactionFromHand'");
+        PlayerZone playerZone = DriverMapper.toPlayerZone(player);
+        CardName cardName = DriverMapper.toCardName(card);
+        this.match.activateReactionFromHand(playerZone, cardName, DriverMapper.toOptionalPlayerZone(targetPlayer), targetCards);
     }
 
     @Override
     public void activateReactionFromActiveZone(ICard card, Optional<DriverMatchSide> targetPlayer,
             List<ICard> targetCards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'activateReactionFromActiveZone'");
+        this.match.activateReactionFromZone(card, DriverMapper.toOptionalPlayerZone(targetPlayer), targetCards);
     }
 
     @Override

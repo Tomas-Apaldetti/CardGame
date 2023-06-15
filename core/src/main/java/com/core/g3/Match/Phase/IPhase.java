@@ -61,5 +61,9 @@ public interface IPhase {
         return;
     }
 
+    default IPhase skipReaction(){
+        return this;
+    }
+
     Player activePlayer();
 }

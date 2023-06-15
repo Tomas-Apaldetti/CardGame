@@ -45,7 +45,9 @@ public class ActiveZone implements IDeathSub, IDeathPub {
             throw new CardLimitReachedException();
         }
 
-        player.pay(card);
+        if(this.isActive){
+            player.pay(card);
+        }
         player.moveFromHand(card);
 
         CardInGame livingCard = new CardInGame(player, card, this);
