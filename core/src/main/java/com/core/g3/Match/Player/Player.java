@@ -289,9 +289,21 @@ public class Player implements IAttackable {
         return a;
     }
 
+    public List<CardInGame> getCardsInGame() {
+        List<CardInGame> a = new ArrayList<>();
+        a.addAll(this.reserveZone.getCardsInGame());
+        a.addAll(this.combatZone.getCardsInGame());
+        a.addAll(this.artifactZone.getCardsInGame());
+        return a;
+    }
+
     public void subscribeToCardDeath(IDeathSub sub) {
         this.reserveZone.add(sub);
         this.combatZone.add(sub);
         this.artifactZone.add(sub);
+    }
+
+    public void resetCards() {
+        this.getCardsInGame().forEach(c -> c.refreshUse());
     }
 }

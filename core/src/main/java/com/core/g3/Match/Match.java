@@ -11,6 +11,7 @@ import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 import com.core.g3.Match.TurnManager.TurnManager;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
@@ -24,6 +25,7 @@ public class Match {
     private GameMode gameMode;
     private IPhase phase;
     private TurnManager turnManager;
+    private List<ILingeringEffect> lingeringEffects;
 
     public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
         this.bluePlayer = bluePlayer;
@@ -31,6 +33,7 @@ public class Match {
         this.gameMode = gameMode;
         this.gameMode.setMatch(this);
         this.phase = new NotPlayable();
+        this.lingeringEffects = new ArrayList<>();
         this.turnManager = new TurnManager(this.bluePlayer, this.greenPlayer);
     }
 
@@ -38,12 +41,14 @@ public class Match {
         this.turnManager.setSide(firstTurn);
         this.gameMode.drawInitialCards(bluePlayer);
         this.gameMode.drawInitialCards(greenPlayer);
-        this.phase = new InitialPhase(this.turnManager.getPlayer(), this.turnManager.getRival());
+        this.phase = new InitialPhase(this.turnManager.getPlayer(), this.turnManager.getRival(), this);
     }
 
     public void skipToPhase(PlayerZone playerSide, PhaseType phase) {
         this.turnManager.setSide(playerSide);
-        this.phase = PhaseFactory.createNewPhase(phase, this.turnManager.getPlayer(), this.turnManager.getRival());
+        this.phase = PhaseFactory.createNewPhase(phase, this.turnManager.getPlayer(), this.turnManager.getRival(), this);
+        this.phase.activePlayer().resetCards();
+        this.phase.applyLingeringEffects(this.lingeringEffects, this.turnManager.getPlayer());
     }
 
     public Player getCurrentPlayerTurn() {
@@ -87,6 +92,55 @@ public class Match {
 
     public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone,
             List<ICard> targets) {
+
+        Player player = this.turnManager.getPlayer();
+        CardInGame cig = player.getCardInGame(artifact);
+
+        if(cig == null){
+            throw new RuntimeException();
+        }
+
+        if(toOptionalPlayerZone.isPresent()){
+            this.phase = this.phase.useArtifact(cig, this.turnManager.getPlayerFrom(toOptionalPlayerZone.get()));
+            return;
+        }
+
+        List<CardInGame> cigs = this.getCardsInGame(targets);
+
+        this.phase = this.phase.useArtifact(cig, cigs);
+    }
+
+    public void activateReactionFromHand(PlayerZone side, CardName cardName, Optional<PlayerZone> targetPlayer, List<ICard> targetCards){
+        this.assertCurrentPlayer(side);
+        Player player = this.turnManager.getPlayer();
+        ICard cardToPlay = player.getCardByCardName(cardName);
+
+        if (targetPlayer.isPresent()) {
+            this.phase = this.phase.useReaction(cardToPlay, this.turnManager.getPlayerFrom(targetPlayer.get()));
+            return;
+        }
+
+        List<CardInGame> cigs = this.getCardsInGame(targetCards);
+
+        this.phase = this.phase.useReaction(cardToPlay, cigs);
+    }
+
+    public void activateReactionFromZone(ICard card, Optional<PlayerZone> targetPlayer, List<ICard> targetCards){
+        Player player = this.turnManager.getPlayer();
+        CardInGame cig = player.getCardInGame(card);
+
+        if(cig == null){
+            throw new RuntimeException();
+        }
+
+        if(targetPlayer.isPresent()) {
+            this.phase = this.phase.useReaction(cig, this.turnManager.getPlayerFrom(targetPlayer.get()));
+            return;
+        }
+
+        List<CardInGame> cigs = this.getCardsInGame(targetCards);
+
+        this.phase = this.phase.useReaction(cig, cigs);
     }
 
     public int getCreatureHitpoints(ICard card) {
@@ -144,5 +198,9 @@ public class Match {
 
     public Player getRival(Player owner) {
         return this.turnManager.getRivalTo(owner);
+    }
+
+    public void addLingering(List<ILingeringEffect> effects){
+        this.lingeringEffects.addAll(effects);
     }
 }
