@@ -17,6 +17,7 @@ import com.core.g3.Card.Cards.PlantEnergy;
 import com.core.g3.Card.Cards.Recycle;
 import com.core.g3.Card.Cards.Resonance;
 import com.core.g3.Card.Cards.Saboteur;
+import com.core.g3.Card.Cards.Treason;
 import com.core.g3.Card.Cards.WaterEnergy;
 
 public class CardFactory {
@@ -61,7 +62,7 @@ public class CardFactory {
             case Sacrifice:
                 break;
             case Treason:
-                break;
+                return Treason.create();
             default:
                 break;
         }
