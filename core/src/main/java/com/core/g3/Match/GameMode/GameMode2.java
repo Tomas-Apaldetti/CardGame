@@ -55,6 +55,8 @@ public class GameMode2 extends GameMode implements IDeathSub{
 
     @Override
     public void notify(CardInGame card) {
-        this.match.getRival(card.getOwner()).affectMatchEndCondition(new Amount(1));
+        Player rival = this.match.getRival(card.getOwner());
+        rival.affectMatchEndCondition(new Amount(1));
+        rival.drawCard();
     }
 }
