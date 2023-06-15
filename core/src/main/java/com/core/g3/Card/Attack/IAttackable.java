@@ -10,6 +10,10 @@ public interface IAttackable {
 
     void heal(Amount heal);
 
+    default boolean isDead(){
+        return false;
+    }
+
     default boolean isAttackable() {
         return true;
     };
