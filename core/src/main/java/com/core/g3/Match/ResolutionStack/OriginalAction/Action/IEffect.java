@@ -7,4 +7,6 @@ import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 public interface IEffect {
 
     public List<ILingeringEffect> apply();
+
+    public List<ILingeringEffect> apply(Integer times);
 }

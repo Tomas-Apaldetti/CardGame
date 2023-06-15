@@ -25,4 +25,10 @@ public class AddEnergy implements IEffect {
         this.user.add(this.energyToAdd, this.amountToAdd);
         return new ArrayList<>();
     }
+
+    @Override
+    public List<ILingeringEffect> apply(Integer times) {
+        this.user.add(this.energyToAdd, new Amount(this.amountToAdd.value() * times));
+        return new ArrayList<>();
+    }
 }

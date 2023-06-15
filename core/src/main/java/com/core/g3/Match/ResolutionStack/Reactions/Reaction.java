@@ -2,7 +2,11 @@ package com.core.g3.Match.ResolutionStack.Reactions;
 
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reaction {
 
@@ -23,11 +27,13 @@ public class Reaction {
         this.isCanceled = false;
     }
 
-    public void apply(ResolutionStack stack){
+    public List<ILingeringEffect> apply(ResolutionStack stack){
+        List<ILingeringEffect> effects = new ArrayList<>();
         if(!this.isCanceled) {
-            this.effect.apply(this, this.source, stack, user, rival );
+            effects.addAll(this.effect.apply(this, this.source, stack, user, rival));
         }
         this.onUse();
+        return effects;
     }
 
     public void discardOnUse(boolean discardOnUse){

@@ -29,6 +29,12 @@ public class Damage implements IEffect {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<ILingeringEffect> apply(Integer times) {
+        this.victims.forEach((victim) -> victim.receiveAttack(new Amount(this.value.value() * times)));
+        return new ArrayList<>();
+    }
+
     public void setMaxDamage(Amount value) {
         if (this.value.gte(value)) {
             return;

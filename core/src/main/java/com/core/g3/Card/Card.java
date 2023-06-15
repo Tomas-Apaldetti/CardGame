@@ -187,8 +187,9 @@ public class Card implements ITransactionable, ICard {
         throw new ArtifactNotUsableException();
     }
 
+
     @Override
-    public OriginalAction artifact(OriginalAction og, IAttackable affected, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction og, List<IAttackable> affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Artifact)) {
                 return cardType.artifact(og, affected, user, rival);

@@ -22,4 +22,10 @@ public class HealCard implements IEffect {
         this.affected.heal(this.amount);
         return new ArrayList<>();
     }
+
+    @Override
+    public List<ILingeringEffect> apply(Integer times) {
+        this.affected.heal(new Amount(this.amount.value() * times));
+        return new ArrayList<>();
+    }
 }

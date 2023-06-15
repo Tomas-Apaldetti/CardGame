@@ -91,7 +91,7 @@ public class CardInGame implements IAttackable, IDeathPub {
         return this.base.artifact(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction artifact(IAttackable affected, Player user, Player rival) {
+    public OriginalAction artifact(List<IAttackable> affected, Player user, Player rival) {
         if (!this.artifactState.canActivate()) {
             throw new ArtifactNotUsableException();
         }
