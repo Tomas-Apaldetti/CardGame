@@ -1,6 +1,5 @@
 package com.core.tcg.driver.Adapter;
 
-import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
@@ -78,7 +77,8 @@ public class MatchDriverClass implements MatchDriver<ICard> {
     }
 
     @Override
-    public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer, List<ICard> targets) {
+    public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer,
+            List<ICard> targets) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'activateArtifact'");
     }

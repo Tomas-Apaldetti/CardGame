@@ -31,7 +31,6 @@ public class CardTypeArtefact extends CardType {
         return Optional.ofNullable(effect);
     }
 
-
     @Override
     public boolean is(CardTypeName cardType) {
         return CardTypeName.Artefact == cardType;

@@ -16,16 +16,16 @@ public class DamageAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable victim, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
         action.setType(ActionType.Action);
-        action.addEffect(new Damage(damage, victim));
+        action.addEffect(new Damage(damage, rival));
         return action;
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
         action.setType(ActionType.Action);
-        action.addEffect(new Damage(damage, rival));
+        action.addEffect(new Damage(damage, affected));
         return action;
     }
 }

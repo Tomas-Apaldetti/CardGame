@@ -217,7 +217,7 @@ public class Card implements ITransactionable, ICard {
     public OriginalAction action(OriginalAction og, IAttackable affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Action)) {
-                return cardType.action(og, affected, user, rival);
+                return cardType.action(og, affected, user);
             }
         }
         throw new ActionNotUsableException();

@@ -38,7 +38,7 @@ public class CardTypeAction extends CardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, IAttackable affected, Player user, Player rival) {
-        return this.effect.apply(action, affected, user, rival);
+    public OriginalAction action(OriginalAction action, IAttackable affected, Player user) {
+        return this.effect.apply(action, affected, user);
     }
 }

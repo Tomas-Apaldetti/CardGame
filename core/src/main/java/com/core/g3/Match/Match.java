@@ -1,6 +1,5 @@
 package com.core.g3.Match;
 
-import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.GameMode.GameMode;
@@ -58,11 +57,11 @@ public class Match implements IMatch {
     public ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
         Player player = filterPlayer(side);
         ICard cardToPlay = player.getCardByCardName(cardName);
-        return this.phase.summon(cardToPlay,zone, player);
+        return this.phase.summon(cardToPlay, zone, player);
     }
 
     @Override
-    public int getCreatureHitpoints(ICard card) {
+    public int getCreatureHitpoints(ICard card) { // @TODO: review
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");
     }
@@ -73,7 +72,7 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void attackPlayer(ICard creature, int index) {
+    public void attackPlayer(ICard creature, int index) { // @TODO: review
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'attackPlayer'");
     }

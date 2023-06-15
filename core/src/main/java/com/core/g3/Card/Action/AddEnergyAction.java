@@ -1,5 +1,7 @@
 package com.core.g3.Card.Action;
 
+import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -22,6 +24,11 @@ public class AddEnergyAction implements IAction {
         action.setType(ActionType.Action);
         action.addEffect(new AddEnergy(this.type, this.amount, user));
         return action;
+    }
+
+    @Override
+    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
+        throw new ActionNotUsableException();
     }
 
 }
