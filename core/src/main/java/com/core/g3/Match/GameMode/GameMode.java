@@ -21,7 +21,7 @@ public abstract class GameMode {
     protected int minDeckCards;
     protected int maxRepeatedCards;
     protected int combatZoneLimit;
-    protected int artifactZoneLimit;
+    protected int artefactZoneLimit;
     protected int reserveZoneLimit;
     protected int initialHandSize;
 
@@ -35,11 +35,11 @@ public abstract class GameMode {
 
         IMatchEndCondition condition = this.getCondition();
 
-        ActiveZone artifactZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(this.artifactZoneLimit));
+        ActiveZone artefactZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(this.artefactZoneLimit));
         ActiveZone combatZone = new ActiveZone(ActiveZoneType.Combat, new Amount(this.combatZoneLimit));
         ActiveZone reserveZone = new ActiveZone(ActiveZoneType.Reserve, new Amount(this.reserveZoneLimit));
 
-        Player player = new Player(user, playableDeck, condition, artifactZone, combatZone, reserveZone);
+        Player player = new Player(user, playableDeck, condition, artefactZone, combatZone, reserveZone);
         return player;
     }
 
@@ -62,18 +62,18 @@ public abstract class GameMode {
         IntStream.range(0, this.initialHandSize).forEach(i -> player.drawCard());
     }
 
-     public abstract Optional<Player> getWinner(Player player1, Player player2);
+    public abstract Optional<Player> getWinner(Player player1, Player player2);
 
     public int getCombatZoneLimit() {
         return this.combatZoneLimit;
     }
 
     public int getArtifactZoneLimit() {
-        return this.artifactZoneLimit;
+        return this.artefactZoneLimit;
     }
 
     public int getReserveZoneLimit() {
         return this.reserveZoneLimit;
     }
-    
+
 }

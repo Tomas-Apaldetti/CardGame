@@ -26,7 +26,7 @@ public interface ICard {
 
     public int getPrice();
 
-    public Amount summonIn(ActiveZoneType artifacts);
+    public Amount summonIn(ActiveZoneType artefacts);
 
     public void applySummonCost(Player player);
 

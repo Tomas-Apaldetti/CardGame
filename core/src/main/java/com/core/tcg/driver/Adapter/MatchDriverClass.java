@@ -66,9 +66,9 @@ public class MatchDriverClass implements MatchDriver<ICard> {
     }
 
     @Override
-    public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer,
+    public void activateArtifact(ICard artefact, int index, Optional<DriverMatchSide> targetPlayer,
             List<ICard> targets) {
-        this.match.activateArtifact(artifact, index, DriverMapper.toOptionalPlayerZone(targetPlayer), targets);
+        this.match.activateArtefact(artefact, index, DriverMapper.toOptionalPlayerZone(targetPlayer), targets);
     }
 
     @Override

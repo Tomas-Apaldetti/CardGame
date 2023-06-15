@@ -34,7 +34,7 @@ public class DriverMapper {
     }
 
     public static Optional<PlayerZone> toOptionalPlayerZone(Optional<DriverMatchSide> matchSide) {
-        if(matchSide.isPresent()) {
+        if (matchSide.isPresent()) {
             return Optional.of(PlayerZone.valueOf(matchSide.get().name()));
         }
         return Optional.empty();
@@ -45,7 +45,7 @@ public class DriverMapper {
     }
 
     public static Optional<DriverMatchSide> toOptionalDriverMatchSide(Optional<PlayerZone> playerZone) {
-        if(playerZone.isPresent()) {
+        if (playerZone.isPresent()) {
             return Optional.of(DriverMatchSide.valueOf(playerZone.get().name()));
         }
         return Optional.empty();
