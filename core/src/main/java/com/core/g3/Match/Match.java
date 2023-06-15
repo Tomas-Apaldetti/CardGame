@@ -1,9 +1,6 @@
 package com.core.g3.Match;
 
-import com.core.g3.Card.Attack.IAttackable;
-import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -15,11 +12,9 @@ import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.TurnManager.TurnManager;
-import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

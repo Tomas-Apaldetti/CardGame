@@ -63,6 +63,10 @@ public class Card implements ITransactionable, ICard {
         this.summonableSpace = summonableSpace;
     }
 
+    public ICost getInvocationCost() {
+        return this.invocationCost;
+    }
+
     @Override
     public void removeFrom(ISeller seller) {
         seller.removeItem(this);
@@ -218,7 +222,7 @@ public class Card implements ITransactionable, ICard {
     public OriginalAction action(OriginalAction og, List<IAttackable> affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Action)) {
-                return cardType.action(og, affected, user);
+                return cardType.action(og, affected, user, rival);
             }
         }
         throw new ActionNotUsableException();

@@ -10,6 +10,10 @@ public class Amount {
         this.value = initialValue;
     }
 
+    public Amount(Amount current) {
+        this.value = current.value;
+    }
+
     private void assertPositive(int value) {
         if (value < 0) {
             throw new InvalidAmountException();
@@ -57,5 +61,9 @@ public class Amount {
         } else {
             this.value -= value.value();
         }
+    }
+
+    public void multiply(Amount increment) {
+        this.value = this.value * increment.value;
     }
 }

@@ -18,16 +18,16 @@ public class DestroyAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
+    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
         action.setType(ActionType.Action);
-        action.addEffect(new Damage(this.damage, affected));
+        action.addEffect(new Damage(this.damage, rival));
         return action;
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
         action.setType(ActionType.Action);
-        action.addEffect(new Damage(this.damage, rival));
+        action.addEffect(new Damage(this.damage, affected));
         return action;
     }
 }

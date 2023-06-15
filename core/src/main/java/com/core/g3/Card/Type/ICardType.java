@@ -32,7 +32,7 @@ public interface ICardType {
 
     OriginalAction action(OriginalAction action, Player user, Player rival);
 
-    OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user);
+    OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user, Player rival);
 
     List<Attribute> getAttributes();
 

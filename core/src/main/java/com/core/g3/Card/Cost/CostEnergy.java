@@ -59,4 +59,9 @@ public class CostEnergy implements ICost {
         }
 
     }
+
+    @Override
+    public Amount current() {
+        return this.cost;
+    }
 }
