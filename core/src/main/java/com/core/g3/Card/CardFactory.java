@@ -19,6 +19,7 @@ import com.core.g3.Card.Cards.Resonance;
 import com.core.g3.Card.Cards.Saboteur;
 import com.core.g3.Card.Cards.Treason;
 import com.core.g3.Card.Cards.WaterEnergy;
+import com.core.g3.Card.Cards.Sacrifice;
 
 public class CardFactory {
     public static Card createCard(CardName name) {
@@ -60,7 +61,7 @@ public class CardFactory {
             case Saboteur:
                 return Saboteur.create();
             case Sacrifice:
-                break;
+                return Sacrifice.create();
             case Treason:
                 return Treason.create();
             default:
