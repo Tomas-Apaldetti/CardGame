@@ -53,7 +53,7 @@ public class CardFactory {
             case PlantEnergy:
                 return PlantEnergy.create();
             case Recycle:
-                break;
+                return Recycle.create();
             case Resonance:
                 return Resonance.create();
             case Saboteur:
