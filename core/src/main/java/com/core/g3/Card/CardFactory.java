@@ -8,6 +8,7 @@ import com.core.g3.Card.Cards.Drain;
 import com.core.g3.Card.Cards.FireEnergy;
 import com.core.g3.Card.Cards.Goblin;
 import com.core.g3.Card.Cards.Hospital;
+import com.core.g3.Card.Cards.Inventor;
 import com.core.g3.Card.Cards.MagicBarrier;
 import com.core.g3.Card.Cards.MagicSword;
 import com.core.g3.Card.Cards.PlantEnergy;
@@ -35,7 +36,7 @@ public class CardFactory {
             case Hospital:
                 return Hospital.create();
             case Inventor:
-                break;
+                return Inventor.create();
             case MagicBarrier:
                 return MagicBarrier.create();
             case MagicDrill:
