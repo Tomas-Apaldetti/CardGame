@@ -2,11 +2,16 @@ package com.core.g3.Card.Attack;
 
 import com.core.g3.Card.Attack.Mocks.AttackMock;
 import com.core.g3.Card.CardBuilder;
+import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
+import com.core.g3.Deck.Deck;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.DeckPlayable.DeckPlayable;
+import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -33,8 +38,12 @@ class AddEnergyAttackTest {
 
     @Test
     public void energyAddAttackAddCorrectAmount() {
-        Player blue = new Player(null, null, null, null, null, null);
-        Player green = new Player(null, null, null, null, null, null);
+        IDeck bdeck = new Deck("blue");
+        IDeck gdeck = new Deck("green");
+        IDeckPlayable pbdeck = new DeckPlayable(bdeck);
+        IDeckPlayable pgdeck = new DeckPlayable(gdeck);
+        Player blue = new Player(null, pbdeck, null, null, null, null);
+        Player green = new Player(null, pgdeck, null, null, null, null);
         ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Water, new Amount(3))).build();
         ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire, new Amount(3))).build();
 
@@ -49,8 +58,12 @@ class AddEnergyAttackTest {
 
     @Test
     public void executeInternalAttackException() {
-        Player blue = new Player(null, null, null, null, null, null);
-        Player green = new Player(null, null, null, null, null, null);
+        IDeck bdeck = new Deck("blue");
+        IDeck gdeck = new Deck("green");
+        IDeckPlayable pbdeck = new DeckPlayable(bdeck);
+        IDeckPlayable pgdeck = new DeckPlayable(gdeck);
+        Player blue = new Player(null, pbdeck, null, null, null, null);
+        Player green = new Player(null, pgdeck, null, null, null, null);
         ICard card1 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Plant, new Amount(3), new AttackMock()))
                 .build();
         ICard card2 = this.getCardBuilder(new AddEnergyAttack(EnergyType.Fire, new Amount(3))).build();

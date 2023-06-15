@@ -28,6 +28,7 @@ public class OriginalAction implements IOriginal {
         this.effects = new ArrayList<>();
         this.isCanceled = false;
         this.discardOnUse = false;
+        this.lingerings = new ArrayList<>();
     }
 
     public void setType(ActionType type) {
