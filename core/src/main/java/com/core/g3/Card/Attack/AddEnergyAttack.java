@@ -9,26 +9,26 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.Optional;
 
-public class AddEnergyAttack implements IAttack{
+public class AddEnergyAttack implements IAttack {
 
     private final EnergyType energyToAdd;
     private final Amount amountToAdd;
     private Optional<IAttack> next = Optional.empty();
 
-    public AddEnergyAttack(EnergyType type, Amount value){
+    public AddEnergyAttack(EnergyType type, Amount value) {
         this.energyToAdd = type;
         this.amountToAdd = value;
     }
 
-    public AddEnergyAttack(EnergyType type, Amount value, IAttack next){
+    public AddEnergyAttack(EnergyType type, Amount value, IAttack next) {
         this.energyToAdd = type;
         this.amountToAdd = value;
         this.next = Optional.ofNullable(next);
     }
 
     public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival) {
-        if(this.next.isPresent()){
-            this.next.get().attack(action,victim,user,rival);
+        if (this.next.isPresent()) {
+            this.next.get().attack(action, victim, user, rival);
         }
         action.setType(ActionType.Attack);
         action.addEffect(new AddEnergy(this.energyToAdd, this.amountToAdd, user));

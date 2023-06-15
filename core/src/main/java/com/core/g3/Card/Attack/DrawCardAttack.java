@@ -8,26 +8,26 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.Optional;
 
-public class DrawCardAttack implements IAttack{
+public class DrawCardAttack implements IAttack {
 
     private final Optional<IAttack> next;
 
-    public DrawCardAttack(){
+    public DrawCardAttack() {
         this.next = Optional.empty();
     }
 
-    public DrawCardAttack(IAttack next){
+    public DrawCardAttack(IAttack next) {
         this.next = Optional.ofNullable(next);
     }
+
     @Override
     public OriginalAction attack(OriginalAction action, IAttackable victim, Player user, Player rival) {
-        if(this.next.isPresent()){
-            this.next.get().attack(action,victim,user,rival);
+        if (this.next.isPresent()) {
+            this.next.get().attack(action, victim, user, rival);
         }
         action.setType(ActionType.Attack);
         action.addEffect(new DrawCard(new Amount(1), user));
         return action;
     }
-
 
 }
