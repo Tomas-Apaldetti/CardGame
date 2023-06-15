@@ -215,8 +215,8 @@ public class Player implements IAttackable {
         return total;
     }
 
-    public IAttackable getAttackable(ICard card) {
-        IAttackable cig = this.artifactZone.getCardInGame(card);
+    public CardInGame getCardInGame(ICard card) {
+        CardInGame cig = this.artifactZone.getCardInGame(card);
         if (cig != null) {
             return cig;
         }
@@ -279,7 +279,7 @@ public class Player implements IAttackable {
         return this.zone;
     }
 
-    public List<CardInGame> getCardsInGame(List<ICard> cards){
+    public List<CardInGame> getCardsInGame(List<ICard> cards) {
         List<CardInGame> a = new ArrayList<>();
         a.addAll(this.reserveZone.getCardsInGame(cards));
         a.addAll(this.combatZone.getCardsInGame(cards));

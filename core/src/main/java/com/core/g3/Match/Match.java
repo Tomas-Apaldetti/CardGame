@@ -18,6 +18,7 @@ import com.core.g3.Match.TurnManager.TurnManager;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,24 +97,19 @@ public class Match {
     }
 
     public void attackCreature(ICard creature, int index, ICard target) {
-         Player rival = this.turnManager.getRival();
-        List<CardInGame> cigs = this.getCardsInGame(targetCards);
-         CardInGame cig = this.getCardsInGame([creature]).get(0);
-         this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
-         IAttackable targetAttackable = rival.getAttackable(target);
-         this.phase.attack(cig, new Amount(index), targetAttackable);
+        CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
+        CardInGame targetCIG = this.turnManager.getRival().getCardInGame(target);
+        this.phase.attack(playerCIG, new Amount(index), targetCIG);
     }
 
     public void attackPlayer(ICard creature, int index) {
-        // Player rival = this.turnManager.getRival();
-        // CardInGame cig =
-        // this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
-        // this.phase.attack(cig, new Amount(index), rival);
+        CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
+        this.phase.attack(playerCIG, new Amount(index));
+
     }
 
     public int playerHealth(PlayerZone side) {
-        // return this.turnManager.getPlayerFrom(side).matchEndConditionPoints();
-        return 0;
+        return this.turnManager.getPlayerFrom(side).matchEndConditionPoints();
     }
 
     public IResource playerEnergy(PlayerZone side, EnergyType energyType) {
