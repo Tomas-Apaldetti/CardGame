@@ -15,7 +15,7 @@ public class GameMode2 extends GameMode {
         this.minDeckCards = 60;
         this.maxRepeatedCards = 4;
         this.combatZoneLimit = 1;
-        this.artifactZoneLimit = 5;
+        this.artefactZoneLimit = 5;
         this.reserveZoneLimit = 3;
         this.initialHandSize = 7;
     }

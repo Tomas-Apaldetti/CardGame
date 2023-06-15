@@ -1,6 +1,5 @@
 package com.core.g3.Match.Player.MatchEndCondition;
 
-import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.MatchEndCondition.Exception.HPAlreadyDepletedException;
 

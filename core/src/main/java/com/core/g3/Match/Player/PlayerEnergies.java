@@ -1,6 +1,5 @@
 package com.core.g3.Match.Player;
 
-import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Commons.Exception.InvalidAmountException;
 import com.core.g3.Match.Player.Exception.InvalidEnergyTypeException;
@@ -78,13 +77,7 @@ public class PlayerEnergies {
     }
 
     public Optional<EnergyType> getMaxType() {
-        Energy max = null;
-        for (IModifiableResource e : this.energies) {
-            Energy cast = (Energy) e;
-            if (max == null || cast.gt(max)) {
-                max = cast;
-            }
-        }
-        return Optional.ofNullable(max.getType());
+        IModifiableResource max = this.energies.stream().reduce((x, y) -> x.available() > y.available() ? x : y).get();
+        return Optional.ofNullable(((Energy) max).getType());
     }
 }

@@ -1,145 +1,146 @@
 package com.core.g3.Match;
 
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
-import com.core.g3.Match.Phase.IPhase;
-import com.core.g3.Match.Phase.InitialPhase;
-import com.core.g3.Match.Phase.PhaseFactory;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
+import com.core.g3.Match.Phase.*;
+import com.core.g3.Match.Phase.Exceptions.CurrentPhaseDoesNotBelongToUserException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.g3.Match.TurnManager.TurnManager;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Match implements IMatch {
+public class Match {
     private Player bluePlayer;
     private Player greenPlayer;
     private GameMode gameMode;
-    public Player turn;
     private IPhase phase;
+    private TurnManager turnManager;
 
     public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
-        this.turn = null;
-        this.phase = null;
+        this.phase = new NotPlayable();
+        this.turnManager = new TurnManager(this.bluePlayer, this.greenPlayer);
     }
 
-    @Override
     public void startMatch(PlayerZone firstTurn) {
+        this.turnManager.setSide(firstTurn);
         this.gameMode.drawInitialCards(bluePlayer);
         this.gameMode.drawInitialCards(greenPlayer);
-        this.turn = this.getPlayer(firstTurn);
-        this.phase = new InitialPhase();
+        this.phase = new InitialPhase(this.turnManager.getPlayer(), this.turnManager.getRival());
     }
 
-    public void skipToPhase(PlayerZone player, PhaseType phase) {
-        this.turn = this.getPlayer(player);
-        this.phase = PhaseFactory.createNewPhase(phase);
-    }
-
-    public void moveToNextTurn() {
-        if (this.turn.equals(this.bluePlayer)) {
-            this.turn = this.greenPlayer;
-        } else {
-            this.turn = this.bluePlayer;
-        }
+    public void skipToPhase(PlayerZone playerSide, PhaseType phase) {
+        this.turnManager.setSide(playerSide);
+        this.phase = PhaseFactory.createNewPhase(phase, this.turnManager.getPlayer(), this.turnManager.getRival());
     }
 
     public Player getCurrentPlayerTurn() {
-        return this.turn;
+        return this.turnManager.getPlayer();
     }
 
-    @Override
     public void forceDeckOrder(PlayerZone side, List<CardName> cards) {
-        filterPlayer(side).forceDeckOrder(cards);
+        this.turnManager.getPlayerFrom(side).forceDeckOrder(cards);
     }
 
-    @Override
-    public void summon(PlayerZone side, ICard card, ActiveZoneType zone) {
-        Player player = filterPlayer(side);
-        this.phase.canSummon(card);
-        player.summonInZone(card, zone);
-    }
-
-    @Override
-    public void summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
-        Player player = filterPlayer(side);
+    public ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
+        this.assertCurrentPlayer(side);
+        Player player = this.turnManager.getPlayer();
         ICard cardToPlay = player.getCardByCardName(cardName);
-        this.phase.canSummon(cardToPlay);
-
-        player.summonInZone(cardToPlay, zone);
+        this.phase = this.phase.summon(cardToPlay, zone);
+        return cardToPlay;
     }
 
-    @Override
-    public int getCreatureHitpoints(Card card) {
-        return card.getHealth().current();
+    public List<CardInGame> getCardsInGame(List<ICard> cards) {
+        List<CardInGame> cigs = new ArrayList<>();
+        cigs.addAll(this.turnManager.getPlayer().getCardsInGame(cards));
+        cigs.addAll(this.turnManager.getRival().getCardsInGame(cards));
+        return cigs;
     }
 
-    @Override
-    public void attackCreature(Card creature, int index, Card target) {
-        this.phase.canAttack();
-        Player player = this.turn;
-        Player theOtherPlayer = this.turn.equals(this.bluePlayer) ? this.greenPlayer : this.bluePlayer;
+    public void activateAction(PlayerZone side, CardName cardName, int index, Optional<PlayerZone> targetPlayer,
+            List<ICard> targetCards) {
+        this.assertCurrentPlayer(side);
+        Player player = this.turnManager.getPlayer();
+        ICard cardToPlay = player.getCardByCardName(cardName);
 
-        CardInGame cardInGame = new CardInGame(player, creature, null);
-        CardInGame cardTarget = new CardInGame(player, target, null);
+        if (targetPlayer.isPresent()) {
+            this.phase = this.phase.useAction(cardToPlay, this.turnManager.getPlayerFrom(targetPlayer.get()));
+            return;
+        }
 
-        OriginalAction action = cardInGame.attack(cardTarget, player, theOtherPlayer, new Amount(index));
-        action.apply();
+        List<CardInGame> cigs = this.getCardsInGame(targetCards);
+
+        this.phase = this.phase.useAction(cardToPlay, cigs);
     }
 
-    @Override
-    public void attackPlayer(Card creature, int index) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attackPlayer'");
+    public void activateArtefact(ICard artefact, int index, Optional<PlayerZone> toOptionalPlayerZone,
+            List<ICard> targets) {
     }
 
-    @Override
+    public int getCreatureHitpoints(ICard card) {
+        return card.getCreatureHP();
+    }
+
+    public void attackCreature(ICard creature, int index, ICard target) {
+        this.assertCurrentPlayer();
+        CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
+        CardInGame targetCIG = this.turnManager.getRival().getCardInGame(target);
+        this.phase.attack(playerCIG, new Amount(index), targetCIG);
+    }
+
+    public void attackPlayer(ICard creature, int index) {
+        this.assertCurrentPlayer();
+        CardInGame playerCIG = this.turnManager.getPlayer().getCardInGame(creature);
+        this.phase.attack(playerCIG, new Amount(index), this.turnManager.getRival());
+    }
+
     public int playerHealth(PlayerZone side) {
-        Player player = filterPlayer(side);
-        return player.matchEndConditionPoints();
+        return this.turnManager.getPlayerFrom(side).matchEndConditionPoints();
     }
 
-    @Override
     public IResource playerEnergy(PlayerZone side, EnergyType energyType) {
-        Player player = filterPlayer(side);
-        return player.getEnergy(energyType);
+        return this.turnManager.getPlayerFrom(side).getEnergy(energyType);
     }
 
-    @Override
-    public Player getPlayer(PlayerZone side) {
-        return filterPlayer(side);
-    }
-
-    private Player filterPlayer(PlayerZone side) {
-        return side.equals(PlayerZone.Blue) ? bluePlayer : greenPlayer;
-    }
-
-    private PlayerZone getPlayerSide(Player player) {
-        return player.equals(bluePlayer) ? PlayerZone.Blue : PlayerZone.Green;
-    }
-
-    @Override
     public Optional<PlayerZone> getWinner() {
-        Player bluePlayer = getPlayer(PlayerZone.Blue);
-        Player greenPlayer = getPlayer(PlayerZone.Green);
-        Optional<Player> winnerPlayer = this.gameMode.getWinner(greenPlayer, bluePlayer);
+        Optional<Player> winner = this.gameMode.getWinner(this.bluePlayer, this.greenPlayer);
 
-        if (winnerPlayer.isPresent()) {
-            return Optional.of(this.getPlayerSide(winnerPlayer.get()));
+        if (winner.isPresent()) {
+            return Optional.of(winner.get().getZone());
         } else {
             return Optional.empty();
         }
+    }
+
+    private void assertCurrentPlayer() {
+        if (!this.turnManager.getPlayer().equals(this.phase.activePlayer())) {
+            throw new CurrentPhaseDoesNotBelongToUserException();
+        }
+    }
+
+    private void assertCurrentPlayer(PlayerZone zone) {
+        if (!this.turnManager.getPlayerFrom(zone).equals(this.phase.activePlayer())) {
+            throw new CurrentPhaseDoesNotBelongToUserException();
+        }
+    }
+
+    public Player getPlayer(PlayerZone playerZone) {
+        return this.turnManager.getPlayerFrom(playerZone);
     }
 }

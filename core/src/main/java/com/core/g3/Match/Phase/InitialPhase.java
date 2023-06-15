@@ -1,19 +1,24 @@
 package com.core.g3.Match.Phase;
 
-import com.core.g3.Deck.ICard;
-import com.core.g3.Match.Phase.Exceptions.NotPossibleToAttack;
-import com.core.g3.Match.Phase.Exceptions.NotPossibleToSummonInPhase;
+import com.core.g3.Match.Player.Player;
+
+import java.util.List;
 
 public class InitialPhase implements IPhase {
+    private final Player current;
+    private final Player rival;
 
-    @Override
-    public void canSummon(ICard card) {
-        throw new NotPossibleToSummonInPhase(PhaseType.Initial);
+    public InitialPhase(Player current, Player rival){
+        this.current = current;
+        this.rival = rival;
+    }
+
+    public void applyLingeringEffects(List<Object> effects){
+        effects.forEach((e) -> e.toString()); //@TODO
     }
 
     @Override
-    public void canAttack() {
-        throw new NotPossibleToAttack();
+    public Player activePlayer() {
+        return this.current;
     }
-
 }

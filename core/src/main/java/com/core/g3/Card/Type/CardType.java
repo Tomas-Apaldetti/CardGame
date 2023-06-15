@@ -1,6 +1,6 @@
 package com.core.g3.Card.Type;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
@@ -9,6 +9,7 @@ import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
 import com.core.g3.Card.Type.Creature.Attribute;
+import com.core.g3.Card.Type.Exceptions.CardIsNotCreatureException;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -17,17 +18,17 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
 
-    public static final Object Artefacts = null;
     protected CardTypeName type;
     protected List<ActiveZoneType> allowedZones;
 
     protected CardType(CardTypeName type) {
         this.type = type;
-        this.allowedZones = new ArrayList<>();
+        this.allowedZones = Arrays.asList(ActiveZoneType.Temporal);
     }
 
     protected CardType(CardTypeName type, List<ActiveZoneType> allowedZones) {
         this.type = type;
+        allowedZones.add(ActiveZoneType.Temporal);
         this.allowedZones = allowedZones;
     }
 
@@ -72,7 +73,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, IAttackable affected, Player user, Player rival) {
+    public OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 
@@ -84,5 +85,10 @@ public abstract class CardType implements ICardType {
     @Override
     public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival) {
         throw new ReactionNotUsableException();
+    }
+
+    @Override
+    public int getCreatureHP(){
+        throw new CardIsNotCreatureException();
     }
 }

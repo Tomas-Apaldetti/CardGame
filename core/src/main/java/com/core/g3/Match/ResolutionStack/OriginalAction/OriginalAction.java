@@ -4,6 +4,7 @@ import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.Damage;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.IEffect;
 
@@ -20,6 +21,7 @@ public class OriginalAction implements IOriginal {
     private Optional<IAttackable> attackObjective = Optional.empty();
     private List<IEffect> effects;
     private boolean discardOnUse;
+    private List<ILingeringEffect> lingerings;
 
     public OriginalAction(CardInGame source) {
         this.source = source;
@@ -47,7 +49,7 @@ public class OriginalAction implements IOriginal {
                 this.damage.get().apply();
             }
             for (IEffect effect : effects) {
-                effect.apply();
+                this.lingerings.addAll(effect.apply());
             }
         }
         if (this.discardOnUse) {

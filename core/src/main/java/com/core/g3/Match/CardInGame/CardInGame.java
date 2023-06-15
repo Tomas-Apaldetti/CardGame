@@ -1,8 +1,11 @@
 package com.core.g3.Match.CardInGame;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
+import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
+import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
+import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
@@ -23,8 +26,8 @@ public class CardInGame implements IAttackable {
     private final ICard base;
     private final Player owner;
     private final AttackStateManager attackState;
-    private final OnceManager reactionState;
-    private OnceManager artefactState;
+    private final OnceManager<IReaction> reactionState;
+    private OnceManager<IArtefactEffect> artefactState;
     private ActiveZone currentZone;
     private final IAttackableManager health;
 
@@ -35,10 +38,10 @@ public class CardInGame implements IAttackable {
         this.attackState = new AttackStateManager(this.base.getAttacks());
         this.attackState.deplete();
 
-        this.artefactState = new OnceManager(this.base.getArtefactEffects());
+        this.artefactState = new OnceManager<IArtefactEffect>(this.base.getArtefactEffects());
         this.artefactState.deplete();
 
-        this.reactionState = new OnceManager(this.base.getReactionEffects());
+        this.reactionState = new OnceManager<IReaction>(this.base.getReactionEffects());
         this.reactionState.deplete();
 
         this.owner = owner;
@@ -59,10 +62,15 @@ public class CardInGame implements IAttackable {
         this.currentZone.addCard(this);
     }
 
-    public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount with) {
+    public OriginalAction attack(IAttackable victim, Player user, Player rival, Amount with) {
         if (!this.attackState.canAttack(with.value())) {
             throw new CardCantAttackException();
         }
+
+        if (!victim.isAttackable()) {
+            throw new CantAttackToVictimException();
+        }
+
         this.attackState.deplete();
         return this.base.attack(new OriginalAction(this), victim, user, rival, with.value());
     }
@@ -90,8 +98,8 @@ public class CardInGame implements IAttackable {
         return this.base.action(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction action(IAttackable victim, Player user, Player rival) {
-        if (!victim.isAttackable()) {
+    public OriginalAction action(List<IAttackable> victim, Player user, Player rival) {
+        if (victim.stream().anyMatch(v -> !v.isAttackable())) {
             throw new ActionNotUsableException();
         }
         return this.base.action(new OriginalAction(this), victim, user, rival);

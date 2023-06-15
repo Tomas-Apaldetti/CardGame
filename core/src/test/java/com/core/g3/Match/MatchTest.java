@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.core.g3.Match.Phase.PhaseType;
 import org.junit.jupiter.api.Test;
 
 import com.core.g3.Card.Card;
@@ -19,7 +20,6 @@ import com.core.g3.Deck.Deck;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.GameMode.GameMode1;
 import com.core.g3.Match.GameMode.GameMode2;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
@@ -81,7 +81,7 @@ public class MatchTest {
         match.startMatch(PlayerZone.Blue);
         match.skipToPhase(PlayerZone.Blue, PhaseType.Main);
 
-        match.summon(PlayerZone.Blue, testCard, ActiveZoneType.Combat);
+        match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat);
 
         assertEquals(1,
                 playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
@@ -97,11 +97,10 @@ public class MatchTest {
         Match match = new Match(playerBlue, playerGreen, gameMode1);
         match.startMatch(PlayerZone.Blue);
 
-        Card testCard = createCard();
 
         assertEquals(0,
                 playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
-        assertThrows(Throwable.class, () -> match.summon(PlayerZone.Blue, testCard, ActiveZoneType.Combat));
+        assertThrows(Throwable.class, () -> match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat));
     }
 
     public Deck generateRandomDeck(int numberOfCards, int numberPerCard) {

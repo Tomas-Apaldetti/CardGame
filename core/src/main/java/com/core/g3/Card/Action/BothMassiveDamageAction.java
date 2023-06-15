@@ -1,5 +1,6 @@
 package com.core.g3.Card.Action;
 
+import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
@@ -28,5 +29,10 @@ public class BothMassiveDamageAction implements IAction {
         List<IAttackable> rivalCreatures = rival.getCreatures(this.attrFilter);
         action.addEffect(new Damage(this.value, (IAttackable) Arrays.asList(userCreatures, rivalCreatures)));
         return action;
+    }
+
+    @Override
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
+        throw new ActionNotUsableException();
     }
 }

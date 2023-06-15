@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.CardTypeName;
-import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
@@ -27,7 +26,7 @@ public interface ICard {
 
     public int getPrice();
 
-    public Amount summonIn(ActiveZoneType artifacts);
+    public Amount summonIn(ActiveZoneType artefacts);
 
     public void applySummonCost(Player player);
 
@@ -51,9 +50,11 @@ public interface ICard {
 
     OriginalAction action(OriginalAction og, Player user, Player rival);
 
-    OriginalAction action(OriginalAction og, IAttackable affected, Player user, Player rival);
+    OriginalAction action(OriginalAction og, List<IAttackable> affected, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 
     Optional<List<Attribute>> getCreatureAttributes();
+
+    int getCreatureHP();
 }

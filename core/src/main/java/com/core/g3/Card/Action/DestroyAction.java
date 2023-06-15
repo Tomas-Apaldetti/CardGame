@@ -9,25 +9,25 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.Action.Damage;
 
 import java.util.List;
 
-public class DamageAction implements IAction {
+public class DestroyAction implements IAction {
 
     private Amount damage;
 
-    public DamageAction(Amount damage) {
-        this.damage = damage;
-    }
-
-    @Override
-    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
-        action.setType(ActionType.Action);
-        action.addEffect(new Damage(damage, rival));
-        return action;
+    public DestroyAction() {
+        this.damage = new Amount(Integer.MAX_VALUE);
     }
 
     @Override
     public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
         action.setType(ActionType.Action);
-        action.addEffect(new Damage(damage, affected));
+        action.addEffect(new Damage(this.damage, affected));
+        return action;
+    }
+
+    @Override
+    public OriginalAction apply(OriginalAction action, Player user, Player rival) {
+        action.setType(ActionType.Action);
+        action.addEffect(new Damage(this.damage, rival));
         return action;
     }
 }

@@ -1,17 +1,15 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.CardName;
-import com.core.g3.Match.Phase.IPhase;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
+import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
+import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Zone.ActiveZoneType;
-import com.core.tcg.driver.DriverActiveZone;
-import com.core.tcg.driver.DriverCardName;
-import com.core.tcg.driver.DriverMatchSide;
-import com.core.tcg.driver.DriverTurnPhase;
+import com.core.tcg.driver.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DriverMapper {
 
@@ -35,8 +33,22 @@ public class DriverMapper {
         return PlayerZone.valueOf(matchSide.name());
     }
 
+    public static Optional<PlayerZone> toOptionalPlayerZone(Optional<DriverMatchSide> matchSide) {
+        if (matchSide.isPresent()) {
+            return Optional.of(PlayerZone.valueOf(matchSide.get().name()));
+        }
+        return Optional.empty();
+    }
+
     public static DriverMatchSide toDriverMatchSide(PlayerZone playerZone) {
         return DriverMatchSide.valueOf(playerZone.name());
+    }
+
+    public static Optional<DriverMatchSide> toOptionalDriverMatchSide(Optional<PlayerZone> playerZone) {
+        if (playerZone.isPresent()) {
+            return Optional.of(DriverMatchSide.valueOf(playerZone.get().name()));
+        }
+        return Optional.empty();
     }
 
     public static PhaseType toTurnPhase(DriverTurnPhase phase) {
@@ -51,5 +63,9 @@ public class DriverMapper {
         } else {
             return ActiveZoneType.Artifacts;
         }
+    }
+
+    public static EnergyType toEnergyType(DriverEnergyType energyType) {
+        return EnergyType.valueOf(energyType.name());
     }
 }

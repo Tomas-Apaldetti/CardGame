@@ -1,12 +1,10 @@
 package com.core.g3.User;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Type.CardType;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Deck.IDeck;

@@ -19,6 +19,11 @@ public class PointsCounter implements IMatchEndCondition {
     }
 
     @Override
+    public boolean isAttackable(){
+        return false;
+    }
+
+    @Override
     public boolean isMet() {
         return this.current.gte(upperLimit);
     }
