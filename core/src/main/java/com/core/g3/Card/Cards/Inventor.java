@@ -28,7 +28,6 @@ public class Inventor {
         ICost costEnergy = new CostEnergy(Optional.of(EnergyType.Water), new Amount(1));
         IReaction duplicateReaction = new DuplicateReaction();
         builder.cardTypeBuilder.setTypeReaction(costEnergy, duplicateReaction);
-        builder.setSummonableSpace(new Amount(0));
 
         return builder.build();
     }
