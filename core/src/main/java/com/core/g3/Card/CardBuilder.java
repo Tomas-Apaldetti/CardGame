@@ -31,4 +31,5 @@ public class CardBuilder {
     public void setPrice(Amount price) {
         this.price = price;
     }
+
 }
