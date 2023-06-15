@@ -35,4 +35,6 @@ public interface ICardType {
     OriginalAction action(OriginalAction action, IAttackable affected, Player user);
 
     List<Attribute> getAttributes();
+
+    int getCreatureHP();
 }

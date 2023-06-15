@@ -198,6 +198,19 @@ public class Player implements IAttackable {
         return total;
     }
 
+    public IAttackable getAttackable(ICard card) {
+        IAttackable cig = this.artifactZone.getCardInGame(card);
+        if(cig != null){
+            return cig;
+        }
+        cig = this.combatZone.getCardInGame(card);
+        if(cig != null){
+            return cig;
+        }
+        cig = this.reserveZone.getCardInGame(card);
+        return cig;
+    }
+
     public void destroyCreatures(int upTo) {
         List<IAttackable> allCreatures = this.getCreatures();
         Collections.shuffle(allCreatures);

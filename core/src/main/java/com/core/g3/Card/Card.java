@@ -18,6 +18,7 @@ import com.core.g3.Card.Type.Artefact.CardTypeArtefact;
 import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Creature.CardTypeCreature;
+import com.core.g3.Card.Type.Exceptions.CardIsNotCreatureException;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Card.Type.Reaction.CardTypeReaction;
@@ -232,6 +233,17 @@ public class Card implements ITransactionable, ICard {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public int getCreatureHP() {
+        for (ICardType type:
+             this.cardTypes) {
+            if( type.is(CardTypeName.Creature)){
+                return type.getCreatureHP();
+            }
+        }
+        throw new CardIsNotCreatureException();
     }
 
 }

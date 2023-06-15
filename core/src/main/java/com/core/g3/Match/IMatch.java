@@ -13,25 +13,29 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IMatch {
-    public void startMatch(PlayerZone firstTurn);
+    void startMatch(PlayerZone firstTurn);
 
-    public void forceDeckOrder(PlayerZone player, List<CardName> cards);
+    void forceDeckOrder(PlayerZone player, List<CardName> cards);
 
-    public int getCreatureHitpoints(ICard card);
+    int getCreatureHitpoints(ICard card);
 
-    public void attackCreature(ICard creature, int index, ICard target);
+    void attackCreature(ICard creature, int index, ICard target);
 
-    public void attackPlayer(ICard creature, int index);
+    void attackPlayer(ICard creature, int index);
 
-    public int playerHealth(PlayerZone side);
+    int playerHealth(PlayerZone side);
 
-    public IResource playerEnergy(PlayerZone player, EnergyType energyType);
+    IResource playerEnergy(PlayerZone player, EnergyType energyType);
 
-    public Player getPlayer(PlayerZone side);
+    Player getPlayer(PlayerZone side);
 
-    public Optional<PlayerZone> getWinner();
+    Optional<PlayerZone> getWinner();
 
-    public void skipToPhase(PlayerZone player, PhaseType phase);
+    void skipToPhase(PlayerZone player, PhaseType phase);
 
-    public ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone);
+    ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone);
+
+    void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer, List<ICard> targetCards);
+
+    void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targets);
 }

@@ -9,6 +9,7 @@ import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Reaction.Exceptions.ReactionNotUsableException;
 import com.core.g3.Card.Type.Creature.Attribute;
+import com.core.g3.Card.Type.Exceptions.CardIsNotCreatureException;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -84,5 +85,10 @@ public abstract class CardType implements ICardType {
     @Override
     public void reaction(CardInGame cardInGame, ResolutionStack stack, Player user, Player rival) {
         throw new ReactionNotUsableException();
+    }
+
+    @Override
+    public int getCreatureHP(){
+        throw new CardIsNotCreatureException();
     }
 }

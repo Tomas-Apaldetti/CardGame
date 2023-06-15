@@ -1,15 +1,15 @@
 package com.core.g3.Match.Phase;
 
 import com.core.g3.Card.Attack.IAttackable;
-
-import java.util.List;
-
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Phase.Exceptions.AcctionNotPossibleException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 import com.core.g3.Match.Zone.ActiveZoneType;
+
+import java.util.List;
 
 public interface IPhase {
 
@@ -21,7 +21,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useAction(ICard card, Player player) {
+    default IPhase useAction(ICard card, Player player, int index, Player targetPlayer, List<ICard> targetCards) {
         throw new AcctionNotPossibleException();
     }
 
@@ -29,7 +29,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default void attack(CardInGame card, IAttackable attackable) {
+    default void attack(CardInGame card, Amount index, IAttackable attackable) {
         throw new AcctionNotPossibleException();
     }
 
