@@ -62,6 +62,16 @@ public class Match implements IMatch {
     }
 
     @Override
+    public void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targetCards) {
+
+    }
+
+    @Override
+    public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targets) {
+
+    }
+
+    @Override
     public int getCreatureHitpoints(ICard card) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");

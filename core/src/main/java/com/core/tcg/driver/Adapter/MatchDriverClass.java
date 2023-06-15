@@ -60,34 +60,30 @@ public class MatchDriverClass implements MatchDriver<ICard> {
 
     @Override
     public int getCreatureHitpoints(ICard card) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");
+        return this.match.getCreatureHitpoints(card);
     }
 
     @Override
     public void attackCreature(ICard creature, int index, ICard target) {
-        // TODO Auto-generated method stub
-
-        throw new UnsupportedOperationException("Unimplemented method 'attackCreature'");
+        this.match.attackCreature(creature,index,target);
     }
 
     @Override
     public void attackPlayer(ICard creature, int index) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attackPlayer'");
+        this.match.attackPlayer(creature,index);
     }
 
     @Override
     public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer, List<ICard> targets) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'activateArtifact'");
+        this.match.activateArtifact(artifact,index,DriverMapper.toOptionalPlayerZone(targetPlayer),targets);
     }
 
     @Override
     public void activateAction(DriverMatchSide player, DriverCardName card, int index,
             Optional<DriverMatchSide> targetPlayer, List<ICard> targetCards) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'activateAction'");
+        PlayerZone playerZone = DriverMapper.toPlayerZone(player);
+        CardName cardName = DriverMapper.toCardName(card);
+        this.match.activateAction(playerZone,cardName,index,DriverMapper.toOptionalPlayerZone(targetPlayer),targetCards);
     }
 
     @Override
@@ -118,37 +114,16 @@ public class MatchDriverClass implements MatchDriver<ICard> {
 
     @Override
     public int playerHealth(DriverMatchSide player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'playerEnergy'");
+        return this.match.playerHealth(DriverMapper.toPlayerZone(player));
     }
 
     @Override
     public int playerEnergy(DriverMatchSide player, DriverEnergyType energyType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'playerEnergy'");
+        return this.match.playerEnergy(DriverMapper.toPlayerZone(player),DriverMapper.toEnergyType(energyType)).available();
     }
 
     @Override
     public Optional<DriverMatchSide> winner() {
-        Player playerBlue = this.createPlayer("blue", "test1", 100);
-        Player playerGreen = this.createPlayer("green", "test2", 0);
-        GameMode1 gameMode = new GameMode1();
-
-        Match match = new Match(playerBlue, playerGreen, gameMode);
-        Optional<PlayerZone> winner = match.getWinner();
-        if (winner.isPresent()) {
-            return Optional.of(DriverMapper.toDriverMatchSide(winner.get()));
-        } else {
-            return Optional.empty();
-        }
+        return DriverMapper.toOptionalDriverMatchSide(this.match.getWinner());
     }
-
-    private Player createPlayer(String username, String deckName, Integer initialAmount) {
-        User user = new User(username);
-        Deck deck = new Deck(deckName);
-        DeckPlayable playableDeck = new DeckPlayable(deck);
-        PlainHP condition = new PlainHP(new Amount(initialAmount));
-        return new Player(user, playableDeck, condition, null, null, null);
-    }
-
 }
