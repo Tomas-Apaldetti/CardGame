@@ -15,9 +15,6 @@ import org.junit.jupiter.api.Test;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
-import com.core.g3.Match.Phase.Exceptions.NotPossibleToSummonInPhase;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
 
 public class PhaseTest {
 

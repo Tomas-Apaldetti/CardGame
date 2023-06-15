@@ -2,25 +2,19 @@ package com.core.g3.Match.Phase;
 
 import java.util.List;
 
+import com.core.g3.Card.Attack.IAttackable;
+import com.core.g3.Card.Card;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Deck.ICard;
-import com.core.g3.Match.Phase.Exceptions.NotPossibleToAttack;
-import com.core.g3.Match.Phase.Exceptions.NotPossibleToSummonInPhase;
+import com.core.g3.Match.CardInGame.CardInGame;
+import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class MainPhase implements IPhase {
-
     @Override
-    public void canSummon(ICard card) {
-        List<CardTypeName> cardType = card.getTypes();
-        cardType.stream()
-                .filter(type -> type == CardTypeName.Creature || type == CardTypeName.Artefact
-                        || type == CardTypeName.Action)
-                .findFirst().orElseThrow(() -> new NotPossibleToSummonInPhase(PhaseType.Main));
-    }
-
-    @Override
-    public void canAttack() {
-        throw new NotPossibleToAttack();
+    public ICard summon(ICard card, ActiveZoneType zone, Player player){
+        player.summonInZone(card, zone);
+        return card;
     }
 }

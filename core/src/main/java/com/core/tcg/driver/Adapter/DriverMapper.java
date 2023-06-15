@@ -1,8 +1,7 @@
 package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.CardName;
-import com.core.g3.Match.Phase.IPhase;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
+import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.tcg.driver.DriverActiveZone;

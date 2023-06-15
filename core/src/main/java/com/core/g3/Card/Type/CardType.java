@@ -17,7 +17,6 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 
 public abstract class CardType implements ICardType {
 
-    public static final Object Artefacts = null;
     protected CardTypeName type;
     protected List<ActiveZoneType> allowedZones;
 

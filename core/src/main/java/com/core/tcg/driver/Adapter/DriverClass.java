@@ -3,6 +3,7 @@ package com.core.tcg.driver.Adapter;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
+import com.core.g3.Deck.ICard;
 import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.GameMode.GameMode1;
@@ -15,7 +16,7 @@ import com.core.tcg.driver.*;
 import java.nio.charset.Charset;
 import java.util.Random;
 
-public class DriverClass implements Driver<User, Card> {
+public class DriverClass implements Driver<User, ICard> {
     @Override
     public User newAccount() {
         byte[] array = new byte[7];
@@ -58,7 +59,7 @@ public class DriverClass implements Driver<User, Card> {
     }
 
     @Override
-    public MatchDriver<Card> startMatch(DriverGameMode mode, User blue, String blueDeck, User green, String greenDeck) {
+    public MatchDriver<ICard> startMatch(DriverGameMode mode, User blue, String blueDeck, User green, String greenDeck) {
 
         if (mode.equals(DriverGameMode.HitpointLoss)) {
             GameMode gamemode = new GameMode1();
@@ -71,7 +72,7 @@ public class DriverClass implements Driver<User, Card> {
         return null;
     }
 
-    private MatchDriver<Card> getDriverClass(User blue, String blueDeck, User green, String greenDeck,
+    private MatchDriver<ICard> getDriverClass(User blue, String blueDeck, User green, String greenDeck,
             GameMode gamemode) {
         IDeck gDeck = green.getDeckInventory().getDeck(greenDeck);
         Player greenPlayer = gamemode.addPlayer(green, gDeck);

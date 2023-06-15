@@ -7,7 +7,7 @@ import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Phase.IPhase;
 import com.core.g3.Match.Phase.InitialPhase;
 import com.core.g3.Match.Phase.PhaseFactory;
-import com.core.g3.Match.Phase.IPhase.PhaseType;
+import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -45,14 +45,6 @@ public class Match implements IMatch {
         this.phase = PhaseFactory.createNewPhase(phase);
     }
 
-    public void moveToNextTurn() {
-        if (this.turn.equals(this.bluePlayer)) {
-            this.turn = this.greenPlayer;
-        } else {
-            this.turn = this.bluePlayer;
-        }
-    }
-
     public Player getCurrentPlayerTurn() {
         return this.turn;
     }
@@ -63,34 +55,25 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void summon(PlayerZone side, ICard card, ActiveZoneType zone) {
-        Player player = filterPlayer(side);
-        this.phase.canSummon(card);
-        player.summonInZone(card, zone);
-    }
-
-    @Override
-    public void summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
+    public ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
         Player player = filterPlayer(side);
         ICard cardToPlay = player.getCardByCardName(cardName);
-        this.phase.canSummon(cardToPlay);
-        System.out.println(cardToPlay.getAllowableZones());
-        player.summonInZone(cardToPlay, zone);
+        return this.phase.summon(cardToPlay,zone, player);
     }
 
     @Override
-    public int getCreatureHitpoints(Card card) {
+    public int getCreatureHitpoints(ICard card) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");
     }
 
     @Override
-    public void attackCreature(Card creature, int index, Card target) {
-        this.phase.canAttack();
+    public void attackCreature(ICard creature, int index, ICard target) {
+
     }
 
     @Override
-    public void attackPlayer(Card creature, int index) {
+    public void attackPlayer(ICard creature, int index) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'attackPlayer'");
     }
