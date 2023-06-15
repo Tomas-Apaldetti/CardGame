@@ -28,7 +28,6 @@ public abstract class CardType implements ICardType {
 
     protected CardType(CardTypeName type, List<ActiveZoneType> allowedZones) {
         this.type = type;
-        allowedZones.add(ActiveZoneType.Temporal);
         this.allowedZones = allowedZones;
     }
 

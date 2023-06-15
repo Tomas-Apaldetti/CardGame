@@ -117,7 +117,7 @@ public class Match {
         Optional<Player> winner = this.gameMode.getWinner(this.bluePlayer, this.greenPlayer);
 
         if (winner.isPresent()) {
-            return Optional.of(winner.get().getZone());
+            return Optional.of(winner.get().equals(bluePlayer) ? PlayerZone.Blue : PlayerZone.Green );
         } else {
             return Optional.empty();
         }
@@ -130,7 +130,9 @@ public class Match {
     }
 
     private void assertCurrentPlayer(PlayerZone zone) {
-        if (!this.turnManager.getPlayerFrom(zone).equals(this.phase.activePlayer())) {
+        Player playerFromZone = this.turnManager.getPlayerFrom(zone);
+        Player current = this.phase.activePlayer();
+        if (!(playerFromZone.equals(current))) {
             throw new CurrentPhaseDoesNotBelongToUserException();
         }
     }

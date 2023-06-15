@@ -1,5 +1,6 @@
 package com.core.g3.Card.Type.Creature;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,7 @@ public class CardTypeCreature extends CardType {
     private final List<IAttack> attacks;
 
     public CardTypeCreature(Amount baseHP, List<Attribute> attributes, List<IAttack> attacks) {
-        super(CardTypeName.Creature, Arrays.asList(ActiveZoneType.Combat, ActiveZoneType.Reserve));
+        super(CardTypeName.Creature, new ArrayList<ActiveZoneType>(Arrays.asList(ActiveZoneType.Combat, ActiveZoneType.Reserve)));
         this.baseHP = baseHP;
         this.attributes = attributes;
         this.attacks = attacks;
