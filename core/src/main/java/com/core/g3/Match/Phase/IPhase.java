@@ -2,6 +2,7 @@ package com.core.g3.Match.Phase;
 
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Card;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Phase.Exceptions.AcctionNotPossibleException;
@@ -28,7 +29,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default void attack(CardInGame card, IAttackable attackable){
+    default void attack(CardInGame card, Amount index, IAttackable attackable){
         throw new AcctionNotPossibleException();
     }
 

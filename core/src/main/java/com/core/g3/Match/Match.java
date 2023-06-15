@@ -1,9 +1,12 @@
 package com.core.g3.Match;
 
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.Creature.Attribute;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Phase.IPhase;
 import com.core.g3.Match.Phase.InitialPhase;
@@ -82,13 +85,17 @@ public class Match implements IMatch {
 
     @Override
     public void attackCreature(ICard creature, int index, ICard target) {
-
+        Player rival = this.turn.equals(this.bluePlayer) ? greenPlayer : bluePlayer;
+        CardInGame cig = this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
+        IAttackable targetAttackable = rival.getAttackable(target);
+        this.phase.attack(cig,new Amount(index),targetAttackable);
     }
 
     @Override
     public void attackPlayer(ICard creature, int index) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attackPlayer'");
+        Player rival = this.turn.equals(this.bluePlayer) ? greenPlayer : bluePlayer;
+        CardInGame cig = this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
+        this.phase.attack(cig,new Amount(index),rival);
     }
 
     @Override
