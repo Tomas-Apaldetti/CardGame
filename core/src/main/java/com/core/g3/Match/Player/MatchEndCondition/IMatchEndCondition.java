@@ -12,15 +12,15 @@ public interface IMatchEndCondition extends IAttackable {
 
     int getNumeric();
 
-    default public void receiveAttack(Amount damage) {
+    default void receiveAttack(Amount damage) {
         throw new AttackCanNotBeDoneToMatchEndConditionException();
     }
 
-    default public void destroy() {
+    default void destroy() {
         throw new AttackCanNotBeDoneToMatchEndConditionException();
     }
 
-    default public void heal(Amount heal) {
+    default void heal(Amount heal) {
         throw new AttackCanNotBeDoneToMatchEndConditionException();
     }
 }

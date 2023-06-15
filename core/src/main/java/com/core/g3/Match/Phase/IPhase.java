@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface IPhase {
 
-    default ICard summon(ICard card, ActiveZoneType zone, Player player) {
+    default IPhase summon(ICard card, ActiveZoneType zone){
         throw new AcctionNotPossibleException();
     }
 
@@ -44,4 +44,5 @@ public interface IPhase {
     default void applyLingeringEffects(List<ILingeringEffect> effectsToApply, Player activePlayer) {
         return;
     }
+    Player activePlayer();
 }

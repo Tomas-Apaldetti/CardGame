@@ -7,14 +7,22 @@ import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class MainPhase implements IPhase {
+    private final Player current;
+    private final Player rival;
+
+    public MainPhase(Player current, Player rival){
+        this.current = current;
+        this.rival = rival;
+    }
     @Override
-    public ICard summon(ICard card, ActiveZoneType zone, Player player) {
-        player.summonInZone(card, zone);
-        return card;
+    public IPhase summon(ICard card, ActiveZoneType zone){
+        this.current.summonInZone(card, zone);
+        return this;
     }
 
     @Override
-    public IPhase useArtefact(CardInGame card, Player player) {
+    public IPhase useArtefact(CardInGame card, Player player){
+
         throw new AcctionNotPossibleException();
     }
 
@@ -30,5 +38,10 @@ public class MainPhase implements IPhase {
     @Override
     public void moveCreature(CardInGame card, ActiveZoneType zoneToMove) {
         throw new AcctionNotPossibleException();
+    }
+
+    @Override
+    public Player activePlayer() {
+        return null;
     }
 }

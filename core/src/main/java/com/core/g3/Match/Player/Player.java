@@ -227,8 +227,9 @@ public class Player implements IAttackable {
         this.hand.add(card);
     }
 
+    @Override
     public boolean isAttackable() {
-        return false;
+        return this.condition.isAttackable();
     }
 
     @Override

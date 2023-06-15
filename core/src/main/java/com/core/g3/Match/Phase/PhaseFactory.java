@@ -1,19 +1,21 @@
 package com.core.g3.Match.Phase;
 
 
+import com.core.g3.Match.Player.Player;
+
 public class PhaseFactory {
-    public static IPhase createNewPhase(PhaseType type) {
+    public static IPhase createNewPhase(PhaseType type, Player current, Player rival) {
         switch (type) {
             case Initial:
-                return new InitialPhase();
+                return new InitialPhase(current, rival);
             case Main:
                 return new MainPhase();
             case Attack:
-                return new AttackPhase();
+                return new AttackPhase(current, rival);
             case End:
                 return new EndPhase();
             default:
-                return new InitialPhase();
+                throw new RuntimeException();
         }
     }
 }

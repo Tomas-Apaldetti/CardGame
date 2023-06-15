@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.CardType;
@@ -42,7 +43,7 @@ public class CardTypeCreature extends CardType {
 
     @Override
     public boolean canAttack(){
-        return true;
+        return !this.attacks.isEmpty();
     }
 
     @Override

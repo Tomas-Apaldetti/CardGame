@@ -8,10 +8,8 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
-import com.core.g3.Match.Phase.IPhase;
-import com.core.g3.Match.Phase.InitialPhase;
-import com.core.g3.Match.Phase.PhaseFactory;
-import com.core.g3.Match.Phase.PhaseType;
+import com.core.g3.Match.Phase.*;
+import com.core.g3.Match.Phase.Exceptions.CurrentPhaseIsNotOfUserException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -25,32 +23,32 @@ public class Match implements IMatch {
     private Player bluePlayer;
     private Player greenPlayer;
     private GameMode gameMode;
-    private Player turn;
     private IPhase phase;
 
     public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
         this.bluePlayer = bluePlayer;
         this.greenPlayer = greenPlayer;
         this.gameMode = gameMode;
-        this.turn = null;
-        this.phase = null;
+        this.phase = new NotPlayable();
     }
 
     @Override
     public void startMatch(PlayerZone firstTurn) {
         this.gameMode.drawInitialCards(bluePlayer);
         this.gameMode.drawInitialCards(greenPlayer);
-        this.turn = this.getPlayer(firstTurn);
-        this.phase = new InitialPhase();
+        Player pFirst = this.getPlayer(firstTurn);
+        Player rival = this.getRival(pFirst);
+        this.phase = new InitialPhase(pFirst, rival);
     }
 
     public void skipToPhase(PlayerZone player, PhaseType phase) {
-        this.turn = this.getPlayer(player);
-        this.phase = PhaseFactory.createNewPhase(phase);
+        Player curr = this.getPlayer(player);
+        Player rival = this.getRival(curr);
+        this.phase = PhaseFactory.createNewPhase(phase, curr, rival);
     }
 
     public Player getCurrentPlayerTurn() {
-        return this.turn;
+        return this.phase.activePlayer();
     }
 
     @Override
@@ -59,16 +57,17 @@ public class Match implements IMatch {
     }
 
     @Override
-    public ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
-        Player player = filterPlayer(side);
-        ICard cardToPlay = player.getCardByCardName(cardName);
-        return this.phase.summon(cardToPlay, zone, player);
+    public void summon(PlayerZone side, CardName cardName, ActiveZoneType zone) {
+        this.assertCurrentPlayer(side);
+        Player currentP = this.phase.activePlayer();
+        ICard cardToPlay = currentP.getCardByCardName(cardName);
+        this.phase = this.phase.summon(cardToPlay, zone);
     }
 
     @Override
-    public void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer,
-            List<ICard> targetCards) {
-        Player player = filterPlayer(playerZone);
+    public void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer, List<ICard> targetCards) {
+        this.assertCurrentPlayer(playerZone);
+        Player player = this.phase.activePlayer();
         ICard cardToPlay = player.getCardByCardName(cardName);
         Player playerToReact = optionalFilterPlayer(targetPlayer);
         this.phase = this.phase.useAction(cardToPlay, player, index, playerToReact, targetCards);
@@ -77,7 +76,7 @@ public class Match implements IMatch {
     @Override
     public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone,
             List<ICard> targets) {
-
+            
     }
 
     @Override
@@ -145,4 +144,16 @@ public class Match implements IMatch {
         }
     }
 
+    private Player getRival(Player toWhom){
+        if(this.bluePlayer.equals(toWhom)){
+            return this.greenPlayer;
+        }
+        return this.bluePlayer;
+    }
+
+    private void assertCurrentPlayer(PlayerZone zone){
+        if(!this.getPlayer(zone).equals(this.phase.activePlayer())){
+            throw new CurrentPhaseIsNotOfUserException();
+        }
+    }
 }

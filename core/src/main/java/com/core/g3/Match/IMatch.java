@@ -33,7 +33,7 @@ public interface IMatch {
 
     void skipToPhase(PlayerZone player, PhaseType phase);
 
-    ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone);
+    void summon(PlayerZone side, CardName cardName, ActiveZoneType zone);
 
     void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer, List<ICard> targetCards);
 

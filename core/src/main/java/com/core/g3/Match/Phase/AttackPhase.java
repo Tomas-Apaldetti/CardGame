@@ -6,7 +6,19 @@ import com.core.g3.Match.CardInGame.CardInGame;
 
 public class AttackPhase implements IPhase {
 
-    public void attack(CardInGame card, Amount index, IAttackable attackable) {
-        // card.attack(index,attackable);
+    private final Player current;
+    private final Player rival;
+
+    public AttackPhase(Player current, Player rival){
+        this.current = current;
+        this.rival = rival;
+    }
+    public void attack(CardInGame card, Amount index, IAttackable attackable){
+        card.attack(attackable,this.current, this.rival, index);
+    }
+
+    @Override
+    public Player activePlayer() {
+        return this.current;
     }
 }

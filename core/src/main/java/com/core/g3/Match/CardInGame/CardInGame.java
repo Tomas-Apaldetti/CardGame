@@ -3,6 +3,7 @@ package com.core.g3.Match.CardInGame;
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
+import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Reaction.IReaction;
 import com.core.g3.Card.Attack.IAttackable;
@@ -61,10 +62,15 @@ public class CardInGame implements IAttackable {
         this.currentZone.addCard(this);
     }
 
-    public OriginalAction attack(CardInGame victim, Player user, Player rival, Amount with) {
+    public OriginalAction attack(IAttackable victim, Player user, Player rival, Amount with) {
         if (!this.attackState.canAttack(with.value())) {
             throw new CardCantAttackException();
         }
+
+        if(!victim.isAttackable()){
+            throw new CantAttackToVictimException();
+        }
+
         this.attackState.deplete();
         return this.base.attack(new OriginalAction(this), victim, user, rival, with.value());
     }
