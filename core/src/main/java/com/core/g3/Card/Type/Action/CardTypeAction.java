@@ -1,7 +1,5 @@
 package com.core.g3.Card.Type.Action;
 
-import java.util.List;
-
 import com.core.g3.Card.Action.IAction;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Cost.ICost;

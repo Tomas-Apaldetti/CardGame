@@ -1,40 +1,47 @@
 package com.core.g3.Card;
 
 import com.core.g3.Card.Cards.Alchemist;
+import com.core.g3.Card.Cards.Antimagic;
+import com.core.g3.Card.Cards.BlockReaction;
+import com.core.g3.Card.Cards.Corrosion;
+import com.core.g3.Card.Cards.Drain;
 import com.core.g3.Card.Cards.FireEnergy;
+import com.core.g3.Card.Cards.Goblin;
+import com.core.g3.Card.Cards.Hospital;
+import com.core.g3.Card.Cards.MagicBarrier;
+import com.core.g3.Card.Cards.MagicSword;
 import com.core.g3.Card.Cards.PlantEnergy;
 import com.core.g3.Card.Cards.WaterEnergy;
 
 public class CardFactory {
     public static Card createCard(CardName name) {
-        // create a card based on the name from CardName
         switch (name) {
             case WaterEnergy:
                 return WaterEnergy.create();
             case Alchemist:
                 return Alchemist.create();
             case Antimagic:
-                break;
+                return Antimagic.create();
             case BlockReaction:
-                break;
+                return BlockReaction.create();
             case Corrosion:
-                break;
+                return Corrosion.create();
             case Drain:
-                break;
+                return Drain.create();
             case FireEnergy:
                 return FireEnergy.create();
             case Goblin:
-                break;
+                return Goblin.create();
             case Hospital:
-                break;
+                return Hospital.create();
             case Inventor:
                 break;
             case MagicBarrier:
-                break;
+                return MagicBarrier.create();
             case MagicDrill:
                 break;
             case MagicSword:
-                break;
+                return MagicSword.create();
             case Orc:
                 break;
             case PlantEnergy:
