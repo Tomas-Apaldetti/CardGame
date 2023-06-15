@@ -22,4 +22,11 @@ public class DrawCard implements IEffect {
                 .forEach(i -> this.user.drawCard());
         return new ArrayList<>();
     }
+
+    @Override
+    public List<ILingeringEffect> apply(Integer times) {
+        IntStream.range(0, this.value.value() * times)
+                .forEach(i -> this.user.drawCard());
+        return new ArrayList<>();
+    }
 }

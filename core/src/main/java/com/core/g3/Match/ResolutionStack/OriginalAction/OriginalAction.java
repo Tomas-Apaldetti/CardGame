@@ -78,7 +78,9 @@ public class OriginalAction implements IOriginal {
 
     @Override
     public void duplicate() {
-        // @TODO
+        for (IEffect effect: this.effects){
+            this.lingerings.addAll(effect.apply(2));
+        }
     }
 
     @Override
