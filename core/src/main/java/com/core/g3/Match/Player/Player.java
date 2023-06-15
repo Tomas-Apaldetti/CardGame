@@ -67,7 +67,7 @@ public class Player implements IAttackable {
                 this.summonInZone(card, this.combatZone);
             } else if (zone.equals(ActiveZoneType.Reserve)) {
                 this.summonInZone(card, this.reserveZone);
-            } else if (zone.equals(ActiveZoneType.Artefacts)) {
+            } else if (zone.equals(ActiveZoneType.Artifacts)) {
                 this.summonInZone(card, this.artifactZone);
             }
         } else {
@@ -228,7 +228,7 @@ public class Player implements IAttackable {
             return this.combatZone;
         } else if (activeZoneType.equals(ActiveZoneType.Reserve)) {
             return this.reserveZone;
-        } else if (activeZoneType.equals(ActiveZoneType.Artefacts)) {
+        } else if (activeZoneType.equals(ActiveZoneType.Artifacts)) {
             return this.artifactZone;
         }
         throw new RuntimeException("Invalid active zone type");

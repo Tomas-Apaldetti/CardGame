@@ -35,7 +35,7 @@ public abstract class GameMode {
 
         IMatchEndCondition condition = this.getCondition();
 
-        ActiveZone artifactZone = new ActiveZone(ActiveZoneType.Artefacts, new Amount(this.artifactZoneLimit));
+        ActiveZone artifactZone = new ActiveZone(ActiveZoneType.Artifacts, new Amount(this.artifactZoneLimit));
         ActiveZone combatZone = new ActiveZone(ActiveZoneType.Combat, new Amount(this.combatZoneLimit));
         ActiveZone reserveZone = new ActiveZone(ActiveZoneType.Reserve, new Amount(this.reserveZoneLimit));
 

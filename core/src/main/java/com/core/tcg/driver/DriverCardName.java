@@ -1,6 +1,7 @@
 package com.core.tcg.driver;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum DriverCardName {
@@ -27,14 +28,14 @@ public enum DriverCardName {
 
     /**
      * @return A list of length count, starting with prefix, followed by the
-     *         full card list looped as necessary
+     * full card list looped as necessary
      */
     public static List<DriverCardName> loopedCardNames(int count, Stream<DriverCardName> prefix) {
         DriverCardName[] arr = DriverCardName.values();
         Stream<DriverCardName> loopedArr = Stream
                 .iterate(0, i -> (i + 1) % arr.length)
                 .map(i -> arr[i]);
-        return Stream.concat(prefix, loopedArr).limit(count).toList();
+        return Stream.concat(prefix, loopedArr).limit(count).collect(Collectors.toList());
     }
 
     public static List<DriverCardName> loopedCardNames(int count) {
