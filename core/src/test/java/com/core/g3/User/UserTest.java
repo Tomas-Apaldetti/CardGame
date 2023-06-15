@@ -14,7 +14,7 @@ public class UserTest {
         user.credit(new Amount(10));
         CardName cardName = CardName.Alchemist;
         Card newCardToBuy = CardFactory.createCard(cardName);
-        user.buyCard(newCardToBuy);
+        user.buyCards(cardName,1);
         user.addCardToDeck("deck", cardName, 1);
         assert (user.countCards(cardName) == 1);
     }
@@ -24,12 +24,7 @@ public class UserTest {
         User user = new User("user");
         user.credit(new Amount(10));
         CardName cardName = CardName.Alchemist;
-        Card newCardToBuy = CardFactory.createCard(cardName);
-        Card secondCardToBuy = CardFactory.createCard(cardName);
-        Card thirdCardToBuy = CardFactory.createCard(cardName);
-        user.buyCard(newCardToBuy);
-        user.buyCard(secondCardToBuy);
-        user.buyCard(thirdCardToBuy);
+        user.buyCards(cardName,3);
         user.addCardToDeck("deck", cardName, 2);
         assert (user.countCards(cardName) == 3);
         assert (user.getDeckInventory().getDeck("deck").getCards().size() == 2);
@@ -46,9 +41,7 @@ public class UserTest {
 
         for (int i = 0; i < cardNames.length; i++) {
             CardName cardName = cardNames[i];
-            user.buyCard(CardFactory.createCard(cardName));
-            user.buyCard(CardFactory.createCard(cardName));
-            user.buyCard(CardFactory.createCard(cardName));
+            user.buyCards(cardName,3);
 
             user.addCardToDeck("deck", cardName, 3);
         }
