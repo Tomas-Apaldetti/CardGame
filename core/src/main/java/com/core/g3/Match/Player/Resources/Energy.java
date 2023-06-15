@@ -1,7 +1,6 @@
 package com.core.g3.Match.Player.Resources;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import com.core.g3.Commons.Amount;
 

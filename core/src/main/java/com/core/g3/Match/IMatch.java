@@ -1,6 +1,5 @@
 package com.core.g3.Match;
 
-import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.Phase.PhaseType;

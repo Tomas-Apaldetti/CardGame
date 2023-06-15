@@ -10,7 +10,6 @@ import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
-import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.tcg.driver.Adapter.DriverMapper;
@@ -116,6 +115,17 @@ public class Player implements IAttackable {
     }
 
     public void consumeMax(Amount value) {
+        Optional<EnergyType> a = this.getMaxEnergyType();
+        if (!a.isPresent()) {
+            return;
+        }
+        IResource maxEnergy = this.getEnergy(a.get());
+
+        if (!value.gt(new Amount(maxEnergy.available()))) {
+            this.consume(this.getMaxEnergyType(), new Amount(maxEnergy.available()));
+            return;
+        }
+
         this.consume(this.getMaxEnergyType(), value);
     }
 

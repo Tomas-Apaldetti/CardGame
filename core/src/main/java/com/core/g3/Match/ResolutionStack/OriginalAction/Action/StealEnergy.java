@@ -1,7 +1,11 @@
 package com.core.g3.Match.ResolutionStack.OriginalAction.Action;
 
+import java.util.ArrayList;
+
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
+import com.core.g3.Match.ResolutionStack.LingeringEffect.OnInitialDrain;
 
 public class StealEnergy implements IEffect {
 
@@ -14,7 +18,9 @@ public class StealEnergy implements IEffect {
     }
 
     @Override
-    public void apply() {
-        this.user.consumeMax(this.value);
+    public ArrayList<ILingeringEffect> apply() {
+        ArrayList<ILingeringEffect> l = new ArrayList<ILingeringEffect>();
+        l.add(new OnInitialDrain(this.value, this.user));
+        return l;
     }
 }

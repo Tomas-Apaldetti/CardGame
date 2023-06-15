@@ -1,6 +1,6 @@
 package com.core.g3.Card.Type;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
@@ -22,11 +22,12 @@ public abstract class CardType implements ICardType {
 
     protected CardType(CardTypeName type) {
         this.type = type;
-        this.allowedZones = new ArrayList<>();
+        this.allowedZones = Arrays.asList(ActiveZoneType.Temporal);
     }
 
     protected CardType(CardTypeName type, List<ActiveZoneType> allowedZones) {
         this.type = type;
+        allowedZones.add(ActiveZoneType.Temporal);
         this.allowedZones = allowedZones;
     }
 

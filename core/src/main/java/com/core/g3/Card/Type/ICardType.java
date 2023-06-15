@@ -18,7 +18,6 @@ public interface ICardType {
 
     boolean isSummonableIn(ActiveZoneType zoneType);
 
-
     List<ActiveZoneType> getAllowableZones();
 
     boolean canAttack();

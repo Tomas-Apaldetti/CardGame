@@ -10,7 +10,6 @@ import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
 import com.core.g3.Match.Zone.Exceptions.CardNotInZoneException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class ActiveZone {
     private boolean isActive;
 
     public ActiveZone(ActiveZoneType zoneType, Amount limit) {
-        this(zoneType,limit,true);
+        this(zoneType, limit, true);
     }
 
     public ActiveZone(ActiveZoneType zoneType, Amount limit, boolean isActive) {
@@ -52,14 +51,14 @@ public class ActiveZone {
         this.cards.add(livingCard);
     }
 
-    public void addCard(CardInGame card){
+    public void addCard(CardInGame card) {
         Amount size = card.getBase().summonIn(this.zoneType);
         this.cardsSize.add(size);
         this.cards.add(card);
     }
 
-    public void remove(CardInGame card){
-        if(!this.cards.contains(card)){
+    public void remove(CardInGame card) {
+        if (!this.cards.contains(card)) {
             throw new CardNotInZoneException();
         }
         Amount size = card.getBase().summonIn(this.zoneType);
@@ -67,21 +66,22 @@ public class ActiveZone {
         this.cardsSize.subtract(size);
     }
 
-    public List<IAttackable> getCreatures(Attribute attrFilter){
+    public List<IAttackable> getCreatures(Attribute attrFilter) {
         return this.cards.stream()
                 .filter(card -> {
                     Optional<List<Attribute>> cAttr = card.getCreatureAttributes();
                     return cAttr.isPresent() && cAttr.get().contains(attrFilter);
-                }).map( c -> (IAttackable) c).collect(Collectors.toList());
+                }).map(c -> (IAttackable) c).collect(Collectors.toList());
     }
-    public int currentCardCount(){
+
+    public int currentCardCount() {
         return this.cards.size();
     }
 
     public List<IAttackable> getCreatures() {
         return this.cards.stream().filter(card -> {
             return card.getCreatureAttributes().isPresent();
-        }).map( c -> (IAttackable) c).collect(Collectors.toList());
+        }).map(c -> (IAttackable) c).collect(Collectors.toList());
     }
 
     public boolean countsAsActive() {

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.CardTypeName;
-import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Artefact.IArtefactEffect;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
