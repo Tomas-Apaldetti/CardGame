@@ -2,7 +2,7 @@ package com.core.tcg.driver.Adapter;
 
 import com.core.g3.Card.CardName;
 import com.core.g3.Deck.ICard;
-import com.core.g3.Match.IMatch;
+import com.core.g3.Match.Match;
 import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class MatchDriverClass implements MatchDriver<ICard> {
-    private IMatch match;
+    private Match match;
 
-    public MatchDriverClass(IMatch match) {
+    public MatchDriverClass(Match match) {
         this.match = match;
     }
 
@@ -41,7 +41,8 @@ public class MatchDriverClass implements MatchDriver<ICard> {
     }
 
     @Override
-    public ICard summon(DriverMatchSide player, DriverCardName card, DriverActiveZone zone) {
+    public ICard summon(DriverMatchSide player, DriverCardName card,
+            DriverActiveZone zone) {
         PlayerZone playerZone = DriverMapper.toPlayerZone(player);
         CardName cardName = DriverMapper.toCardName(card);
         ActiveZoneType activeZoneType = DriverMapper.toActiveZoneType(zone);

@@ -1,6 +1,5 @@
 package com.core.g3.Match.Phase;
 
-
 import com.core.g3.Match.Player.Player;
 
 public class PhaseFactory {
@@ -9,7 +8,7 @@ public class PhaseFactory {
             case Initial:
                 return new InitialPhase(current, rival);
             case Main:
-                return new MainPhase();
+                return new MainPhase(current, rival);
             case Attack:
                 return new AttackPhase(current, rival);
             case End:

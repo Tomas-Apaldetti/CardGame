@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Facade for the TCG game matches, to allow for multiple implementations.<p>
+ * Facade for the TCG game matches, to allow for multiple implementations.
+ * <p>
  *
  * Reactions may only happen within reaction windows
  * (see {@link MatchDriver#startReactionWindow}),
@@ -14,7 +15,7 @@ import java.util.Optional;
 public interface MatchDriver<CardReference> {
     /**
      * @return The player's deck, where the Nth card is what they will draw
-     * in their Nth card draw
+     *         in their Nth card draw
      */
     List<DriverCardName> deckOrder(DriverMatchSide player);
 
@@ -40,6 +41,7 @@ public interface MatchDriver<CardReference> {
 
     /**
      * Play one card from the player's hand into the given zone
+     * 
      * @return Reference to the newly placed card
      * @throws RuntimeException if the summon can't complete as indicated
      */
@@ -53,12 +55,14 @@ public interface MatchDriver<CardReference> {
 
     /**
      * Perform the given creature's attack at index, against the target
+     * 
      * @throws RuntimeException if the attack can't complete as indicated
      */
     void attackCreature(CardReference creature, int index, CardReference target);
 
     /**
      * Perform the given creature's attack at index, against the opposing player
+     * 
      * @throws RuntimeException if the attack can't complete as indicated
      */
     void attackPlayer(CardReference creature, int index);
@@ -66,14 +70,14 @@ public interface MatchDriver<CardReference> {
     /**
      * Activate an artifact in the player's active zones, supplying targets if
      * the specific card needs them
+     * 
      * @throws RuntimeException if the artifact can't be activated as indicated
      */
     void activateArtifact(
             CardReference artifact,
             int index,
             Optional<DriverMatchSide> targetPlayer,
-            List<CardReference> targets
-    );
+            List<CardReference> targets);
 
     default void activateArtifact(CardReference artifact) {
         activateArtifact(artifact, 0, Optional.empty(), new ArrayList<>());
@@ -82,6 +86,7 @@ public interface MatchDriver<CardReference> {
     /**
      * Play an action from the player's hand, supplying targets if the specific
      * card needs them
+     * 
      * @throws RuntimeException if the action can't be activated as indicated
      */
     void activateAction(
@@ -89,8 +94,7 @@ public interface MatchDriver<CardReference> {
             DriverCardName card,
             int index,
             Optional<DriverMatchSide> targetPlayer,
-            List<CardReference> targetCards
-    );
+            List<CardReference> targetCards);
 
     /**
      * Start a reaction window, within which players may play reactions
@@ -115,25 +119,25 @@ public interface MatchDriver<CardReference> {
     /**
      * Play a reaction from the player's hand, supplying targets if the specific
      * card needs them
+     * 
      * @throws RuntimeException if the reaction can't be activated as indicated
      */
     void activateReactionFromHand(
             DriverMatchSide player,
             DriverCardName card,
             Optional<DriverMatchSide> targetPlayer,
-            List<CardReference> targetCards
-    );
+            List<CardReference> targetCards);
 
     /**
      * Play a reaction from the player's active zones, supplying targets if the
      * specific card needs them
+     * 
      * @throws RuntimeException if the reaction can't be activated as indicated
      */
     void activateReactionFromActiveZone(
             CardReference card,
             Optional<DriverMatchSide> targetPlayer,
-            List<CardReference> targetCards
-    );
+            List<CardReference> targetCards);
 
     /**
      * @return The player's current health

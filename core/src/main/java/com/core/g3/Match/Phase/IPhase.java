@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface IPhase {
 
-    default IPhase summon(ICard card, ActiveZoneType zone){
+    default IPhase summon(ICard card, ActiveZoneType zone) {
         throw new AcctionNotPossibleException();
     }
 
@@ -21,7 +21,11 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useAction(ICard card, Player player, int index, Player targetPlayer, List<ICard> targetCards) {
+    default IPhase useAction(ICard card, Player targetPlayer) {
+        throw new AcctionNotPossibleException();
+    }
+
+    default IPhase useAction(ICard card, List<ICard> targetCards) {
         throw new AcctionNotPossibleException();
     }
 
@@ -44,5 +48,6 @@ public interface IPhase {
     default void applyLingeringEffects(List<ILingeringEffect> effectsToApply, Player activePlayer) {
         return;
     }
+
     Player activePlayer();
 }

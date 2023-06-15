@@ -30,6 +30,7 @@ public class Player implements IAttackable {
     private ActiveZone combatZone;
     private ActiveZone reserveZone;
     private PlayerEnergies energies;
+    private PlayerZone zone;
 
     public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone) {
@@ -42,6 +43,21 @@ public class Player implements IAttackable {
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
+        this.zone = null; // @TODO: change imp
+    }
+
+    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
+            ActiveZone combatZone, ActiveZone reserveZone, PlayerZone zone) {
+        this.account = account;
+        this.condition = condition;
+        this.deck = deck;
+        this.hand = new CardContainer();
+        this.discard = new CardContainer();
+        this.artifactZone = artifactZone;
+        this.combatZone = combatZone;
+        this.reserveZone = reserveZone;
+        this.energies = new PlayerEnergies();
+        this.zone = zone; // @TODO: remove opt
     }
 
     public void addCardToHand(ICard card) {
@@ -200,11 +216,11 @@ public class Player implements IAttackable {
 
     public IAttackable getAttackable(ICard card) {
         IAttackable cig = this.artifactZone.getCardInGame(card);
-        if(cig != null){
+        if (cig != null) {
             return cig;
         }
         cig = this.combatZone.getCardInGame(card);
-        if(cig != null){
+        if (cig != null) {
             return cig;
         }
         cig = this.reserveZone.getCardInGame(card);
@@ -256,5 +272,9 @@ public class Player implements IAttackable {
             return this.artifactZone;
         }
         throw new RuntimeException("Invalid active zone type");
+    }
+
+    public PlayerZone getZone() {
+        return this.zone;
     }
 }

@@ -34,7 +34,7 @@ public class ActiveZone {
         this.isActive = isActive;
     }
 
-    public void addCard(ICard card, Player player) {
+    public CardInGame addCard(ICard card, Player player) {
         Amount size = card.summonIn(this.zoneType);
 
         size.add(this.cardsSize);
@@ -49,6 +49,8 @@ public class ActiveZone {
 
         this.cardsSize = size;
         this.cards.add(livingCard);
+
+        return livingCard;
     }
 
     public void addCard(CardInGame card) {
@@ -88,9 +90,9 @@ public class ActiveZone {
         return this.isActive;
     }
 
-    public CardInGame getCardInGame(ICard card){
-        for (CardInGame cig: this.cards){
-            if(cig.getBase().equals(card)){
+    public CardInGame getCardInGame(ICard card) {
+        for (CardInGame cig : this.cards) {
+            if (cig.getBase().equals(card)) {
                 return cig;
             }
         }

@@ -67,7 +67,7 @@ public class CardInGame implements IAttackable {
             throw new CardCantAttackException();
         }
 
-        if(!victim.isAttackable()){
+        if (!victim.isAttackable()) {
             throw new CantAttackToVictimException();
         }
 
