@@ -8,6 +8,8 @@ import com.core.g3.Match.Phase.Exceptions.AcctionNotPossibleException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
+import java.util.List;
+
 public interface IPhase {
 
     default ICard summon(ICard card, ActiveZoneType zone, Player player){
@@ -18,7 +20,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useAction(ICard card, Player player){
+    default IPhase useAction(ICard card, Player player, int index, Player targetPlayer, List<ICard> targetCards){
         throw new AcctionNotPossibleException();
     }
 

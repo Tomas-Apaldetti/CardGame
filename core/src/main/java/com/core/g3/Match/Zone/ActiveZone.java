@@ -87,4 +87,13 @@ public class ActiveZone {
     public boolean countsAsActive() {
         return this.isActive;
     }
+
+    public CardInGame getCardInGame(ICard card){
+        for (CardInGame cig: this.cards){
+            if(cig.getBase().equals(card)){
+                return cig;
+            }
+        }
+        return null;
+    }
 }

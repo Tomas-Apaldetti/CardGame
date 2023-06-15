@@ -6,10 +6,12 @@ import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.Type.ICardType;
 import com.core.g3.Card.Type.CardTypeName;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Phase.Exceptions.AcctionNotPossibleException;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.Zone.ActiveZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public class MainPhase implements IPhase {
@@ -24,10 +26,12 @@ public class MainPhase implements IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    @Override
-    public IPhase useAction(ICard card, Player player){
-        throw new AcctionNotPossibleException();
-    }
+//    @Override
+//    public IPhase useAction(ICard card, Player player, int index, Player targetPlayer, List<ICard> targetCards){
+//        ActiveZone az = new ActiveZone(ActiveZoneType.Temporal,new Amount(Integer.MAX_VALUE));
+//        player.summonInZone(card,az);
+//        CardInGame cig = az.getCardInGame(card);
+//    }
 
     @Override
     public void moveCreature(CardInGame card, ActiveZoneType zoneToMove){

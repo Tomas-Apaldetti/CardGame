@@ -56,4 +56,6 @@ public interface ICard {
     void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 
     Optional<List<Attribute>> getCreatureAttributes();
+
+    int getCreatureHP();
 }

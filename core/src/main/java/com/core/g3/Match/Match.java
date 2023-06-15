@@ -2,6 +2,7 @@ package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
+import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Phase.IPhase;
@@ -62,8 +63,11 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targetCards) {
-
+    public void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer, List<ICard> targetCards) {
+        Player player = filterPlayer(playerZone);
+        ICard cardToPlay = player.getCardByCardName(cardName);
+        Player playerToReact = optionalFilterPlayer(targetPlayer);
+        this.phase = this.phase.useAction(cardToPlay,player,index,playerToReact,targetCards);
     }
 
     @Override
@@ -73,8 +77,7 @@ public class Match implements IMatch {
 
     @Override
     public int getCreatureHitpoints(ICard card) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");
+        return card.getCreatureHP();
     }
 
     @Override
@@ -107,6 +110,13 @@ public class Match implements IMatch {
 
     private Player filterPlayer(PlayerZone side) {
         return side.equals(PlayerZone.Blue) ? bluePlayer : greenPlayer;
+    }
+
+    private Player optionalFilterPlayer(Optional<PlayerZone> side) {
+        if(side.isPresent()) {
+            return side.get().equals(PlayerZone.Blue) ? bluePlayer : greenPlayer;
+        }
+        return null;
     }
 
     private PlayerZone getPlayerSide(Player player) {

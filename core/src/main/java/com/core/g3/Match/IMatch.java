@@ -36,7 +36,7 @@ public interface IMatch {
 
     ICard summon(PlayerZone side, CardName cardName, ActiveZoneType zone);
 
-    void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targetCards);
+    void activateAction(PlayerZone playerZone, CardName cardName, int index, Optional<PlayerZone> targetPlayer, List<ICard> targetCards);
 
     void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone, List<ICard> targets);
 }
