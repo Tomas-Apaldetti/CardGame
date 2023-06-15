@@ -14,6 +14,9 @@ import com.core.g3.Card.Cards.MagicDrill;
 import com.core.g3.Card.Cards.MagicSword;
 import com.core.g3.Card.Cards.Orc;
 import com.core.g3.Card.Cards.PlantEnergy;
+import com.core.g3.Card.Cards.Recycle;
+import com.core.g3.Card.Cards.Resonance;
+import com.core.g3.Card.Cards.Saboteur;
 import com.core.g3.Card.Cards.WaterEnergy;
 
 public class CardFactory {
@@ -52,7 +55,7 @@ public class CardFactory {
             case Recycle:
                 break;
             case Resonance:
-                break;
+                return Resonance.create();
             case Saboteur:
                 break;
             case Sacrifice:
