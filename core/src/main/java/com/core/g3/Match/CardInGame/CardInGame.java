@@ -98,8 +98,8 @@ public class CardInGame implements IAttackable {
         return this.base.action(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction action(IAttackable victim, Player user, Player rival) {
-        if (!victim.isAttackable()) {
+    public OriginalAction action(List<IAttackable> victim, Player user, Player rival) {
+        if (victim.stream().anyMatch(v -> !v.isAttackable())) {
             throw new ActionNotUsableException();
         }
         return this.base.action(new OriginalAction(this), victim, user, rival);

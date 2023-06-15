@@ -8,6 +8,8 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.Action.StealEnergy;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
+import java.util.List;
+
 public class DrainEnergyAction implements IAction {
 
     private final Amount value;
@@ -24,7 +26,7 @@ public class DrainEnergyAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 }

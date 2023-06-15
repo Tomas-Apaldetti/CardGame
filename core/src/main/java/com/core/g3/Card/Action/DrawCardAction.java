@@ -1,5 +1,6 @@
 package com.core.g3.Card.Action;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
@@ -27,7 +28,7 @@ public class DrawCardAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 }

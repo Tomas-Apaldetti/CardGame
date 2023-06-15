@@ -50,7 +50,7 @@ public interface ICard {
 
     OriginalAction action(OriginalAction og, Player user, Player rival);
 
-    OriginalAction action(OriginalAction og, IAttackable affected, Player user, Player rival);
+    OriginalAction action(OriginalAction og, List<IAttackable> affected, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 

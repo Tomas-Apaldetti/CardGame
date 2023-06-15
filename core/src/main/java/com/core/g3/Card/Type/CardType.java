@@ -73,7 +73,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 

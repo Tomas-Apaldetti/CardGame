@@ -1,9 +1,9 @@
 package com.core.g3.Match.Phase;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.core.g3.Card.Card;
-import com.core.g3.Card.Attack.IAttack;
+import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -40,13 +40,20 @@ public class MainPhase implements IPhase {
     public IPhase useAction(ICard card, Player targetPlayer) {
         ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
         CardInGame cig = temporal.addCard(card, this.current);
-        OriginalAction og = cig.action(cig, this.current, targetPlayer);
+        OriginalAction og = cig.action(this.current, targetPlayer);
         ResolutionStack rstack = new ResolutionStack(og);
-        return new ReactionPhase(this.current, targetPlayer, rstack, this, temporal);
+        return new ReactionPhase(this.current, this.rival, rstack, this, temporal);
     }
 
-    public IPhase useAction(ICard card, List<ICard> targetCards) {
-        return null;
+    public IPhase useAction(ICard card, List<CardInGame> targetCards) {
+        ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
+        CardInGame cig = temporal.addCard(card, this.current);
+
+        List<IAttackable> attackables = targetCards.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
+
+        OriginalAction og = cig.action(attackables, this.current, this.rival);
+        ResolutionStack rstack = new ResolutionStack(og);
+        return new ReactionPhase(this.current, this.rival, rstack, this, temporal);
     }
 
     @Override

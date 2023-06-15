@@ -64,8 +64,10 @@ public class Match {
         return cardToPlay;
     }
 
-    public List<CardInGame> getCardInGame(List<ICard> cards) {
+    public List<CardInGame> getCardsInGame(List<ICard> cards) {
         List<CardInGame> cigs = new ArrayList<>();
+        cigs.addAll(this.turnManager.getPlayer().getCardsInGame(cards));
+        cigs.addAll(this.turnManager.getRival().getCardsInGame(cards));
         return cigs;
     }
 
@@ -80,7 +82,9 @@ public class Match {
             return;
         }
 
-        this.phase = this.phase.useAction(cardToPlay, targetCards);
+        List<CardInGame> cigs = this.getCardsInGame(targetCards);
+
+        this.phase = this.phase.useAction(cardToPlay, cigs);
     }
 
     public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone,
@@ -92,11 +96,12 @@ public class Match {
     }
 
     public void attackCreature(ICard creature, int index, ICard target) {
-        // Player rival = this.turnManager.getRival();
-        // CardInGame cig =
-        // this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
-        // IAttackable targetAttackable = rival.getAttackable(target);
-        // this.phase.attack(cig, new Amount(index), targetAttackable);
+         Player rival = this.turnManager.getRival();
+        List<CardInGame> cigs = this.getCardsInGame(targetCards);
+         CardInGame cig = this.getCardsInGame([creature]).get(0);
+         this.turn.seeActiveZone(ActiveZoneType.Combat).getCardInGame(creature);
+         IAttackable targetAttackable = rival.getAttackable(target);
+         this.phase.attack(cig, new Amount(index), targetAttackable);
     }
 
     public void attackPlayer(ICard creature, int index) {

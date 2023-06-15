@@ -25,7 +25,7 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useAction(ICard card, List<ICard> targetCards) {
+    default IPhase useAction(ICard card, List<CardInGame> targetCards) {
         throw new AcctionNotPossibleException();
     }
 

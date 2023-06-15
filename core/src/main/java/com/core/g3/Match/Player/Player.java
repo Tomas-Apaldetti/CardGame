@@ -6,6 +6,7 @@ import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardContainer.CardContainer;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
@@ -276,5 +277,13 @@ public class Player implements IAttackable {
 
     public PlayerZone getZone() {
         return this.zone;
+    }
+
+    public List<CardInGame> getCardsInGame(List<ICard> cards){
+        List<CardInGame> a = new ArrayList<>();
+        a.addAll(this.reserveZone.getCardsInGame(cards));
+        a.addAll(this.combatZone.getCardsInGame(cards));
+        a.addAll(this.artifactZone.getCardsInGame(cards));
+        return a;
     }
 }

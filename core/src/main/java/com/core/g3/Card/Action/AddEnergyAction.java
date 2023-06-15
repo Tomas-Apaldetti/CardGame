@@ -9,6 +9,8 @@ import com.core.g3.Match.ResolutionStack.OriginalAction.Action.AddEnergy;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
+import java.util.List;
+
 public class AddEnergyAction implements IAction {
 
     private final EnergyType type;
@@ -27,7 +29,7 @@ public class AddEnergyAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 

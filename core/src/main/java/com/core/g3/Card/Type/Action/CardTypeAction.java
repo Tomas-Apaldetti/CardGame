@@ -9,6 +9,8 @@ import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
+import java.util.List;
+
 public class CardTypeAction extends CardType {
 
     private final ICost useCost;
@@ -38,7 +40,7 @@ public class CardTypeAction extends CardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user) {
         return this.effect.apply(action, affected, user);
     }
 }

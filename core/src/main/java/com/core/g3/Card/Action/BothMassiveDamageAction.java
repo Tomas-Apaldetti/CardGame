@@ -32,7 +32,7 @@ public class BothMassiveDamageAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, IAttackable affected, Player user) {
+    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user) {
         throw new ActionNotUsableException();
     }
 }

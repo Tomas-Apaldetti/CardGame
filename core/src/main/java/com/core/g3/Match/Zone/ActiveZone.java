@@ -98,4 +98,14 @@ public class ActiveZone {
         }
         return null;
     }
+
+    public List<CardInGame> getCardsInGame(List<ICard> cards) {
+        return this.cards.stream()
+                .filter(cig -> cards.contains(cig.getBase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<CardInGame> getCardsInGame() {
+        return this.cards;
+    }
 }
