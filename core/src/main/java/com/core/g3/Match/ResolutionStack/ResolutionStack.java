@@ -1,5 +1,6 @@
 package com.core.g3.Match.ResolutionStack;
 
+import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 import com.core.g3.Match.ResolutionStack.OriginalAction.IOriginal;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.Reactions.Reaction;
@@ -35,6 +36,17 @@ public class ResolutionStack {
         }
 
         return Optional.ofNullable(this.reactionStack.subList(0,toIdx.get() - 1));
+    }
+
+    public List<ILingeringEffect> apply(){
+        List<ILingeringEffect> effects = new ArrayList<>();
+
+        effects.addAll(this.original.apply());
+        for(int i = this.reactionStack.size() - 1; i < 0; i--){
+            effects.addAll(this.reactionStack.get(i).apply(this));
+        }
+
+        return effects;
     }
 
     private Optional<Integer> getIdx(Reaction to){

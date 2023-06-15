@@ -41,11 +41,19 @@ public interface IPhase {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useReaction(CardInGame card) {
+    default IPhase useReaction(CardInGame card, List<CardInGame> targets) {
         throw new AcctionNotPossibleException();
     }
 
-    default IPhase useReaction(ICard card) {
+    default IPhase useReaction(ICard card, List<CardInGame> targets){
+        throw new AcctionNotPossibleException();
+    }
+
+    default IPhase useReaction(CardInGame card, Player target){
+        throw new AcctionNotPossibleException();
+    }
+
+    default IPhase useReaction(ICard card, Player target) {
         throw new AcctionNotPossibleException();
     }
 

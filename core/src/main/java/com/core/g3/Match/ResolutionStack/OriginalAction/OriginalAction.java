@@ -44,7 +44,7 @@ public class OriginalAction implements IOriginal {
         this.effects.add(effect);
     }
 
-    public void apply() {
+    public List<ILingeringEffect> apply() {
         if (!this.isCanceled) {
             if (this.damage.isPresent()) {
                 this.damage.get().apply();
@@ -56,6 +56,8 @@ public class OriginalAction implements IOriginal {
         if (this.discardOnUse) {
             this.source.discard();
         }
+
+        return this.lingerings;
     }
 
     @Override
