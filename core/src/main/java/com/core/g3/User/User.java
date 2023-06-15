@@ -125,7 +125,6 @@ public class User implements IBuyer, ISeller, IAccount {
 
                 deck.addCard(card);
                 cardsAdded++;
-                System.out.println(deckName + " " + card.getName());
                 if (cardsAdded == amount) {
                     break;
                 }

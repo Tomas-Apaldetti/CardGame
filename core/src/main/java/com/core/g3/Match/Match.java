@@ -2,7 +2,9 @@ package com.core.g3.Match;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardName;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.Phase.IPhase;
 import com.core.g3.Match.Phase.InitialPhase;
@@ -12,6 +14,7 @@ import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.List;
@@ -21,7 +24,7 @@ public class Match implements IMatch {
     private Player bluePlayer;
     private Player greenPlayer;
     private GameMode gameMode;
-    private Player turn;
+    public Player turn;
     private IPhase phase;
 
     public Match(Player bluePlayer, Player greenPlayer, GameMode gameMode) {
@@ -30,6 +33,11 @@ public class Match implements IMatch {
         this.gameMode = gameMode;
         this.turn = null;
         this.phase = null;
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        return this.turn;
     }
 
     @Override
@@ -74,19 +82,26 @@ public class Match implements IMatch {
         Player player = filterPlayer(side);
         ICard cardToPlay = player.getCardByCardName(cardName);
         this.phase.canSummon(cardToPlay);
-        System.out.println(cardToPlay.getAllowableZones());
+
         player.summonInZone(cardToPlay, zone);
     }
 
     @Override
     public int getCreatureHitpoints(Card card) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCreatureHitpoints'");
+        return card.getHealth().current();
     }
 
     @Override
     public void attackCreature(Card creature, int index, Card target) {
         this.phase.canAttack();
+        Player player = this.turn;
+        Player theOtherPlayer = this.turn.equals(this.bluePlayer) ? this.greenPlayer : this.bluePlayer;
+
+        CardInGame cardInGame = new CardInGame(player, creature, null);
+        CardInGame cardTarget = new CardInGame(player, target, null);
+
+        OriginalAction action = cardInGame.attack(cardTarget, player, theOtherPlayer, new Amount(index));
+        action.apply();
     }
 
     @Override
@@ -132,5 +147,4 @@ public class Match implements IMatch {
             return Optional.empty();
         }
     }
-
 }

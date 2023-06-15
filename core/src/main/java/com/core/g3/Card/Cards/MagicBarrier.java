@@ -25,7 +25,7 @@ public class MagicBarrier {
         ArrayList<Attribute> creatureAttributes = new ArrayList<>();
         creatureAttributes.add(Attribute.Magic);
         ArrayList<ActiveZoneType> allowedZones = new ArrayList<>();
-        allowedZones.add(ActiveZoneType.Artefacts);
+        allowedZones.add(ActiveZoneType.Artifacts);
         allowedZones.add(ActiveZoneType.Reserve);
         builder.cardTypeBuilder.setTypeCreature(baseHp, creatureAttributes, null, allowedZones);
 
