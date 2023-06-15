@@ -57,7 +57,7 @@ public class CardFactory {
             case Resonance:
                 return Resonance.create();
             case Saboteur:
-                break;
+                return Saboteur.create();
             case Sacrifice:
                 break;
             case Treason:
