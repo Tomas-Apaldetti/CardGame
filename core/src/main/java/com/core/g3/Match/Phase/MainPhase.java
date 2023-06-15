@@ -2,6 +2,8 @@ package com.core.g3.Match.Phase;
 
 import java.util.List;
 
+import com.core.g3.Card.Card;
+import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -36,29 +38,15 @@ public class MainPhase implements IPhase {
 
     @Override
     public IPhase useAction(ICard card, Player targetPlayer) {
-        /**
-         * Crear una zona temporal, cap infinita
-         * agregar la carta a la zona temporal
-         * llamar a la carta in OriginalAction = game.action para solo player
-         * Crear una fase de reaccion
-         * -- StackResolution
-         * -- Optional<La zona temporal>
-         * -- De quien es el turno
-         * -- Rival
-         * -- Quien es el que actua
-         */
-        // ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new
-        // Amount(Integer.MAX_VALUE), false);
-        // CardInGame cig = temporal.addCard(card, this.current);
-        // OriginalAction og = cig.action(cig, this.current, targetPlayer);
-        // ResolutionStack rstack = new ResolutionStack(og);
-        // return new ReactionPhase(this.current, targetPlayer, rstack, this);
-
-        throw new AcctionNotPossibleException();
+        ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
+        CardInGame cig = temporal.addCard(card, this.current);
+        OriginalAction og = cig.action(cig, this.current, targetPlayer);
+        ResolutionStack rstack = new ResolutionStack(og);
+        return new ReactionPhase(this.current, targetPlayer, rstack, this, temporal);
     }
 
     public IPhase useAction(ICard card, List<ICard> targetCards) {
-        throw new AcctionNotPossibleException();
+        return null;
     }
 
     @Override

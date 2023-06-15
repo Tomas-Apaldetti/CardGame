@@ -17,6 +17,7 @@ import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.TurnManager.TurnManager;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,11 @@ public class Match {
         ICard cardToPlay = player.getCardByCardName(cardName);
         this.phase = this.phase.summon(cardToPlay, zone);
         return cardToPlay;
+    }
+
+    public List<CardInGame> getCardInGame(List<ICard> cards) {
+        List<CardInGame> cigs = new ArrayList<>();
+        return cigs;
     }
 
     public void activateAction(PlayerZone side, CardName cardName, int index, Optional<PlayerZone> targetPlayer,
