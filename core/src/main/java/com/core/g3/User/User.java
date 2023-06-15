@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
+import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
@@ -56,24 +57,14 @@ public class User implements IBuyer, ISeller, IAccount {
         return wallet.hasEnoughFounds(value);
     }
 
-    public void buyCard(Card card) {
-        Amount amountToSubstract = new Amount(card.getPrice());
-        if (wallet.hasEnoughFounds(amountToSubstract)) {
-            wallet.subtract(amountToSubstract.value());
-            this.cardInventory.addCard(card);
-        } else {
-            throw new InsufficientMoneyException();
-        }
-    }
-
     @Override
     public void buyCards(CardName name, int amount) {
-        Card card = new CardBuilder(name).build();
+        Card card = CardFactory.createCard(name);
         Amount amountToSubstract = new Amount(card.getPrice() * amount);
         if (wallet.hasEnoughFounds(amountToSubstract)) {
             wallet.subtract(amountToSubstract.value());
             for (int i = 0; i < amount; i++) {
-                Card cardToAdd = new CardBuilder(name).build();
+                Card cardToAdd = CardFactory.createCard(name);
                 this.cardInventory.addCard(cardToAdd);
             }
         } else {
@@ -131,4 +122,5 @@ public class User implements IBuyer, ISeller, IAccount {
             }
         }
     }
+
 }

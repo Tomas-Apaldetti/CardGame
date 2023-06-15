@@ -45,8 +45,7 @@ public class DriverClass implements Driver<User, ICard> {
     @Override
     public void buyCards(User account, DriverCardName cardName, int amount) {
         CardName cardNameToBuy = DriverMapper.toCardName(cardName);
-        Card newCard = CardFactory.createCard(cardNameToBuy);
-        account.buyCard(newCard);
+        account.buyCards(cardNameToBuy,amount);
 
     }
 
