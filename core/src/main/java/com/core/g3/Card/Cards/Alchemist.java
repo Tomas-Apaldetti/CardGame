@@ -37,7 +37,6 @@ public class Alchemist {
                 DrawCardArtifact drawCardArtifact = new DrawCardArtifact(Optional.of(new Amount(1)));
                 builder.cardTypeBuilder.setTypeArtifact(drawCardArtifact);
 
-                builder.setSummonableSpace(new Amount(0));
                 return builder.build();
         }
 }
