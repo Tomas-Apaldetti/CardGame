@@ -36,11 +36,6 @@ public class Match implements IMatch {
     }
 
     @Override
-    public Player getCurrentPlayer() {
-        return this.turn;
-    }
-
-    @Override
     public void startMatch(PlayerZone firstTurn) {
         this.gameMode.drawInitialCards(bluePlayer);
         this.gameMode.drawInitialCards(greenPlayer);
