@@ -31,7 +31,7 @@ public class MainPhase implements IPhase {
     }
 
     @Override
-    public IPhase useArtefact(CardInGame card, Player player) {
+    public IPhase useArtifact(CardInGame card, Player player) {
 
         throw new AcctionNotPossibleException();
     }

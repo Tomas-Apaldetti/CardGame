@@ -1,8 +1,8 @@
 package com.core.g3.Match.CardInGame;
 
 import com.core.g3.Card.Action.Exceptions.ActionNotUsableException;
-import com.core.g3.Card.Artefact.IArtefactEffect;
-import com.core.g3.Card.Artefact.Exceptions.ArtefactNotUsableException;
+import com.core.g3.Card.Artifact.IArtifactEffect;
+import com.core.g3.Card.Artifact.Exceptions.ArtifactNotUsableException;
 import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.Attack.Exceptions.CardCantAttackException;
 import com.core.g3.Card.Reaction.IReaction;
@@ -27,7 +27,7 @@ public class CardInGame implements IAttackable {
     private final Player owner;
     private final AttackStateManager attackState;
     private final OnceManager<IReaction> reactionState;
-    private OnceManager<IArtefactEffect> artefactState;
+    private OnceManager<IArtifactEffect> artifactState;
     private ActiveZone currentZone;
     private final IAttackableManager health;
 
@@ -38,8 +38,8 @@ public class CardInGame implements IAttackable {
         this.attackState = new AttackStateManager(this.base.getAttacks());
         this.attackState.deplete();
 
-        this.artefactState = new OnceManager<IArtefactEffect>(this.base.getArtefactEffects());
-        this.artefactState.deplete();
+        this.artifactState = new OnceManager<IArtifactEffect>(this.base.getArtifactEffects());
+        this.artifactState.deplete();
 
         this.reactionState = new OnceManager<IReaction>(this.base.getReactionEffects());
         this.reactionState.deplete();
@@ -75,24 +75,24 @@ public class CardInGame implements IAttackable {
         return this.base.attack(new OriginalAction(this), victim, user, rival, with.value());
     }
 
-    public OriginalAction artefact(Player user, Player rival) {
-        if (!this.artefactState.canActivate()) {
-            throw new ArtefactNotUsableException();
+    public OriginalAction artifact(Player user, Player rival) {
+        if (!this.artifactState.canActivate()) {
+            throw new ArtifactNotUsableException();
         }
-        this.artefactState.deplete();
-        return this.base.artefact(new OriginalAction(this), user, rival);
+        this.artifactState.deplete();
+        return this.base.artifact(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction artefact(IAttackable affected, Player user, Player rival) {
-        if (!this.artefactState.canActivate()) {
-            throw new ArtefactNotUsableException();
+    public OriginalAction artifact(IAttackable affected, Player user, Player rival) {
+        if (!this.artifactState.canActivate()) {
+            throw new ArtifactNotUsableException();
         }
-        this.artefactState.deplete();
-        return this.base.artefact(new OriginalAction(this), affected, user, rival);
+        this.artifactState.deplete();
+        return this.base.artifact(new OriginalAction(this), affected, user, rival);
     }
 
     public OriginalAction action(Player user, Player rival) {
-        if (!rival.isAttackable()) { // @TODO -> repeat for attack & artefact
+        if (!rival.isAttackable()) { // @TODO -> repeat for attack & artifact
             throw new ActionNotUsableException();
         }
         return this.base.action(new OriginalAction(this), user, rival);
@@ -111,7 +111,7 @@ public class CardInGame implements IAttackable {
 
     public void refreshUse() {
         this.attackState.reset();
-        this.artefactState.reset();
+        this.artifactState.reset();
         this.reactionState.reset();
     }
 

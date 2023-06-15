@@ -1,6 +1,6 @@
 package com.core.g3.Card.Type;
 
-import com.core.g3.Card.Artefact.AddEnergyArtefact;
+import com.core.g3.Card.Artifact.AddEnergyArtifact;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import org.junit.jupiter.api.Test;
@@ -23,11 +23,11 @@ public class CardTypeBuilderTest {
     @Test
     public void createCardOfType() {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
+        cardBuilder.cardTypeBuilder.setTypeArtifact(null);
         Card card = cardBuilder.build();
 
         ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
-        actual.add(CardTypeName.Artefact);
+        actual.add(CardTypeName.Artifact);
 
         assertEquals(CardName.Antimagic, card.getName());
         assertEquals(true, actual.containsAll(card.getTypes()));
@@ -36,12 +36,12 @@ public class CardTypeBuilderTest {
     @Test
     public void createCardOfTwoTypes() {
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
+        cardBuilder.cardTypeBuilder.setTypeArtifact(null);
         cardBuilder.cardTypeBuilder.setTypeCreature(null, null, null);
         Card card = cardBuilder.build();
 
         ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
-        actual.add(CardTypeName.Artefact);
+        actual.add(CardTypeName.Artifact);
         actual.add(CardTypeName.Creature);
 
         assertEquals(CardName.Antimagic, card.getName());
@@ -54,20 +54,20 @@ public class CardTypeBuilderTest {
 
         ArrayList<CardTypeName> actual = new ArrayList<CardTypeName>();
         actual.add(CardTypeName.Action);
-        actual.add(CardTypeName.Artefact);
-        actual.add(CardTypeName.Artefact);
+        actual.add(CardTypeName.Artifact);
+        actual.add(CardTypeName.Artifact);
 
         cardBuilder.cardTypeBuilder.setTypeAction(null);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
+        cardBuilder.cardTypeBuilder.setTypeArtifact(null);
 
         assertThrows(CardTypeIsAlreadyContainedInCardException.class,
-                () -> cardBuilder.cardTypeBuilder.setTypeArtefact(null));
+                () -> cardBuilder.cardTypeBuilder.setTypeArtifact(null));
     }
 
     @Test
     public void testAllowedZones() {
         CardBuilder cardBuilder = new CardBuilder(CardName.WaterEnergy);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(new AddEnergyArtefact(EnergyType.Fire, new Amount(10)));
+        cardBuilder.cardTypeBuilder.setTypeArtifact(new AddEnergyArtifact(EnergyType.Fire, new Amount(10)));
         Card card = cardBuilder.build();
 
         assertEquals(true, card.getAllowableZones().contains(ActiveZoneType.Artifacts));

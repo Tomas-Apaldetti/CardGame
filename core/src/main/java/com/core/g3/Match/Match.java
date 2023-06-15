@@ -89,7 +89,7 @@ public class Match {
         this.phase = this.phase.useAction(cardToPlay, cigs);
     }
 
-    public void activateArtefact(ICard artefact, int index, Optional<PlayerZone> toOptionalPlayerZone,
+    public void activateArtifact(ICard artifact, int index, Optional<PlayerZone> toOptionalPlayerZone,
             List<ICard> targets) {
     }
 

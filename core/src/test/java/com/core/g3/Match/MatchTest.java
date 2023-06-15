@@ -97,7 +97,6 @@ public class MatchTest {
         Match match = new Match(playerBlue, playerGreen, gameMode1);
         match.startMatch(PlayerZone.Blue);
 
-
         assertEquals(0,
                 playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
         assertThrows(Throwable.class, () -> match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat));
@@ -126,7 +125,7 @@ public class MatchTest {
     public Card createCard() {
         // List<IEffect> effects = new TestEffects().effects;
         CardBuilder cardBuilder = new CardBuilder(CardName.Antimagic);
-        cardBuilder.cardTypeBuilder.setTypeArtefact(null);
+        cardBuilder.cardTypeBuilder.setTypeArtifact(null);
         cardBuilder.cardTypeBuilder.setTypeCreature(new Amount(3), null, new ArrayList<>());
         Card card = cardBuilder.build();
 
