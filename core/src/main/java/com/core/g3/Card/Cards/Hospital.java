@@ -10,7 +10,7 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 
 public class Hospital {
     public static Card create() {
-        CardBuilder builder = new CardBuilder(CardName.PlantEnergy);
+        CardBuilder builder = new CardBuilder(CardName.Hospital);
 
         builder.invocationCost.addEnergyCost(EnergyType.Plant, new Amount(2));
 

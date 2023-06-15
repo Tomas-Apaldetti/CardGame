@@ -16,9 +16,8 @@ public class Resonance {
     public static Card create() {
         CardBuilder builder = new CardBuilder(CardName.Resonance);
 
-       
         ICost costEnergy = new CostEnergy(Optional.of(EnergyType.Fire), new Amount(1),
-            Optional.of(new CostEnergy(Optional.of(EnergyType.Fire), new Amount(1))));
+                Optional.of(new CostEnergy(Optional.of(EnergyType.Fire), new Amount(1))));
 
         // IAction action = new DestroyAction();
         IAction action = new DamageAction(new Amount(Integer.MAX_VALUE));

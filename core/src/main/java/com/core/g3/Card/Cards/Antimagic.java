@@ -22,7 +22,7 @@ public class Antimagic {
         MassiveDamage massiveDamageEffect = new MassiveDamage(new Amount(1), Attribute.Magic);
         builder.cardTypeBuilder.setTypeArtefact(massiveDamageEffect);
 
-        ICost costEnergy = new CostEnergy(Optional.of(null), new Amount(1));
+        ICost costEnergy = new CostEnergy(Optional.empty(), new Amount(1));
         IAction effect = new BothMassiveDamageAction(new Amount(1), Attribute.Magic);
 
         builder.cardTypeBuilder.setTypeAction(costEnergy, effect);

@@ -17,7 +17,7 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 
 public class Saboteur {
     public static Card create() {
-        CardBuilder builder = new CardBuilder(CardName.PlantEnergy);
+        CardBuilder builder = new CardBuilder(CardName.Saboteur);
 
         builder.invocationCost.addEnergyCost(EnergyType.Water, new Amount(1));
 
@@ -26,11 +26,10 @@ public class Saboteur {
         ArrayList<IAttack> creatureAttacks = new ArrayList<>();
         builder.cardTypeBuilder.setTypeCreature(baseHp, creatureAttributes, creatureAttacks);
 
-
         ICost costEnergy = new CostEnergy(Optional.of(EnergyType.Water), new Amount(1));
         IReaction sabotageReaction = new SabotageReaction();
         builder.cardTypeBuilder.setTypeReaction(costEnergy, sabotageReaction);
-        
+
         return builder.build();
     }
 }

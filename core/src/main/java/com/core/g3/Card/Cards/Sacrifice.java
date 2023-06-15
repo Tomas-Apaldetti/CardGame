@@ -14,10 +14,10 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 
 public class Sacrifice {
     public static Card create() {
-        CardBuilder builder = new CardBuilder(CardName.Resonance);
+        CardBuilder builder = new CardBuilder(CardName.Sacrifice);
 
-       
-        // TODO ADD: Efecto: Obten tres veces la energía que lista en su costo de invocación
+        // TODO ADD: Efecto: Obten tres veces la energía que lista en su costo de
+        // invocación
         ICost costEnergy = new CostEnergy(Optional.of(EnergyType.Fire), new Amount(1));
         IAction action = new SacrificeCreatureAction();
         builder.cardTypeBuilder.setTypeAction(costEnergy, action);

@@ -15,10 +15,9 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 
 public class MagicDrill {
     public static Card create() {
-        CardBuilder builder = new CardBuilder(CardName.MagicBarrier);
+        CardBuilder builder = new CardBuilder(CardName.MagicDrill);
 
         builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
-
 
         Amount baseHp = new Amount(3);
         ArrayList<Attribute> creatureAttributes = new ArrayList<>();
@@ -30,7 +29,7 @@ public class MagicDrill {
 
         IReaction ignoreDefensesReaction = new IgnoreDefensesReaction();
         builder.cardTypeBuilder.setTypeReaction(ignoreDefensesReaction);
-        
+
         return builder.build();
     }
 }
