@@ -1,35 +1,33 @@
 package com.core.apirest.model;
 
-public class User {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-    private String username;
-    private String password;
+public class User {
+    public String username;
+    @JsonIgnore
+    public String password;
+    @JsonIgnore
     private int money;
 
     public User() {
-        this.username = "";
-        this.password = "";
         this.money = 0;
     }
 
-    public String getUsername() {
-        return username;
+    public void setCredentials(final UserCredentials userCredentials) {
+        this.username = userCredentials.username;
+        this.password = userCredentials.password;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean matchCredentials(final UserCredentials userCredentials) {
+        if (this.username.equals(userCredentials.username)
+                && this.password.equals(userCredentials.password)) {
+            return true;
+        }
+        return false;
     }
 
     public int getMoney() {
         return money;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
     }
 
     public int setMoney(final int money) {
@@ -41,10 +39,4 @@ public class User {
         this.money += money;
         return this.money;
     }
-
-    @Override
-    public final String toString() {
-        return "User [username=" + username + ", password=" + password + "]";
-    }
-
 }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.core.apirest.jwtutil.JwtUtil;
 import com.core.apirest.model.User;
+import com.core.apirest.model.UserCredentials;
 import com.core.apirest.service.UserService;
 
 import java.util.List;
@@ -15,49 +16,42 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-public class TestController {
+@RequestMapping("/users")
+public class UserController {
 
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user")
-    public ResponseEntity<String> createUser(@RequestBody final User user) {
-        if (userService.existsUser(user.getUsername())) {
+    // Check this to define the endpoints URIs:
+    // https://restfulapi.net/resource-naming/
+
+    @PostMapping
+    public ResponseEntity<String> createUser(@RequestBody final UserCredentials userCredentials) {
+        if (userService.existsUser(userCredentials)) {
             return ResponseEntity.badRequest().body("User already exists");
         } else {
-            userService.addUser(user);
+            userService.addUser(userCredentials);
             return ResponseEntity.ok("User created successfully");
         }
     }
 
-    @GetMapping("/user")
+    @GetMapping
     public List<User> getUsers() {
-        return userService.getUsersWithoutPasswords();
+        return userService.getUsers();
+
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable final String username) {
-        return userService.getUserWithOutPasswrod(username);
+        return userService.getUser(username);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        // Check if user exists
-        User returnUser = userService.getUser(user.getUsername());
-        if (returnUser == null || !returnUser.getPassword().equals(user.getPassword())) {
-            return "Not valid credentials";
-        }
-        // Generate JWT token
-        String token = jwtUtil.generateToken(user.getUsername());
-        // Return the token to the client
-        return token;
-    }
-
-    @GetMapping("/user/money/{username}")
+    @GetMapping("/{username}/money")
     public int getMoney(@RequestHeader("my-authorization") String token, @PathVariable final String username) {
         String extractedToken = token.substring(7);
         String extractedUsername = jwtUtil.extractUsername(extractedToken);
@@ -72,7 +66,7 @@ public class TestController {
         }
     }
 
-    @PostMapping("/user/money/{username}")
+    @PostMapping("/{username}/money")
     public int addMoney(@RequestHeader("my-authorization") String token, @PathVariable final String username,
             @RequestBody final int moneyToAdd) {
         String extractedToken = token.substring(7);
