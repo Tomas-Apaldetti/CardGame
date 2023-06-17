@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.core.apirest.model.User;
 import com.core.apirest.model.UserCredentials;
+import com.core.apirest.model.UserMoney;
 
 @Component
 public class UserService {
@@ -37,5 +38,19 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public UserMoney addMoney(String userName, int money) {
+        User user = this.getUser(userName);
+        int userMoney = user.addMoney(money);
+        UserMoney userMoneyDTO = new UserMoney(userName, userMoney);
+        return userMoneyDTO;
+    }
+
+    public UserMoney getUserMoney(String extractedUsername) {
+        User user = this.getUser(extractedUsername);
+        int userMoney = user.getMoney();
+        UserMoney userMoneyDTO = new UserMoney(extractedUsername, userMoney);
+        return userMoneyDTO;
     }
 }

@@ -37,7 +37,8 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        String extractedToken = token.substring(7);
+        return extractClaim(extractedToken, Claims::getSubject);
     }
 
     public boolean validateToken(String token, String username) {
@@ -57,5 +58,11 @@ public class JwtUtil {
     private boolean isTokenExpired(String token) {
         Date expirationDate = extractClaim(token, Claims::getExpiration);
         return expirationDate.before(new Date());
+    }
+
+    public String refreshToken(String token) {
+        String extractedUsername = extractUsername(token);
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, extractedUsername);
     }
 }

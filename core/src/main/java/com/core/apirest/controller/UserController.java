@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.core.apirest.jwtutil.JwtUtil;
 import com.core.apirest.model.User;
 import com.core.apirest.model.UserCredentials;
+import com.core.apirest.model.UserMoney;
 import com.core.apirest.service.UserService;
 
 import java.util.List;
@@ -43,42 +44,44 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         return userService.getUsers();
-
     }
 
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable final String username) {
-        return userService.getUser(username);
-    }
-
-    @GetMapping("/{username}/money")
-    public int getMoney(@RequestHeader("my-authorization") String token, @PathVariable final String username) {
-        String extractedToken = token.substring(7);
-        String extractedUsername = jwtUtil.extractUsername(extractedToken);
-        if (!extractedUsername.equals(username)) {
-            return -1;
-        }
-        User returnUser = userService.getUser(extractedUsername);
-        if (returnUser == null) {
-            return -1;
+    public ResponseEntity<User> getUserByUsername(@PathVariable final String username) {
+        User user = userService.getUser(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
         } else {
-            return returnUser.getMoney();
+            return ResponseEntity.ok(user);
         }
     }
 
-    @PostMapping("/{username}/money")
-    public int addMoney(@RequestHeader("my-authorization") String token, @PathVariable final String username,
+    @GetMapping("/money")
+    public ResponseEntity<UserMoney> getMoney(@RequestHeader("my-authorization") String token) {
+        String extractedUsername = jwtUtil.extractUsername(token);
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        UserMoney userMoneyDTO = userService.getUserMoney(extractedUsername);
+        return ResponseEntity.ok(userMoneyDTO);
+    }
+
+    @PostMapping("/money")
+    public ResponseEntity<UserMoney> addMoney(@RequestHeader("my-authorization") String token,
             @RequestBody final int moneyToAdd) {
-        String extractedToken = token.substring(7);
-        String extractedUsername = jwtUtil.extractUsername(extractedToken);
-        if (!extractedUsername.equals(username)) {
-            return -1;
+        String extractedUsername = jwtUtil.extractUsername(token);
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
         }
-        User returnUser = userService.getUser(extractedUsername);
-        if (returnUser == null) {
-            return -1;
-        } else {
-            return returnUser.addMoney(moneyToAdd);
+        if (moneyToAdd < 0) {
+            return ResponseEntity.badRequest().build();
         }
+
+        UserMoney userMoneyDTO = userService.addMoney(extractedUsername, moneyToAdd);
+        return ResponseEntity.ok(userMoneyDTO);
     }
+
 }
