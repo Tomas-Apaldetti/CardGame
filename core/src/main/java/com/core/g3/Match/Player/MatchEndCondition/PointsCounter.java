@@ -25,11 +25,12 @@ public class PointsCounter implements IMatchEndCondition {
 
     @Override
     public boolean isMet() {
-        return this.current.gte(upperLimit);
+        return this.current.gt(upperLimit);
     }
 
     @Override
     public int getNumeric() {
         return this.current.value();
     }
+
 }

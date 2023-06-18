@@ -18,4 +18,14 @@ public class EndPhase implements IPhase {
     public Player activePlayer() {
         return null;
     }
+
+    @Override
+    public IPhase next() {
+        return new InitialPhase(this.rival, this.current, this.match);
+    }
+
+    @Override
+    public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
+        return this.current.equals(desiredCurrentPlayer) && PhaseType.End == phase;
+    }
 }

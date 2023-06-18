@@ -42,7 +42,6 @@ public class CardContainer {
     }
 
     public ICard getCardByName(CardName cardName) {
-        // Returns the first card of type cardName in hand
         for (ICard card : this.cards) {
             if (card.getName().equals(cardName)) {
                 return card;

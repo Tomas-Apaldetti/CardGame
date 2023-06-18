@@ -5,6 +5,8 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Match;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
+import com.core.g3.Match.ResolutionStack.ResolutionStack;
 
 public class AttackPhase implements IPhase {
 
@@ -18,12 +20,24 @@ public class AttackPhase implements IPhase {
         this.match = match;
     }
 
-    public void attack(CardInGame card, Amount index, IAttackable attackable) {
-        card.attack(attackable, this.current, this.rival, index);
+    public IPhase attack(CardInGame card, Amount index, IAttackable attackable) {
+        OriginalAction og = card.attack(attackable, this.current, this.rival, index);
+        ResolutionStack rStack = new ResolutionStack(og);
+        return new ReactionPhase(this.current, this.rival, rStack, this, this.match );
     }
 
     @Override
     public Player activePlayer() {
         return this.current;
+    }
+
+    @Override
+    public IPhase next() {
+        return new EndPhase(this.current, this.rival, this.match);
+    }
+
+    @Override
+    public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
+        return this.current.equals(desiredCurrentPlayer) && PhaseType.Attack == phase;
     }
 }

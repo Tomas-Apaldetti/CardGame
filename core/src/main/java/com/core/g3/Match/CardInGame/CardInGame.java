@@ -38,7 +38,7 @@ public class CardInGame implements IAttackable, IDeathPub {
         this.health = this.base.getHealth();
 
         this.attackState = new AttackStateManager(this.base.getAttacks());
-        this.attackState.deplete();
+        this.attackState.reset();
 
         this.artifactState = new OnceManager<>(this.base.getArtifactEffects());
         this.artifactState.deplete();
@@ -130,7 +130,7 @@ public class CardInGame implements IAttackable, IDeathPub {
     @Override
     public void receiveAttack(Amount damage) {
         this.health.receiveAttack(damage);
-        if(this.isDead()){
+        if(this.health.isDead()){
             this.notifyDeath();
         }
     }

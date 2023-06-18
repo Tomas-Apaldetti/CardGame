@@ -6,6 +6,9 @@ import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
 import com.core.g3.Match.Match;
+import com.core.g3.Match.Phase.IPhase;
+import com.core.g3.Match.Phase.InitialPhase;
+import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Zone.ActiveZone;
@@ -16,7 +19,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public abstract class GameMode {
+public abstract class GameMode implements IConditionMetSub {
     protected int initialPoints;
     protected int maxDeckCards;
     protected int minDeckCards;
@@ -42,6 +45,8 @@ public abstract class GameMode {
         ActiveZone reserveZone = new ActiveZone(ActiveZoneType.Reserve, new Amount(this.reserveZoneLimit));
 
         Player player = new Player(user, playableDeck, condition, artifactZone, combatZone, reserveZone);
+
+        player.addConditionMet(this);
         return player;
     }
 
@@ -68,5 +73,9 @@ public abstract class GameMode {
 
     public void setMatch(Match match){
         this.match = match;
+    }
+
+    public void onInitialPhase(Player current, Player rival){
+        current.drawCard();
     }
 }
