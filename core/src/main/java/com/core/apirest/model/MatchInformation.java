@@ -14,18 +14,6 @@ public class MatchInformation {
     public int greenPlayerHitPoints;
     public String winner;
 
-    public MatchInformation() {
-        this.matchId = 0;
-        this.gameMode = null;
-        this.bluePlayer = null;
-        this.greenPlayer = null;
-        this.turn = null;
-        this.phase = null;
-        this.bluePlayerHitPoints = 0;
-        this.greenPlayerHitPoints = 0;
-        this.winner = null;
-    }
-
     public static MatchInformation fromMatch(int id, Match match) {
         MatchInformation matchInformation = new MatchInformation();
         matchInformation.matchId = id;

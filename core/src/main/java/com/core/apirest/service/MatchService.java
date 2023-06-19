@@ -2,10 +2,12 @@ package com.core.apirest.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.core.apirest.model.CardInGameInformation;
 import com.core.apirest.model.MatchInformation;
 import com.core.apirest.model.PlayerMatchInformation;
 import com.core.apirest.service.exceptions.MatchAlreadyStartedException;
@@ -54,18 +56,18 @@ public class MatchService {
         return this.totalGames;
     }
 
-    public String getMatch(int matchId) {
-        return this.matches.get(matchId - 1).toString();
+    public Match getMatch(int matchId) {
+        return this.matches.get(matchId - 1);
     }
 
     public MatchInformation getMatchInformation(int matchId) {
-        Match match = this.matches.get(matchId - 1);
+        Match match = this.getMatch(matchId);
         MatchInformation matchInformation = MatchInformation.fromMatch(matchId, match);
         return matchInformation;
     }
 
     public MatchInformation startMatch(int matchId) {
-        Match match = this.matches.get(matchId - 1);
+        Match match = this.getMatch(matchId);
         if (!match.getPhaseType().equals(PhaseType.NotPlayable)) {
             throw new MatchAlreadyStartedException();
         }
@@ -75,17 +77,37 @@ public class MatchService {
     }
 
     public PlayerMatchInformation getPlayerMatchInformation(int matchId, String username) {
-        Match match = this.matches.get(matchId - 1);
+        Match match = this.getMatch(matchId);
         String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
         String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
         if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
             throw new PlayerNotInGameException();
         }
-        Player player = match.getPlayer(PlayerZone.Blue).getUsername() == username
+
+        System.out.println("username: " + username);
+        System.out.println("bluePlayer: " + bluePlayer);
+        System.out.println("greenPlayer: " + greenPlayer);
+        Player player = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
                 ? match.getPlayer(PlayerZone.Blue)
                 : match.getPlayer(PlayerZone.Green);
+        System.out.println("Viewing player: " + player.getUsername());
         PlayerMatchInformation playerMatchInformation = PlayerMatchInformation.fromPlayer(player);
         return playerMatchInformation;
+    }
+
+    public List<CardInGameInformation> getPlayerCardsInHand(int matchId, String username) {
+        Match match = this.getMatch(matchId);
+        String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
+        String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
+        if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
+            throw new PlayerNotInGameException();
+        }
+        Player player = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
+                ? match.getPlayer(PlayerZone.Blue)
+                : match.getPlayer(PlayerZone.Green);
+        List<CardInGameInformation> cards = player.seeHand().stream().map(card -> CardInGameInformation.fromCard(card))
+                .collect(Collectors.toList());
+        return cards;
     }
 
     // Create deck only for testing purposes

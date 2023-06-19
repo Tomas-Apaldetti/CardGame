@@ -1,5 +1,7 @@
 package com.core.apirest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.core.apirest.jwtutil.JwtUtil;
+import com.core.apirest.model.CardInGameInformation;
 import com.core.apirest.model.MatchInformation;
 import com.core.apirest.model.NewMatch;
 import com.core.apirest.model.PlayerMatchInformation;
@@ -94,6 +97,25 @@ public class MatchController {
         try {
             PlayerMatchInformation playerMatchInformation = matchService.getPlayerMatchInformation(matchId, username);
             return ResponseEntity.ok().body(playerMatchInformation);
+        } catch (PlayerNotInGameException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/{username}/hand")
+    public ResponseEntity<List<CardInGameInformation>> getHand(@RequestHeader("my-authorization") String token,
+            @PathVariable String username) {
+        // Add validation to check who is viewing the hand
+        String extractedMatchId = jwtUtil.extractUsername(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
+        try {
+            List<CardInGameInformation> hand = matchService.getPlayerCardsInHand(matchId, username);
+            return ResponseEntity.ok().body(hand);
         } catch (PlayerNotInGameException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
