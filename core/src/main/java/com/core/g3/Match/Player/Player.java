@@ -1,5 +1,6 @@
 package com.core.g3.Match.Player;
 
+import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
@@ -12,6 +13,8 @@ import com.core.g3.Match.DeckPlayable.IDeckPlayable;
 import com.core.g3.Match.GameMode.GameMode2;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
+import com.core.g3.Match.Player.MatchEndCondition.IConditionMetPub;
+import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
@@ -23,17 +26,18 @@ import com.core.g3.Match.Zone.ActiveZoneType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Player implements IAttackable {
+public class Player implements IAttackable, IConditionMetPub {
     private final IAccount account;
     private IMatchEndCondition condition;
     private final IDeckPlayable deck;
     private final CardContainer hand;
     private final CardContainer discard;
-    private ActiveZone artifactZone;
-    private ActiveZone combatZone;
-    private ActiveZone reserveZone;
+    private final ActiveZone artifactZone;
+    private final ActiveZone combatZone;
+    private final ActiveZone reserveZone;
     private PlayerEnergies energies;
-    private PlayerZone zone;
+    private final List<IConditionMetSub> subs;
+
 
     public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone) {
@@ -46,21 +50,7 @@ public class Player implements IAttackable {
         this.combatZone = combatZone;
         this.reserveZone = reserveZone;
         this.energies = new PlayerEnergies();
-        this.zone = null; // @TODO: change imp
-    }
-
-    public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
-            ActiveZone combatZone, ActiveZone reserveZone, PlayerZone zone) {
-        this.account = account;
-        this.condition = condition;
-        this.deck = deck;
-        this.hand = new CardContainer();
-        this.discard = new CardContainer();
-        this.artifactZone = artifactZone;
-        this.combatZone = combatZone;
-        this.reserveZone = reserveZone;
-        this.energies = new PlayerEnergies();
-        this.zone = zone; // @TODO: remove opt
+        this.subs = new ArrayList<>();
     }
 
     public void addCardToHand(ICard card) {
@@ -80,22 +70,18 @@ public class Player implements IAttackable {
     }
 
     public void summonInZone(ICard card, ActiveZoneType zone) {
-        if (this.hand.peek().contains(card)) {
-            if (zone.equals(ActiveZoneType.Combat)) {
-                this.summonInZone(card, this.combatZone);
-            } else if (zone.equals(ActiveZoneType.Reserve)) {
-                this.summonInZone(card, this.reserveZone);
-            } else if (zone.equals(ActiveZoneType.Artifacts)) {
-                this.summonInZone(card, this.artifactZone);
-            }
-        } else {
+        if (!this.hand.peek().contains(card)) {
             throw new RuntimeException("Card not in hand");
-
         }
+
+        this.summonInZone(card, this.getZone(zone));
     }
 
     public void affectMatchEndCondition(Amount value) {
         this.condition = this.condition.modify(value);
+        if(this.condition.isMet()){
+            subs.forEach(s->s.conditionMet(this));
+        }
     }
 
     public boolean matchEndConditionMet() {
@@ -253,12 +239,12 @@ public class Player implements IAttackable {
 
     @Override
     public void receiveAttack(Amount damage) {
-        this.condition.receiveAttack(damage);
+        this.affectMatchEndCondition(damage);
     }
 
     @Override
     public void destroy() {
-        this.condition.destroy();
+        throw new CantAttackToVictimException();
     }
 
     @Override
@@ -266,19 +252,17 @@ public class Player implements IAttackable {
         this.condition.heal(heal);
     }
 
-    public ActiveZone seeActiveZone(ActiveZoneType activeZoneType) {
-        if (activeZoneType.equals(ActiveZoneType.Combat)) {
-            return this.combatZone;
-        } else if (activeZoneType.equals(ActiveZoneType.Reserve)) {
-            return this.reserveZone;
-        } else if (activeZoneType.equals(ActiveZoneType.Artifacts)) {
-            return this.artifactZone;
+    public ActiveZone getZone(ActiveZoneType type) {
+        switch (type){
+            case Combat:
+                return this.combatZone;
+            case Reserve:
+                return this.reserveZone;
+            case Artifacts:
+                return this.artifactZone;
+            default:
+                throw new RuntimeException("Invalid active zone type"); //@TODO
         }
-        throw new RuntimeException("Invalid active zone type");
-    }
-
-    public PlayerZone getZone() {
-        return this.zone;
     }
 
     public List<CardInGame> getCardsInGame(List<ICard> cards) {
@@ -305,5 +289,15 @@ public class Player implements IAttackable {
 
     public void resetCards() {
         this.getCardsInGame().forEach(c -> c.refreshUse());
+    }
+
+    @Override
+    public void addConditionMet(IConditionMetSub sub) {
+        this.subs.add(sub);
+    }
+
+    @Override
+    public void removeConditionMet(IConditionMetSub sub) {
+        this.subs.remove(sub);
     }
 }

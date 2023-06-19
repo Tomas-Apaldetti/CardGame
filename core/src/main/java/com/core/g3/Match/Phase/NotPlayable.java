@@ -7,4 +7,14 @@ public class NotPlayable implements IPhase{
     public Player activePlayer() {
         return null;
     }
+
+    @Override
+    public IPhase next() {
+        return null;
+    }
+
+    @Override
+    public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
+        return false;
+    }
 }

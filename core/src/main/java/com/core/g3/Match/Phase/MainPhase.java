@@ -8,7 +8,7 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Match;
-import com.core.g3.Match.Phase.Exceptions.AcctionNotPossibleException;
+import com.core.g3.Match.Phase.Exceptions.ActionNotPossibleException;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -76,11 +76,21 @@ public class MainPhase implements IPhase {
 
     @Override
     public void moveCreature(CardInGame card, ActiveZoneType zoneToMove) {
-        throw new AcctionNotPossibleException();
+        throw new ActionNotPossibleException();
     }
 
     @Override
     public Player activePlayer() {
         return this.current;
+    }
+
+    @Override
+    public IPhase next() {
+        return new AttackPhase(this.current, this.rival, this.match);
+    }
+
+    @Override
+    public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
+        return this.current.equals(desiredCurrentPlayer) && PhaseType.Main == phase;
     }
 }

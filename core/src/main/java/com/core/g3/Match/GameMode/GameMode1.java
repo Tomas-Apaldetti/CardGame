@@ -1,6 +1,7 @@
 package com.core.g3.Match.GameMode;
 
 import com.core.g3.Commons.Amount;
+import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Player;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 public class GameMode1 extends GameMode {
 
+    private Optional<Player> winner = Optional.empty();
     public GameMode1() {
         this.initialPoints = 20;
         this.maxDeckCards = 60;
@@ -35,5 +37,14 @@ public class GameMode1 extends GameMode {
             return Optional.of(player1);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void conditionMet(Player who) {
+        if(this.winner.isPresent()){
+            return;
+        }
+        this.winner = Optional.ofNullable(who);
+        this.match.setWinner(this.match.getRival(who));
     }
 }

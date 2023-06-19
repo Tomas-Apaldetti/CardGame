@@ -117,6 +117,7 @@ public class ActiveZone implements IDeathSub, IDeathPub {
     @Override
     public void notify(CardInGame card) {
         this.remove(card);
+        this.subs.forEach((i) -> i.notify(card));
     }
 
     @Override
