@@ -1,6 +1,7 @@
 package com.core.g3.DataBase;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.core.g3.User.UserDB;
 
@@ -25,6 +26,11 @@ public class MemoryDataBase implements IDataBase {
     @Override
     public UserDB getUser(String userName) {
         return this.data.get(userName);
+    }
+
+    @Override
+    public List<UserDB> getUsers() {
+        return this.data.values().stream().toList();
     }
 
 }

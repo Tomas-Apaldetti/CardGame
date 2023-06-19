@@ -1,13 +1,14 @@
 package com.core.apirest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 
 import com.core.apirest.jwtutil.JwtUtil;
-import com.core.apirest.model.User;
 import com.core.apirest.model.UserCredentials;
 import com.core.apirest.service.UserService;
 
@@ -21,15 +22,17 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping
-    public String login(@RequestBody UserCredentials userCredentials) {
+    public ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) {
         // Check if user exists
-        User returnUser = userService.getUser(userCredentials);
-        if (returnUser == null) {
-            return "Not valid credentials";
+        try {
+            userService.getUser(userCredentials);
+        } catch (Exception e) {
+            // return bad request
+            return ResponseEntity.badRequest().body("Invalid credentials");
         }
         // Generate JWT token
         String token = jwtUtil.generateToken(userCredentials.username);
         // Return the token to the client
-        return token;
+        return ResponseEntity.ok(token);
     }
 }
