@@ -6,8 +6,6 @@ import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.GameMode.Exceptions.InvalidDeckCount;
 import com.core.g3.Match.Match;
-import com.core.g3.Match.Phase.IPhase;
-import com.core.g3.Match.Phase.InitialPhase;
 import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
@@ -29,6 +27,7 @@ public abstract class GameMode implements IConditionMetSub {
     protected int reserveZoneLimit;
     protected int initialHandSize;
     protected Match match;
+    protected GameModeType gameModeType;
 
     protected abstract IMatchEndCondition getCondition();
 
@@ -50,6 +49,8 @@ public abstract class GameMode implements IConditionMetSub {
         return player;
     }
 
+    public abstract GameModeType getGameModeType();
+
     protected void checkRepeatedCards(IDeck deck, int maxRepeatedCards) {
         HashMap<CardName, Integer> countEachCard = deck.getRepeatedCards();
         countEachCard.forEach((cardType, cardCount) -> {
@@ -60,8 +61,9 @@ public abstract class GameMode implements IConditionMetSub {
     }
 
     private void checkDecks(IDeck deck) {
+        System.out.println("El mazo tiene: " + deck.getCards().size());
         if (deck.getCards().size() < minDeckCards || deck.getCards().size() > maxDeckCards) {
-            throw new InvalidDeckCount("El mazo debe tener entre 40 y 60 cartas");
+            throw new InvalidDeckCount("El mazo debe tener entre " + minDeckCards + " y " + maxDeckCards + " cartas");
         }
     }
 
@@ -71,11 +73,11 @@ public abstract class GameMode implements IConditionMetSub {
 
     public abstract Optional<Player> getWinner(Player player1, Player player2);
 
-    public void setMatch(Match match){
+    public void setMatch(Match match) {
         this.match = match;
     }
 
-    public void onInitialPhase(Player current, Player rival){
+    public void onInitialPhase(Player current, Player rival) {
         current.drawCard();
     }
 }

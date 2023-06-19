@@ -14,6 +14,7 @@ public class EndPhase implements IPhase {
         this.rival = rival;
         this.match = match;
     }
+
     @Override
     public Player activePlayer() {
         return null;
@@ -27,5 +28,10 @@ public class EndPhase implements IPhase {
     @Override
     public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
         return this.current.equals(desiredCurrentPlayer) && PhaseType.End == phase;
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.End;
     }
 }

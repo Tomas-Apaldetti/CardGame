@@ -38,6 +38,9 @@ public class Player implements IAttackable, IConditionMetPub {
     private PlayerEnergies energies;
     private final List<IConditionMetSub> subs;
 
+    public String getUsername() {
+        return this.account.getUserName();
+    }
 
     public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone) {
@@ -79,8 +82,8 @@ public class Player implements IAttackable, IConditionMetPub {
 
     public void affectMatchEndCondition(Amount value) {
         this.condition = this.condition.modify(value);
-        if(this.condition.isMet()){
-            subs.forEach(s->s.conditionMet(this));
+        if (this.condition.isMet()) {
+            subs.forEach(s -> s.conditionMet(this));
         }
     }
 
@@ -253,7 +256,7 @@ public class Player implements IAttackable, IConditionMetPub {
     }
 
     public ActiveZone getZone(ActiveZoneType type) {
-        switch (type){
+        switch (type) {
             case Combat:
                 return this.combatZone;
             case Reserve:
@@ -261,7 +264,7 @@ public class Player implements IAttackable, IConditionMetPub {
             case Artifacts:
                 return this.artifactZone;
             default:
-                throw new RuntimeException("Invalid active zone type"); //@TODO
+                throw new RuntimeException("Invalid active zone type"); // @TODO
         }
     }
 

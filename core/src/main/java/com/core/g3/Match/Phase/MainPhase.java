@@ -62,7 +62,7 @@ public class MainPhase implements IPhase {
     }
 
     @Override
-    public IPhase useArtifact(CardInGame card, List<CardInGame> targets){
+    public IPhase useArtifact(CardInGame card, List<CardInGame> targets) {
         List<IAttackable> attackables = this.getAttackables(targets);
 
         OriginalAction og = card.artifact(attackables, this.current, this.rival);
@@ -70,7 +70,7 @@ public class MainPhase implements IPhase {
         return new ReactionPhase(this.current, this.rival, rStack, this, this.match);
     }
 
-    private List<IAttackable> getAttackables(List<CardInGame> from){
+    private List<IAttackable> getAttackables(List<CardInGame> from) {
         return from.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
     }
 
@@ -92,5 +92,10 @@ public class MainPhase implements IPhase {
     @Override
     public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
         return this.current.equals(desiredCurrentPlayer) && PhaseType.Main == phase;
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.Main;
     }
 }

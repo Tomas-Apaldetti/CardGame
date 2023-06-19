@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "b481f3fa-80ba-474c-af61-fb2c88e5a932",
+		"name": "TDD API RESTful Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20446112"
+	},
+	"item": [
+		{
+			"name": "Create new user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"test_user1\",\r\n    \"password\" : \"test_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user Copy",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"test_user2\",\r\n    \"password\" : \"test_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user repeated",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"test_user\",\r\n    \"password\" : \"test_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inexistent user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/users/inexistent_user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"inexistent_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"test_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add money to user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "-1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/test_user/money",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"test_user",
+						"money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add negative money to user is 400",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "9999",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/test_user/money",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"test_user",
+						"money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add money to inexistent user or mismatch token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "-1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/inexistent_user/money",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"inexistent_user",
+						"money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user money",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMTY1MTUsImV4cCI6MTY4NzAyMDExNX0.73pM3RssvqN8bPpoA6ml5bxTMSQm2hj1zaA4R1Y34UM",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"test_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/test_user/money",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"test_user",
+						"money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create invalid match",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gameMode\": \"HitPointLoss\",\r\n  \"bluePlayer\": \"test1\",\r\n  \"greenPlayer\": \"test2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create valid match",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gameMode\": \"HitPointLoss\",\r\n  \"bluePlayer\": \"test_user1\",\r\n  \"greenPlayer\": \"test_user2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get match",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjg3MTQ5MzgyLCJleHAiOjE2ODcxNTI5ODJ9.yx4TesTPg5CBAqFp7XSLndBonY3-w1CC1kxE5Ul_QnQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gameMode\": \"HitPointLoss\",\r\n  \"bluePlayer\": \"test_user1\",\r\n  \"greenPlayer\": \"test_user2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start match",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjg3MTQ5MzgyLCJleHAiOjE2ODcxNTI5ODJ9.yx4TesTPg5CBAqFp7XSLndBonY3-w1CC1kxE5Ul_QnQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gameMode\": \"HitPointLoss\",\r\n  \"bluePlayer\": \"test_user1\",\r\n  \"greenPlayer\": \"test_user2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match/start",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player information ",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "my-authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjg3MTUwNTY4LCJleHAiOjE2ODcxNTQxNjh9.lg8OjbM5d2GxWelt0XUIcCFIWjIK-OrRiH6W7jI-G2U",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"gameMode\": \"HitPointLoss\",\r\n  \"bluePlayer\": \"test_user1\",\r\n  \"greenPlayer\": \"test_user2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match/test_user1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match",
+						"test_user1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

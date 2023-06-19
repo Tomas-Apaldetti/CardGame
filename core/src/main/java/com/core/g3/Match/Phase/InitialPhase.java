@@ -8,7 +8,7 @@ public class InitialPhase implements IPhase {
     private final Player rival;
     private final Match match;
 
-    public InitialPhase(Player current, Player rival, Match match){
+    public InitialPhase(Player current, Player rival, Match match) {
         this.current = current;
         this.rival = rival;
         this.match = match;
@@ -25,7 +25,7 @@ public class InitialPhase implements IPhase {
     }
 
     @Override
-    public void initialEffects(){
+    public void initialEffects() {
         this.match.getLingeringEffects().forEach(l -> l.apply(this, this.current));
         this.match.gamemode().onInitialPhase(this.current, this.rival);
         this.current.resetCards();
@@ -34,5 +34,10 @@ public class InitialPhase implements IPhase {
     @Override
     public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
         return this.current.equals(desiredCurrentPlayer) && PhaseType.Initial == phase;
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.Initial;
     }
 }

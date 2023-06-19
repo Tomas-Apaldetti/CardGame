@@ -29,9 +29,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Check this to define the endpoints URIs:
-    // https://restfulapi.net/resource-naming/
-
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody final UserCredentials userCredentials) {
         try {
@@ -68,7 +65,6 @@ public class UserController {
         }
         System.out.println("User " + extractedUsername + " has " + user.user.getFounds());
 
-       
         return ResponseEntity.ok(user.getMoney());
     }
 

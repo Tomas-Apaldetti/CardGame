@@ -23,7 +23,7 @@ public class AttackPhase implements IPhase {
     public IPhase attack(CardInGame card, Amount index, IAttackable attackable) {
         OriginalAction og = card.attack(attackable, this.current, this.rival, index);
         ResolutionStack rStack = new ResolutionStack(og);
-        return new ReactionPhase(this.current, this.rival, rStack, this, this.match );
+        return new ReactionPhase(this.current, this.rival, rStack, this, this.match);
     }
 
     @Override
@@ -39,5 +39,10 @@ public class AttackPhase implements IPhase {
     @Override
     public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
         return this.current.equals(desiredCurrentPlayer) && PhaseType.Attack == phase;
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.Attack;
     }
 }

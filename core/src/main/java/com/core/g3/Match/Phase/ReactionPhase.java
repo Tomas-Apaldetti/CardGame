@@ -42,11 +42,10 @@ public class ReactionPhase implements IPhase {
                 rStack,
                 previous,
                 match,
-                new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false)
-        );
+                new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false));
     }
 
-    private Player getContrary(){
+    private Player getContrary() {
         return this.activePlayer.equals(this.current) ? this.rival : this.current;
     }
 
@@ -54,10 +53,10 @@ public class ReactionPhase implements IPhase {
         this.activePlayer = this.getContrary();
     }
 
-    public IPhase skipReaction(){
+    public IPhase skipReaction() {
         this.skipAmount++;
         this.switchPlayers();
-        if(this.skipAmount == 2){
+        if (this.skipAmount == 2) {
             this.match.addLingering(this.rstak.apply());
             return this.previous;
         }
@@ -84,20 +83,19 @@ public class ReactionPhase implements IPhase {
         return false;
     }
 
-
     @Override
     public IPhase useReaction(CardInGame card, List<CardInGame> targets) {
         return this.useReaction(card, this.getContrary());
     }
 
     @Override
-    public IPhase useReaction(ICard card, List<CardInGame> targets){
+    public IPhase useReaction(ICard card, List<CardInGame> targets) {
         CardInGame cig = this.zone.addCard(card, this.activePlayer);
         return this.useReaction(cig, this.getContrary());
     }
 
     @Override
-    public IPhase useReaction(CardInGame card, Player target){
+    public IPhase useReaction(CardInGame card, Player target) {
         this.acceptReaction(card, target);
         return this;
     }
@@ -106,5 +104,10 @@ public class ReactionPhase implements IPhase {
     public IPhase useReaction(ICard card, Player target) {
         CardInGame cig = this.zone.addCard(card, this.activePlayer);
         return this.useReaction(cig, target);
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.Reaction;
     }
 }
