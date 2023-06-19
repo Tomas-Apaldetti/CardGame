@@ -1,43 +1,13 @@
 {
 	"info": {
-		"_postman_id": "b481f3fa-80ba-474c-af61-fb2c88e5a932",
+		"_postman_id": "b3e76663-2e15-4e2d-a618-8e4d8eaf43ff",
 		"name": "TDD API RESTful Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20446112"
+		"_exporter_id": "17927932"
 	},
 	"item": [
 		{
 			"name": "Create new user",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"test_user\",\r\n    \"password\" : \"test_password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/users",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create new user repeated",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -85,25 +55,6 @@
 			"response": []
 		},
 		{
-			"name": "Inexistent user",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users/inexistent_user",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"inexistent_user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Login ",
 			"request": {
 				"method": "POST",
@@ -133,52 +84,28 @@
 		{
 			"name": "Add money to user",
 			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "-1",
-					"options": {
-						"raw": {
-							"language": "json"
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NjkwLCJleHAiOjE2ODcxMzgyOTB9.cYwIsyafjl2-43htOL2A1J4fe8vO6fPbQYoWy5hG1fQ",
+							"type": "string"
 						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/users/test_user/money",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"test_user",
-						"money"
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add negative money to user is 400",
-			"request": {
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
-						"type": "default"
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+						"type": "default",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "9999",
+					"raw": "100",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -186,49 +113,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/users/test_user/money",
+					"raw": "localhost:8080/users/money",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"users",
-						"test_user",
-						"money"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add money to inexistent user or mismatch token",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMjIxNDMsImV4cCI6MTY4NzAyNTc0M30.ZbgjW8-FYO0o49M2farQMEDnogTKR8PY-5-7itS09Eo",
-						"type": "default"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "-1",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/users/inexistent_user/money",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"inexistent_user",
 						"money"
 					]
 				}
@@ -237,41 +128,114 @@
 		},
 		{
 			"name": "Get user money",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NjkwLCJleHAiOjE2ODcxMzgyOTB9.cYwIsyafjl2-43htOL2A1J4fe8vO6fPbQYoWy5hG1fQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODcwMTY1MTUsImV4cCI6MTY4NzAyMDExNX0.73pM3RssvqN8bPpoA6ml5bxTMSQm2hj1zaA4R1Y34UM",
-						"type": "default"
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+						"type": "default",
+						"disabled": true
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"test_password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "localhost:8080/users/test_user/money",
+					"raw": "localhost:8080/users/money",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"users",
-						"test_user",
 						"money"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessTokenUrl",
+				"value": "http://localhost:8080/login",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "http://localhost:8080/login",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "organization token",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "profile",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
