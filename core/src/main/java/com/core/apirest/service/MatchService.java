@@ -1,7 +1,6 @@
 package com.core.apirest.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +44,6 @@ public class MatchService {
         // Create deck only for testing purposes
         Deck blueDeck = generateRandomDeck(40, 3);
         Deck greenDeck = generateRandomDeck(40, 3);
-        System.out.println(blueDeck.getCards().size());
-        System.out.println(greenDeck.getCards().size());
         // Create deck only for testing purposes
 
         Player newBluePlayer = newGameMode.addPlayer(blueUser, blueDeck);

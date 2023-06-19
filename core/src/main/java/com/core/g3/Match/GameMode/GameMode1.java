@@ -1,7 +1,6 @@
 package com.core.g3.Match.GameMode;
 
 import com.core.g3.Commons.Amount;
-import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PlainHP;
 import com.core.g3.Match.Player.Player;

@@ -1,6 +1,5 @@
 package com.core.apirest.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import com.core.g3.User.User;
 @Component
 public class UserService {
     private Register reg = new Register(new MemoryDataBase());
-
 
     public void addUser(UserCredentials userCredentials) {
         reg.createUser(userCredentials.username, userCredentials.password);

@@ -61,7 +61,6 @@ public abstract class GameMode implements IConditionMetSub {
     }
 
     private void checkDecks(IDeck deck) {
-        System.out.println("El mazo tiene: " + deck.getCards().size());
         if (deck.getCards().size() < minDeckCards || deck.getCards().size() > maxDeckCards) {
             throw new InvalidDeckCount("El mazo debe tener entre " + minDeckCards + " y " + maxDeckCards + " cartas");
         }

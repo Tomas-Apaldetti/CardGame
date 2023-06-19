@@ -4,14 +4,8 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.CardInGame.IDeathSub;
-import com.core.g3.Match.DeckPlayable.DeckPlayable;
-import com.core.g3.Match.Player.MatchEndCondition.IConditionMetPub;
-import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
-import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PointsCounter;
 import com.core.g3.Match.Player.Player;
-import com.core.g3.Match.Zone.ActiveZone;
-import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
 import java.util.Optional;
