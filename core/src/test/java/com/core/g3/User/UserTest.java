@@ -2,8 +2,6 @@ package com.core.g3.User;
 
 import org.junit.jupiter.api.Test;
 
-import com.core.g3.Card.Card;
-import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 
@@ -13,7 +11,6 @@ public class UserTest {
         User user = new User("user");
         user.credit(new Amount(10));
         CardName cardName = CardName.Alchemist;
-        Card newCardToBuy = CardFactory.createCard(cardName);
         user.buyCards(cardName,1);
         user.addCardToDeck("deck", cardName, 1);
         assert (user.countCards(cardName) == 1);

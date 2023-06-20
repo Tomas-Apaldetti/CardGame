@@ -35,6 +35,6 @@ public class CardsTest {
 
     @Test
     public void testAlchemist() {
-        Card card = Alchemist.create();
+        Alchemist.create();
     }
 }
