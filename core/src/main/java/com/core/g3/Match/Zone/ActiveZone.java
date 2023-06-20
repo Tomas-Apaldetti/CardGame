@@ -24,6 +24,7 @@ public class ActiveZone implements IDeathSub, IDeathPub {
     private List<CardInGame> cards;
     private final List<IDeathSub> subs = new ArrayList<>();
     private boolean isActive;
+    private List<IDeathSub> subsRemovePetitions = new ArrayList<>();
 
     public ActiveZone(ActiveZoneType zoneType, Amount limit) {
         this(zoneType, limit, true);
@@ -38,37 +39,64 @@ public class ActiveZone implements IDeathSub, IDeathPub {
     }
 
     public CardInGame addCard(ICard card, Player player) {
+
+        this.assertCanAdd(card);
+
+        this.assertPayCard(card, player);
+
+        player.moveFromHand(card);
+
+        CardInGame lCard = new CardInGame(player, card, this);
+
+        this.addCard(lCard);
+
+        return lCard;
+    }
+
+    public CardInGame moveToHere(CardInGame card){
+        this.assertCanAdd(card.getBase());
+
+        this.addCard(card);
+
+        card.changeZone(this);
+
+        return card;
+    }
+
+    public CardInGame addCard(CardInGame card) {
+        Amount size = card.getBase().summonSize();
+        this.cardsSize.add(size);
+        this.cards.add(card);
+        return card;
+    }
+
+    private void assertCanAdd(ICard card){
         Amount size = card.summonIn(this.zoneType);
 
         size.add(this.cardsSize);
         if (size.gt(this.limit)) {
             throw new CardLimitReachedException();
         }
+    }
 
+    private void assertPayCard(ICard card, Player player){
         if(this.isActive){
             player.pay(card);
         }
-        player.moveFromHand(card);
-
-        CardInGame livingCard = new CardInGame(player, card, this);
-
-        this.cardsSize = size;
-        this.cards.add(livingCard);
-
-        return livingCard;
-    }
-
-    public void addCard(CardInGame card) {
-        Amount size = card.getBase().summonIn(this.zoneType);
-        this.cardsSize.add(size);
-        this.cards.add(card);
     }
 
     public void remove(CardInGame card) {
-        if (!this.cards.contains(card)) {
-            throw new CardNotInZoneException();
+        this.remove(card, () -> {throw new CardNotInZoneException();});
+    }
+
+    private void remove(CardInGame card, Runnable onMiss){
+        if(!this.cards.contains(card)){
+            onMiss.run();
+            return;
         }
-        Amount size = card.getBase().summonIn(this.zoneType);
+        Amount size = card.getBase().summonSize();
+        card.remove(this);
+        card.putInDiscard();
         this.cards.remove(card);
         this.cardsSize.subtract(size);
     }
@@ -86,9 +114,9 @@ public class ActiveZone implements IDeathSub, IDeathPub {
     }
 
     public List<IAttackable> getCreatures() {
-        return this.cards.stream().filter(card -> {
-            return card.getCreatureAttributes().isPresent();
-        }).map(c -> (IAttackable) c).collect(Collectors.toList());
+        return this.cards.stream().filter(card ->
+            card.getCreatureAttributes().isPresent()
+        ).map(c -> (IAttackable) c).collect(Collectors.toList());
     }
 
     public boolean countsAsActive() {
@@ -114,19 +142,34 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         return this.cards;
     }
 
+    public ActiveZoneType getType(){
+        return this.zoneType;
+    }
+
     @Override
     public void notify(CardInGame card) {
-        this.remove(card);
+        this.remove(card, () -> {});
+        this.onCardDeath(card);
+    }
+
+    private void onCardDeath(CardInGame card){
+        this.applyRemovals();
         this.subs.forEach((i) -> i.notify(card));
+    }
+
+    private void applyRemovals() {
+        this.subsRemovePetitions.forEach(s -> this.subs.remove(s));
+        this.subsRemovePetitions.clear();
     }
 
     @Override
     public void add(IDeathSub sub) {
+        this.applyRemovals();
         this.subs.add(sub);
     }
 
     @Override
     public void remove(IDeathSub sub) {
-        this.subs.remove(subs);
+        this.subsRemovePetitions.add(sub);
     }
 }

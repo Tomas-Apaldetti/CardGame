@@ -28,9 +28,9 @@ class PointsUntilVictoryTest {
     @Test
     public void pointsConditionMetOk() {
         IMatchEndCondition condition = new PointsCounter(new Amount(0), new Amount(2));
-        condition.modify(new Amount(2));
+        condition.modify(new Amount(3));
 
-        assertEquals(2, condition.getNumeric());
+        assertEquals(3, condition.getNumeric());
         assertTrue(condition.isMet());
     }
 

@@ -17,4 +17,5 @@ public interface IAttackable {
     default boolean isAttackable() {
         return true;
     };
+
 }

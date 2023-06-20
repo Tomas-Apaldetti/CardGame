@@ -32,6 +32,7 @@ import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.CardInGame.AttackableManager.NoAttackable;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
@@ -108,6 +109,11 @@ public class Card implements ITransactionable, ICard {
             }
         }
         throw new CardTypeNoSummonableInZoneException();
+    }
+
+    @Override
+    public Amount summonSize() {
+        return this.summonableSpace.clone();
     }
 
     @Override
@@ -189,7 +195,7 @@ public class Card implements ITransactionable, ICard {
 
 
     @Override
-    public OriginalAction artifact(OriginalAction og, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction og, List<IAffectable> affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Artifact)) {
                 return cardType.artifact(og, affected, user, rival);
@@ -220,7 +226,7 @@ public class Card implements ITransactionable, ICard {
     }
 
     @Override
-    public OriginalAction action(OriginalAction og, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction action(OriginalAction og, List<IAffectable> affected, Player user, Player rival) {
         for (ICardType cardType : this.cardTypes) {
             if (cardType.is(CardTypeName.Action)) {
                 return cardType.action(og, affected, user, rival);

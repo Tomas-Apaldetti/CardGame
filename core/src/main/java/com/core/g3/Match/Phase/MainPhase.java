@@ -10,6 +10,7 @@ import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Match;
 import com.core.g3.Match.Phase.Exceptions.ActionNotPossibleException;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.Zone.ActiveZone;
@@ -47,9 +48,9 @@ public class MainPhase implements IPhase {
         ActiveZone temporal = new ActiveZone(ActiveZoneType.Temporal, new Amount(Integer.MAX_VALUE), false);
         CardInGame cig = temporal.addCard(card, this.current);
 
-        List<IAttackable> attackables = this.getAttackables(targetCards);
+        List<IAffectable> affectables = this.getAffectables(targetCards);
 
-        OriginalAction og = cig.action(attackables, this.current, this.rival);
+        OriginalAction og = cig.action(affectables, this.current, this.rival);
         ResolutionStack rstack = new ResolutionStack(og);
         return new ReactionPhase(this.current, this.rival, rstack, this, this.match, temporal);
     }
@@ -63,15 +64,19 @@ public class MainPhase implements IPhase {
 
     @Override
     public IPhase useArtifact(CardInGame card, List<CardInGame> targets){
-        List<IAttackable> attackables = this.getAttackables(targets);
+        List<IAffectable> affectables = this.getAffectables(targets);
 
-        OriginalAction og = card.artifact(attackables, this.current, this.rival);
+        OriginalAction og = card.artifact(affectables, this.current, this.rival);
         ResolutionStack rStack = new ResolutionStack(og);
         return new ReactionPhase(this.current, this.rival, rStack, this, this.match);
     }
 
     private List<IAttackable> getAttackables(List<CardInGame> from){
         return from.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
+    }
+
+    private List<IAffectable> getAffectables(List<CardInGame> from){
+        return from.stream().collect(Collectors.toList());
     }
 
     @Override

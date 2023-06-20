@@ -1,10 +1,10 @@
 package com.core.g3.Card.Action;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.StealEnergy;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -20,7 +20,7 @@ public class SacrificeCreatureAction implements IAction {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, List<IAffectable> affected, Player user, Player rival) {
         action.setType(ActionType.Action);
         Card creature = (Card) affected.get(0);
         CardInGame cig = user.getCardInGame(creature);

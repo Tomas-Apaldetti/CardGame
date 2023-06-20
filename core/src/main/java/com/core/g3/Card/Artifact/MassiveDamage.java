@@ -4,11 +4,13 @@ import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.Damage;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MassiveDamage implements IArtifactEffect {
 
@@ -29,9 +31,12 @@ public class MassiveDamage implements IArtifactEffect {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, List<IAttackable> targets, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, List<IAffectable> targets, Player user, Player rival) {
         action.setType(ActionType.ArtifactEffect);
-        action.addEffect(new Damage(this.value, targets));
+        action.addEffect(new Damage(
+                this.value,
+                targets.stream().collect(Collectors.toList())
+        ));
         return action;
     }
 }

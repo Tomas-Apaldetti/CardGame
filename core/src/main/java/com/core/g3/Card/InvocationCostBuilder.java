@@ -13,7 +13,7 @@ public class InvocationCostBuilder {
 
     private ICost currentCost;
 
-    InvocationCostBuilder() {
+    public InvocationCostBuilder() {
         this.currentCost = new NullInvocationCost();
     }
 
