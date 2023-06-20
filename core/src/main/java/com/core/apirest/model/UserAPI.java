@@ -1,5 +1,9 @@
 package com.core.apirest.model;
 
+import java.util.List;
+
+import com.core.g3.Card.CardName;
+import com.core.g3.Deck.ICard;
 import com.core.g3.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,9 +18,5 @@ public class UserAPI {
         this.user = user;
         this.username = user.getUserName();
         this.money = user.getFounds();
-    }
-
-    public int getMoney() {
-        return money;
     }
 }

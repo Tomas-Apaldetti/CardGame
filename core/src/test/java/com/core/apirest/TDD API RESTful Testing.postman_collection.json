@@ -7,213 +7,335 @@
 	},
 	"item": [
 		{
-			"name": "Create new user",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"test_user\",\r\n    \"password\" : \"test_password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create new user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"test_user\",\r\n    \"password\" : \"test_password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"test_password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Cards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/cards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardName\": \"WaterEnergy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/card/buy",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"card",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add money to user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"money\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/money",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user money",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/users/money",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"money"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "localhost:8080/users",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users"
-					]
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Get users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login ",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"test_password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Market",
+			"item": [
+				{
+					"name": "Sell Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 90\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/market/publish/:cardName",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"market",
+								"publish",
+								":cardName"
+							],
+							"variable": [
+								{
+									"key": "cardName",
+									"value": "WaterEnergy"
+								}
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Publications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/market/publications",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"market",
+								"publications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 90\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/market/buy/:cardName",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"market",
+								"buy",
+								":cardName"
+							],
+							"variable": [
+								{
+									"key": "cardName",
+									"value": "WaterEnergy"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "localhost:8080/login",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add money to user",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NjkwLCJleHAiOjE2ODcxMzgyOTB9.cYwIsyafjl2-43htOL2A1J4fe8vO6fPbQYoWy5hG1fQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
-						"type": "default",
-						"disabled": true
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "100",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/users/money",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"money"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get user money",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NjkwLCJleHAiOjE2ODcxMzgyOTB9.cYwIsyafjl2-43htOL2A1J4fe8vO6fPbQYoWy5hG1fQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "my-authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "localhost:8080/users/money",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"money"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	],
 	"auth": {
-		"type": "oauth2",
-		"oauth2": [
+		"type": "bearer",
+		"bearer": [
 			{
-				"key": "accessTokenUrl",
-				"value": "http://localhost:8080/login",
-				"type": "string"
-			},
-			{
-				"key": "grant_type",
-				"value": "client_credentials",
-				"type": "string"
-			},
-			{
-				"key": "authUrl",
-				"value": "http://localhost:8080/login",
-				"type": "string"
-			},
-			{
-				"key": "clientSecret",
-				"value": "",
-				"type": "string"
-			},
-			{
-				"key": "clientId",
-				"value": "",
-				"type": "string"
-			},
-			{
-				"key": "tokenName",
-				"value": "organization token",
-				"type": "string"
-			},
-			{
-				"key": "challengeAlgorithm",
-				"value": "S256",
-				"type": "string"
-			},
-			{
-				"key": "scope",
-				"value": "profile",
-				"type": "string"
-			},
-			{
-				"key": "addTokenTo",
-				"value": "header",
-				"type": "string"
-			},
-			{
-				"key": "client_authentication",
-				"value": "header",
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIxIiwiaWF0IjoxNjg3MjkxNTc1LCJleHAiOjE2ODcyOTUxNzV9.R9KPobUj5ylQwdan3I48jyAC9AncbKhmjckzhCZ4x2Q",
 				"type": "string"
 			}
 		]

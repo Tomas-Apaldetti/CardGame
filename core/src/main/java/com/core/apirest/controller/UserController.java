@@ -3,11 +3,12 @@ package com.core.apirest.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.core.apirest.jwtutil.JwtUtil;
+import com.core.apirest.model.CardDTO;
+import com.core.apirest.model.MoneyDTO;
 import com.core.apirest.model.UserAPI;
 import com.core.apirest.model.UserCredentials;
 import com.core.apirest.service.UserService;
 import com.core.g3.User.Exceptions.UserAlreadyExistsException;
-import com.core.g3.User.Exceptions.UserDoesntExistException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -50,27 +51,20 @@ public class UserController {
 
     @GetMapping("/money")
     public ResponseEntity<Integer> getMoney(@RequestHeader("Authorization") String token) {
-        System.out.println("inside getMoney");
         String extractedUsername;
         try {
             extractedUsername = jwtUtil.extractUsername(token);
         } catch (io.jsonwebtoken.security.SignatureException e) {
             return ResponseEntity.badRequest().build();
         }
-        UserAPI user;
-        try {
-            user = userService.getUser(extractedUsername);
-        } catch (UserDoesntExistException e) {
-            return ResponseEntity.notFound().build();
-        }
-        System.out.println("User " + extractedUsername + " has " + user.user.getFounds());
-
-        return ResponseEntity.ok(user.getMoney());
+       
+        return userService.getUserFounds(extractedUsername);
     }
 
     @PostMapping("/money")
     public ResponseEntity<String> addMoney(@RequestHeader("Authorization") String token,
-            @RequestBody final int moneyToAdd) {
+            @RequestBody final MoneyDTO data) {
+        Integer moneyToAdd = data.money;
         String extractedUsername;
         try {
             extractedUsername = jwtUtil.extractUsername(token);
@@ -86,6 +80,43 @@ public class UserController {
         }
 
         String message = userService.addMoney(extractedUsername, moneyToAdd);
+        return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/cards")
+    public ResponseEntity<List<String>> getCards(@RequestHeader("Authorization") String token) {
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            System.out.println(e);
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<String> cards = userService.getCards(extractedUsername);
+        return ResponseEntity.ok(cards);
+    }
+
+    @PostMapping("/card/buy")
+    public ResponseEntity<String> buyCard(@RequestHeader("Authorization") String token,
+            @RequestBody final CardDTO data) {
+        String cardName = data.cardName;
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String message = userService.buyCard(extractedUsername, cardName);
         return ResponseEntity.ok(message);
     }
 
