@@ -152,10 +152,10 @@ public class UserService {
         return ResponseEntity.ok("Carta agregada a deck");
     }
 
-    public ResponseEntity<List<String>> getDecksCards(String extractedUsername, String deckName) {
+    public ResponseEntity<List<String>> getDecksCards(String username, String deckName) {
         UserAPI user;
         try {
-            user = this.getUser(extractedUsername);
+            user = this.getUser(username);
         } catch (UserDoesntExistException e) {
             return ResponseEntity.notFound().build();
         }
@@ -167,6 +167,35 @@ public class UserService {
         List<String> cards = deck.getCards().stream().map(card -> card.getName().toString()).toList();
 
         return ResponseEntity.ok(cards);
+    }
+
+    public ResponseEntity<String> removeCardFromDeck(String username, String deckName, String cardName) {
+        UserAPI user;
+        try {
+            user = this.getUser(username);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.notFound().build();
+        }
+        CardName cardNameEnum = CardName.valueOf(cardName);
+
+        // get cards from inventory and select card by name
+        ICard card = user.user.getCardInventory().getCards().stream().filter(c -> c.getName().equals(cardNameEnum)).findFirst().orElse(null);
+        if (card == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carta no encontrada");
+        }
+        // get deck name from user
+        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        if (deckName == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deck no encontrado");
+        }
+        // add card to deck
+        try {
+            deck.removeCard(card);   
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al remover carta de deck");
+        }
+        
+        return ResponseEntity.ok("Carta removida de deck");
     }
 
 }

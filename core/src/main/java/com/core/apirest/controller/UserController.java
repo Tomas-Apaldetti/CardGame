@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -189,5 +190,24 @@ public class UserController {
         }
 
         return userService.addCardToDeck(extractedUsername, deckName, cardName);
+    }
+
+    @DeleteMapping("/decks/cards")
+    public ResponseEntity<String> removeCardFromDeck(@RequestHeader("Authorization") String token,
+            @RequestBody final CardDTO data) {
+        String cardName = data.cardName;
+        String deckName = data.deckName;
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return userService.removeCardFromDeck(extractedUsername, deckName, cardName);
     }
 }

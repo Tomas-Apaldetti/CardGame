@@ -192,6 +192,178 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Decks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/users/decks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"decks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Deck",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deckName\": \"myDeck\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/decks",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"decks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Card to Deck",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deckName\": \"myDeck\",\n    \"cardName\": \"WaterEnergy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/decks/cards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"decks",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cards in Deck",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deckName\": \"myDeck\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/decks/cards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"decks",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cards in Deck",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "my-authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIzIiwiaWF0IjoxNjg3MTM0NTE4LCJleHAiOjE2ODcxMzgxMTh9.jaQPaQXydv8F7hUzRs7R2BX1BhulhzcuBnc8bEMJS0I",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deckName\": \"myDeck\",\n    \"cardName\": \"WaterEnergy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/decks/cards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"decks",
+								"cards"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -335,7 +507,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIxIiwiaWF0IjoxNjg3MjkxNTc1LCJleHAiOjE2ODcyOTUxNzV9.R9KPobUj5ylQwdan3I48jyAC9AncbKhmjckzhCZ4x2Q",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJpYXQiOjE2ODczMDE3MjAsImV4cCI6MTY4NzMwNTMyMH0.i04SPr_CJkF29rt6irus1GbV9MfXwFUAAi9kJsiXlBo",
 				"type": "string"
 			}
 		]
