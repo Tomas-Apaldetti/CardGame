@@ -84,7 +84,7 @@ public class MatchTest {
         match.summon(PlayerZone.Blue, CardName.Antimagic, ActiveZoneType.Combat);
 
         assertEquals(1,
-                playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
+                playerBlue.getZone(ActiveZoneType.Combat).currentCardCount());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class MatchTest {
         match.startMatch(PlayerZone.Blue);
 
         assertEquals(0,
-                playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
+                playerBlue.getZone(ActiveZoneType.Combat).currentCardCount());
         assertThrows(Throwable.class, () -> match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat));
     }
 

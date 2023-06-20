@@ -19,7 +19,7 @@ public class Alchemist {
         public static Card create() {
                 CardBuilder builder = new CardBuilder(CardName.Alchemist);
 
-                builder.invocationCost.addEnergyCost(EnergyType.Water, new Amount(1));
+                builder.invocationCost.addEnergyCost(EnergyType.Fire, new Amount(1));
                 builder.invocationCost.addEnergyCost(EnergyType.Plant, new Amount(1));
 
                 builder.setShouldCount(true);

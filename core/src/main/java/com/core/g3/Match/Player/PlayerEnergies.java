@@ -16,9 +16,9 @@ public class PlayerEnergies {
 
     public PlayerEnergies() {
         this.energies = new HashSet<>();
-        this.energies.add(new Energy(EnergyType.Water, new Amount(0)));
-        this.energies.add(new Energy(EnergyType.Fire, new Amount(0)));
-        this.energies.add(new Energy(EnergyType.Plant, new Amount(0)));
+        for (EnergyType type: EnergyType.values()){
+            this.energies.add(new Energy(type, new Amount(0)));
+        }
     }
 
     public IModifiableResource getEnergy(EnergyType energyType) {
