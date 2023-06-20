@@ -1,6 +1,8 @@
 package com.core.g3.Match;
 
 import com.core.g3.Card.CardName;
+import com.core.g3.Card.Cost.Exception.CanNotPayException;
+import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -13,7 +15,10 @@ import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
 
+import com.core.g3.Match.Zone.ActiveZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
+import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
+import com.core.g3.Match.Zone.Exceptions.InvalidMovementException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,6 +194,27 @@ public class Match {
                 playerCIG,
                 new Amount(index),
                 this.getRival(this.currentActivePlayer()));
+    }
+
+    public void moveCreature(ICard creature, ActiveZoneType from, ActiveZoneType to){
+        this.assertValidCreatureMovement(from, to);
+
+        Player currentPlayer = this.currentActivePlayer();
+        CardInGame card = currentPlayer.getCardInGame(creature);
+        ActiveZone original = currentPlayer.getZone(from);
+        ActiveZone newZone = currentPlayer.getZone(to);
+
+        newZone.moveToHere(card);
+
+        original.remove(card);
+    }
+
+    private void assertValidCreatureMovement(ActiveZoneType from, ActiveZoneType to){
+        boolean combatToReserve = ActiveZoneType.Combat == from && ActiveZoneType.Reserve == to;
+        boolean reserveToCombat = ActiveZoneType.Reserve == from && ActiveZoneType.Combat == to;
+        if(combatToReserve || reserveToCombat){
+            throw new InvalidMovementException();
+        }
     }
 
     public int playerHealth(PlayerZone side) {

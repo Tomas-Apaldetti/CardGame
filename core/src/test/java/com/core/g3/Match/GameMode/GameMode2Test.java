@@ -92,7 +92,7 @@ class GameMode2Test {
         Deck deck = generateRandomDeck(60, 4);
         Player player1 = GameMode2.addPlayer(new User("test"), deck);
         Player player2 = GameMode2.addPlayer(new User("test"), deck);
-        player2.affectMatchEndCondition(new Amount(6));
+        player2.affectMatchEndCondition(new Amount(7));
         assertTrue(GameMode2.getWinner(player1, player2).isPresent());
         assertTrue(GameMode2.getWinner(player1, player2).get().equals(player2));
     }

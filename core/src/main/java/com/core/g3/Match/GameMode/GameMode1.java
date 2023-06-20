@@ -9,8 +9,7 @@ import java.util.Optional;
 
 public class GameMode1 extends GameMode {
 
-    private Optional<Player> winner = Optional.empty();
-
+    private Optional<Player> loser = Optional.empty();
     public GameMode1() {
         this.initialPoints = 20;
         this.maxDeckCards = 60;
@@ -46,10 +45,13 @@ public class GameMode1 extends GameMode {
 
     @Override
     public void conditionMet(Player who) {
-        if (this.winner.isPresent()) {
+        if(this.loser.isPresent()){
             return;
         }
-        this.winner = Optional.ofNullable(who);
-        this.match.setWinner(this.match.getRival(who));
+        this.loser = Optional.ofNullable(who);
+
+        if(this.match != null){
+            this.match.setWinner(this.match.getRival(who));
+        }
     }
 }

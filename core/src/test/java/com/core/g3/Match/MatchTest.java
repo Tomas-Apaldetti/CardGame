@@ -46,8 +46,10 @@ public class MatchTest {
         Player playerGreen = gameMode.addPlayer(new User("green"), basicDeck);
 
         Match match = new Match(playerBlue, playerGreen, gameMode);
-        playerGreen.affectMatchEndCondition(new Amount(6));
+        match.startMatch(PlayerZone.Green);
+        playerGreen.affectMatchEndCondition(new Amount(7));
         Optional<PlayerZone> playerZoneGreen = Optional.of(PlayerZone.Green);
+        match.skipToPhase(PlayerZone.Green, PhaseType.Initial);
         assertEquals(playerZoneGreen, match.getWinner());
     }
 
