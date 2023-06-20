@@ -5,12 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.core.g3.Card.Attack.Exceptions.CantAttackToVictimException;
 import com.core.g3.Card.Attack.IAttack;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.CardTypeName;
-import com.core.g3.Card.Type.Exceptions.CardIsNotCreatureException;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;

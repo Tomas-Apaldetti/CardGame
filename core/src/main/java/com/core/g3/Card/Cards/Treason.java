@@ -1,20 +1,22 @@
 package com.core.g3.Card.Cards;
 
+import com.core.g3.Card.Action.TreasonAction;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
+import com.core.g3.Card.InvocationCostBuilder;
+import com.core.g3.Commons.Amount;
+import com.core.g3.Match.Player.Resources.EnergyType;
 
 public class Treason {
     public static Card create() {
         CardBuilder builder = new CardBuilder(CardName.Treason);
 
-        // ICost costEnergy = new CostEnergy(Optional.of(EnergyType.Water), new
-        // Amount(1),
-        // Optional.of(new CostEnergy(Optional.of(EnergyType.Plant), new Amount(1)))
-        // );
-        // TODO: Efecto: Selecciona una carta en las zonas activas de cualquier jugador.
-        // Transfiere dicha carta a la misma zona del jugador opuesto.
-        // builder.cardTypeBuilder.setTypeReaction(costEnergy);
+        InvocationCostBuilder cost = new InvocationCostBuilder();
+        cost.addEnergyCost(EnergyType.Water, new Amount(1));
+        cost.addEnergyCost(EnergyType.Plant, new Amount(1));
+
+        builder.cardTypeBuilder.setTypeAction(cost.getCost(), new TreasonAction());
 
         return builder.build();
     }

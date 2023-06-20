@@ -10,7 +10,6 @@ import com.core.g3.Match.CardContainer.CardContainer;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.CardInGame.IDeathSub;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
-import com.core.g3.Match.GameMode.GameMode2;
 import com.core.g3.Match.IAccount;
 import com.core.g3.Match.Player.Exception.HandIsEmptyException;
 import com.core.g3.Match.Player.MatchEndCondition.IConditionMetPub;
@@ -18,6 +17,7 @@ import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
 import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
+import com.core.g3.Match.Zone.Exceptions.InvalidActiveZoneException;
 import com.core.tcg.driver.Adapter.DriverMapper;
 import com.core.tcg.driver.DriverCardName;
 import com.core.g3.Match.Zone.ActiveZone;
@@ -261,7 +261,7 @@ public class Player implements IAttackable, IConditionMetPub {
             case Artifacts:
                 return this.artifactZone;
             default:
-                throw new RuntimeException("Invalid active zone type"); //@TODO
+                throw new InvalidActiveZoneException();
         }
     }
 

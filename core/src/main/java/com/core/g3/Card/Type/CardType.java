@@ -12,6 +12,7 @@ import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Card.Type.Exceptions.CardIsNotCreatureException;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
@@ -62,7 +63,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction artifact(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction artifact(OriginalAction action, List<IAffectable> affected, Player user, Player rival) {
         throw new ArtifactNotUsableException();
     }
 
@@ -72,7 +73,7 @@ public abstract class CardType implements ICardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction action(OriginalAction action, List<IAffectable> affected, Player user, Player rival) {
         throw new ActionNotUsableException();
     }
 

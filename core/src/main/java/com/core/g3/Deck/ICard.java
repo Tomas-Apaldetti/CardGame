@@ -14,25 +14,28 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
 public interface ICard {
 
-    public CardName getName();
+    CardName getName();
 
-    public boolean shouldCountAgainstNameLimit();
+    boolean shouldCountAgainstNameLimit();
 
-    public int getPrice();
+    int getPrice();
 
-    public Amount summonIn(ActiveZoneType artifacts);
+    Amount summonIn(ActiveZoneType artifacts);
 
-    public void applySummonCost(Player player);
+    Amount summonSize();
+
+    void applySummonCost(Player player);
 
     List<ActiveZoneType> getAllowableZones();
 
-    public List<CardTypeName> getTypes();
+    List<CardTypeName> getTypes();
 
     IAttackableManager getHealth();
 
@@ -46,11 +49,11 @@ public interface ICard {
 
     OriginalAction artifact(OriginalAction og, Player user, Player rival);
 
-    OriginalAction artifact(OriginalAction og, List<IAttackable> affected, Player user, Player rival);
+    OriginalAction artifact(OriginalAction og, List<IAffectable> affected, Player user, Player rival);
 
     OriginalAction action(OriginalAction og, Player user, Player rival);
 
-    OriginalAction action(OriginalAction og, List<IAttackable> affected, Player user, Player rival);
+    OriginalAction action(OriginalAction og, List<IAffectable> affected, Player user, Player rival);
 
     void reaction(CardInGame cardInGame, Player user, Player rival, ResolutionStack stack);
 
