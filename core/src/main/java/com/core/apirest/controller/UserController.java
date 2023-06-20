@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.core.apirest.jwtutil.JwtUtil;
 import com.core.apirest.model.CardDTO;
+import com.core.apirest.model.DeckDTO;
 import com.core.apirest.model.MoneyDTO;
 import com.core.apirest.model.UserAPI;
 import com.core.apirest.model.UserCredentials;
@@ -120,4 +121,73 @@ public class UserController {
         return ResponseEntity.ok(message);
     }
 
+    @GetMapping("/decks")
+    public ResponseEntity<List<String>> getDeck(@RequestHeader("Authorization") String token) {
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return userService.getDecks(extractedUsername);
+    }
+
+    @PostMapping("/decks")
+    public ResponseEntity<String> addDeck(@RequestHeader("Authorization") String token,
+            @RequestBody final DeckDTO data) {
+        String deckName = data.deckName;
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return userService.createDeck(extractedUsername, deckName);
+    }
+
+    @GetMapping("/decks/cards")
+    public ResponseEntity<List<String>> getDeckCards(@RequestHeader("Authorization") String token, @RequestBody final DeckDTO data) {
+        String deckName = data.deckName;
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return userService.getDecksCards(extractedUsername, deckName);
+    }
+
+    @PostMapping("/decks/cards")
+    public ResponseEntity<String> addCardToDeck(@RequestHeader("Authorization") String token,
+            @RequestBody final CardDTO data) {
+        String cardName = data.cardName;
+        String deckName = data.deckName;
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+
+        if (userService.getUser(extractedUsername) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return userService.addCardToDeck(extractedUsername, deckName, cardName);
+    }
 }

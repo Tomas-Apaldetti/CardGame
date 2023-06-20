@@ -3,6 +3,7 @@ package com.core.apirest.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,9 @@ import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.DataBase.MemoryDataBase;
 import com.core.g3.Deck.ICard;
+import com.core.g3.Deck.IDeck;
+import com.core.g3.Deck.Exceptions.CardAlreadyExistsInDeckException;
+import com.core.g3.Deck.Exceptions.DeckAlreadyExistsException;
 import com.core.g3.Market.Exceptions.InsufficientMoneyException;
 import com.core.g3.User.Register;
 import com.core.g3.User.User;
@@ -88,6 +92,81 @@ public class UserService {
 
     public ICard getCardByName(UserAPI user, CardName name) {
         return user.user.getCards().stream().filter(card -> card.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public ResponseEntity<List<String>> getDecks(String username) {
+        UserAPI user;
+        try {
+            user = this.getUser(username);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.user.getDeckInventory().getDecks().stream().map(deck -> deck.getDeckName()).toList());
+    }
+
+    public ResponseEntity<String> createDeck(String username, String deckName) {
+        UserAPI user;
+        try {
+            user = this.getUser(username);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            user.user.getDeckInventory().createDeck(deckName);
+        } catch (DeckAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Deck ya existe");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear deck");
+        }
+        return ResponseEntity.ok("Deck creado");
+    }
+
+    public ResponseEntity<String> addCardToDeck(String username, String deckName, String cardName) {
+        UserAPI user;
+        try {
+            user = this.getUser(username);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.notFound().build();
+        }
+        CardName cardNameEnum = CardName.valueOf(cardName);
+
+        // get cards from inventory and select card by name
+        ICard card = user.user.getCardInventory().getCards().stream().filter(c -> c.getName().equals(cardNameEnum)).findFirst().orElse(null);
+        if (card == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carta no encontrada");
+        }
+        // get deck name from user
+        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        if (deckName == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deck no encontrado");
+        }
+        // add card to deck
+        try {
+            deck.addCard(card);   
+        } catch (CardAlreadyExistsInDeckException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Carta ya existe en deck");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al agregar carta a deck");
+        }
+        
+        return ResponseEntity.ok("Carta agregada a deck");
+    }
+
+    public ResponseEntity<List<String>> getDecksCards(String extractedUsername, String deckName) {
+        UserAPI user;
+        try {
+            user = this.getUser(extractedUsername);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        if (deckName == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }    
+        List<String> cards = deck.getCards().stream().map(card -> card.getName().toString()).toList();
+
+        return ResponseEntity.ok(cards);
     }
 
 }
