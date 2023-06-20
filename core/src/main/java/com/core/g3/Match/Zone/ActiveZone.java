@@ -1,5 +1,6 @@
 package com.core.g3.Match.Zone;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;
@@ -38,6 +39,12 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         this.isActive = isActive;
     }
 
+    public List<CardInGame> getCardsInGameByCardName(CardName cardName) {
+        return this.cards.stream()
+                .filter(cig -> cig.getBase().getName().equals(cardName))
+                .collect(Collectors.toList());
+    }
+
     public CardInGame addCard(ICard card, Player player) {
 
         this.assertCanAdd(card);
@@ -53,7 +60,7 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         return lCard;
     }
 
-    public CardInGame moveToHere(CardInGame card){
+    public CardInGame moveToHere(CardInGame card) {
         this.assertCanAdd(card.getBase());
 
         this.addCard(card);
@@ -70,7 +77,7 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         return card;
     }
 
-    private void assertCanAdd(ICard card){
+    private void assertCanAdd(ICard card) {
         Amount size = card.summonIn(this.zoneType);
 
         size.add(this.cardsSize);
@@ -79,18 +86,20 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         }
     }
 
-    private void assertPayCard(ICard card, Player player){
-        if(this.isActive){
+    private void assertPayCard(ICard card, Player player) {
+        if (this.isActive) {
             player.pay(card);
         }
     }
 
     public void remove(CardInGame card) {
-        this.remove(card, () -> {throw new CardNotInZoneException();});
+        this.remove(card, () -> {
+            throw new CardNotInZoneException();
+        });
     }
 
-    private void remove(CardInGame card, Runnable onMiss){
-        if(!this.cards.contains(card)){
+    private void remove(CardInGame card, Runnable onMiss) {
+        if (!this.cards.contains(card)) {
             onMiss.run();
             return;
         }
@@ -114,9 +123,8 @@ public class ActiveZone implements IDeathSub, IDeathPub {
     }
 
     public List<IAttackable> getCreatures() {
-        return this.cards.stream().filter(card ->
-            card.getCreatureAttributes().isPresent()
-        ).map(c -> (IAttackable) c).collect(Collectors.toList());
+        return this.cards.stream().filter(card -> card.getCreatureAttributes().isPresent()).map(c -> (IAttackable) c)
+                .collect(Collectors.toList());
     }
 
     public boolean countsAsActive() {
@@ -142,17 +150,18 @@ public class ActiveZone implements IDeathSub, IDeathPub {
         return this.cards;
     }
 
-    public ActiveZoneType getType(){
+    public ActiveZoneType getType() {
         return this.zoneType;
     }
 
     @Override
     public void notify(CardInGame card) {
-        this.remove(card, () -> {});
+        this.remove(card, () -> {
+        });
         this.onCardDeath(card);
     }
 
-    private void onCardDeath(CardInGame card){
+    private void onCardDeath(CardInGame card) {
         this.applyRemovals();
         this.subs.forEach((i) -> i.notify(card));
     }

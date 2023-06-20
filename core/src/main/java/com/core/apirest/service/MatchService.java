@@ -2,6 +2,7 @@ package com.core.apirest.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +12,20 @@ import com.core.apirest.model.CardInGameInformation;
 import com.core.apirest.model.MatchInformation;
 import com.core.apirest.model.PlayerMatchInformation;
 import com.core.apirest.service.exceptions.MatchAlreadyStartedException;
-import com.core.apirest.service.exceptions.PlayerNotInGameException;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
+import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
 import com.core.g3.Match.Match;
+import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
 import com.core.g3.Match.GameMode.GameMode1;
 import com.core.g3.Match.GameMode.GameMode2;
 import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
+import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
@@ -51,6 +54,18 @@ public class MatchService {
 
         Player newBluePlayer = newGameMode.addPlayer(blueUser, blueDeck);
         Player newGreenPlayer = newGameMode.addPlayer(greeUser, greenDeck);
+
+        // Adding energies to players for testing purposes
+        newBluePlayer.add(EnergyType.Fire, new Amount(100));
+        newBluePlayer.add(EnergyType.Water, new Amount(100));
+        newBluePlayer.add(EnergyType.Plant, new Amount(100));
+        newGreenPlayer.add(EnergyType.Fire, new Amount(100));
+        newGreenPlayer.add(EnergyType.Water, new Amount(100));
+        newGreenPlayer.add(EnergyType.Plant, new Amount(100));
+        newBluePlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Alchemist));
+        newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Goblin));
+        // Adding energies to players for testing purposes
+
         Match newMatch = new Match(newBluePlayer, newGreenPlayer, newGameMode);
         this.totalGames++;
         this.matches.add(newMatch);
@@ -77,64 +92,85 @@ public class MatchService {
         return matchInformation;
     }
 
-    public PlayerMatchInformation getPlayerMatchInformation(int matchId, String username) {
+    public PlayerMatchInformation getPlayerMatchInformation(int matchId, PlayerZone playerZone) {
         Match match = this.getMatch(matchId);
-        String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
-        String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
-        if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
-            throw new PlayerNotInGameException();
-        }
-
-        System.out.println("username: " + username);
-        System.out.println("bluePlayer: " + bluePlayer);
-        System.out.println("greenPlayer: " + greenPlayer);
-        Player player = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
-                ? match.getPlayer(PlayerZone.Blue)
-                : match.getPlayer(PlayerZone.Green);
-        System.out.println("Viewing player: " + player.getUsername());
+        Player player = match.getPlayer(playerZone);
         PlayerMatchInformation playerMatchInformation = PlayerMatchInformation.fromPlayer(player);
         return playerMatchInformation;
     }
 
-    public List<CardInGameInformation> getPlayerCardsInHand(int matchId, String username) {
+    public List<CardInGameInformation> getPlayerCardsInHand(int matchId, PlayerZone playerZone) {
         Match match = this.getMatch(matchId);
-        String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
-        String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
-        if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
-            throw new PlayerNotInGameException();
-        }
-        Player player = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
-                ? match.getPlayer(PlayerZone.Blue)
-                : match.getPlayer(PlayerZone.Green);
+        Player player = match.getPlayer(playerZone);
         List<CardInGameInformation> cards = player.seeHand().stream().map(card -> CardInGameInformation.fromCard(card))
                 .collect(Collectors.toList());
         return cards;
     }
 
-    public String summonCard(int matchId, String username, String cardName, String zone) {
+    public List<CardInGameInformation> getCardsInActiveZones(int matchId, PlayerZone playerZone) {
         Match match = this.getMatch(matchId);
-        String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
-        String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
-        if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
-            throw new PlayerNotInGameException();
+        Player player = match.getPlayer(playerZone);
+        List<CardInGame> cardsInGame = player.getCardsInGame();
+        List<CardInGameInformation> cards = new ArrayList<>();
+        for (CardInGame cardInGame : cardsInGame) {
+            CardInGameInformation cardInGameInformation = CardInGameInformation.fromCard(cardInGame);
+            cards.add(cardInGameInformation);
         }
-        PlayerZone playerZone = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
-                ? PlayerZone.Blue
-                : PlayerZone.Green;
+        return cards;
+    }
 
-        ActiveZoneType zoneType = ActiveZoneType.valueOf(zone);
-        match.summon(playerZone, CardName.valueOf(cardName), zoneType);
+    public String summonCard(int matchId, CardName cardName, ActiveZoneType zone) {
+        Match match = this.getMatch(matchId);
+        PlayerZone playerZone = match.currentActivePlayerZone();
+        match.summon(playerZone, cardName, zone);
         return "Card summond";
     }
 
-    public String skipToPhase(int matchId, String username, String phase) {
+    public String skipToPhase(int matchId, PlayerZone playerZone, PhaseType phaseType) {
         Match match = this.getMatch(matchId);
-        PlayerZone playerZone = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
-                ? PlayerZone.Blue
-                : PlayerZone.Green;
-        PhaseType phaseType = PhaseType.valueOf(phase);
         match.skipToPhase(playerZone, phaseType);
         return "Phase skipped";
+    }
+
+    public String attackPlayer(int matchId, CardName cardName, int idx) {
+        Match match = this.getMatch(matchId);
+        match.attackPlayer(cardName, idx);
+        return "Player attacked";
+    }
+
+    public String attackCreature(int matchId, CardName cardName, int idx, CardName rivalCardName) {
+        Match match = this.getMatch(matchId);
+        Player player = match.currentActivePlayer();
+        List<CardInGame> creatures = player.getCardsInZoneByCardName(cardName, ActiveZoneType.Combat);
+        System.out.println("Creatures: " + creatures);
+        CardInGame card = creatures.get(0);
+
+        Player rival = match.getRival(player);
+        List<CardInGame> rivalCreatures = rival.getCardsByCardName(rivalCardName);
+        System.out.println("Rival creatures: " + rivalCreatures);
+        CardInGame rivalCard = rivalCreatures.get(0);
+
+        match.attackCreature(card.getBase(), idx, rivalCard.getBase());
+        return "Creature attacked";
+    }
+
+    public String skipReaction(int matchId) {
+        Match match = this.getMatch(matchId);
+        match.skipReaction();
+        return "Reaction phase skipped";
+    }
+
+    public String activateArtifact(int matchId, CardName cardName, int idx) {
+        Match match = this.getMatch(matchId);
+        match.activateArtifact(cardName, idx, Optional.empty(), new ArrayList<>());
+        return "Artifact activated";
+    }
+
+    public String activateAction(int matchId, CardName cardName, int idx) {
+        Match match = this.getMatch(matchId);
+        PlayerZone playerZone = match.currentActivePlayerZone();
+        match.activateAction(playerZone, cardName, idx, Optional.empty(), new ArrayList<>());
+        return "Action activated";
     }
 
     // Create deck only for testing purposes

@@ -190,6 +190,22 @@ public class Player implements IAttackable, IConditionMetPub {
         this.discard.add(base);
     }
 
+    public List<IAttackable> getCreatures(ActiveZoneType zone) {
+        return this.getZone(zone).getCreatures();
+    }
+
+    public List<CardInGame> getCardsInZoneByCardName(CardName cardName, ActiveZoneType zone) {
+        return this.getZone(zone).getCardsInGameByCardName(cardName);
+    }
+
+    public List<CardInGame> getCardsByCardName(CardName cardName) {
+        List<CardInGame> cards = new ArrayList<>();
+        cards.addAll(this.reserveZone.getCardsInGameByCardName(cardName));
+        cards.addAll(this.combatZone.getCardsInGameByCardName(cardName));
+        cards.addAll(this.artifactZone.getCardsInGameByCardName(cardName));
+        return cards;
+    }
+
     public List<IAttackable> getCreatures(Attribute attrFilter) {
         List<IAttackable> total = new ArrayList<>();
         total.addAll(this.artifactZone.getCreatures(attrFilter));
