@@ -17,10 +17,14 @@ import com.core.apirest.model.CardInGameInformation;
 import com.core.apirest.model.MatchInformation;
 import com.core.apirest.model.NewMatch;
 import com.core.apirest.model.PlayerMatchInformation;
+import com.core.apirest.model.SkipToPhase;
+import com.core.apirest.model.SummonCard;
 import com.core.apirest.service.MatchService;
 import com.core.apirest.service.exceptions.MatchAlreadyStartedException;
 import com.core.apirest.service.exceptions.PlayerNotInGameException;
 import com.core.g3.User.Exceptions.UserDoesntExistException;
+
+import jakarta.validation.valueextraction.Unwrapping.Skip;
 
 @RestController
 @RequestMapping("/match")
@@ -54,13 +58,15 @@ public class MatchController {
         }
     }
 
+    // Reponer esta variable @RequestHeader("my-authorization") String token
     @GetMapping
-    public ResponseEntity<MatchInformation> getMatch(@RequestHeader("my-authorization") String token) {
-        String extractedMatchId = jwtUtil.extractUsername(token);
-        int matchId = Integer.parseInt(extractedMatchId);
-        if (matchId < 1 || matchId > matchService.totalGames) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<MatchInformation> getMatch() {
+        // String extractedMatchId = jwtUtil.extractUsername(token);
+        // int matchId = Integer.parseInt(extractedMatchId);
+        // if (matchId < 1 || matchId > matchService.totalGames) {
+        // return ResponseEntity.badRequest().build();
+        // }
+        int matchId = 1;
         try {
             MatchInformation matchInformation = matchService.getMatchInformation(matchId);
             return ResponseEntity.ok().body(matchInformation);
@@ -72,11 +78,12 @@ public class MatchController {
 
     @PostMapping("/start")
     public ResponseEntity<MatchInformation> startMatch(@RequestHeader("my-authorization") String token) {
-        String extractedMatchId = jwtUtil.extractUsername(token);
-        int matchId = Integer.parseInt(extractedMatchId);
-        if (matchId < 1 || matchId > matchService.totalGames) {
-            return ResponseEntity.badRequest().build();
-        }
+        // String extractedMatchId = jwtUtil.extractUsername(token);
+        // int matchId = Integer.parseInt(extractedMatchId);
+        // if (matchId < 1 || matchId > matchService.totalGames) {
+        // return ResponseEntity.badRequest().build();
+        // }
+        int matchId = 1;
         try {
             return ResponseEntity.ok().body(matchService.startMatch(matchId));
         } catch (MatchAlreadyStartedException e) {
@@ -89,11 +96,12 @@ public class MatchController {
     @GetMapping("/{username}")
     public ResponseEntity<PlayerMatchInformation> getPlayerInformation(@RequestHeader("my-authorization") String token,
             @PathVariable String username) {
-        String extractedMatchId = jwtUtil.extractUsername(token);
-        int matchId = Integer.parseInt(extractedMatchId);
-        if (matchId < 1 || matchId > matchService.totalGames) {
-            return ResponseEntity.badRequest().build();
-        }
+        // String extractedMatchId = jwtUtil.extractUsername(token);
+        // int matchId = Integer.parseInt(extractedMatchId);
+        // if (matchId < 1 || matchId > matchService.totalGames) {
+        // return ResponseEntity.badRequest().build();
+        // }
+        int matchId = 1;
         try {
             PlayerMatchInformation playerMatchInformation = matchService.getPlayerMatchInformation(matchId, username);
             return ResponseEntity.ok().body(playerMatchInformation);
@@ -108,11 +116,12 @@ public class MatchController {
     public ResponseEntity<List<CardInGameInformation>> getHand(@RequestHeader("my-authorization") String token,
             @PathVariable String username) {
         // Add validation to check who is viewing the hand
-        String extractedMatchId = jwtUtil.extractUsername(token);
-        int matchId = Integer.parseInt(extractedMatchId);
-        if (matchId < 1 || matchId > matchService.totalGames) {
-            return ResponseEntity.badRequest().build();
-        }
+        // String extractedMatchId = jwtUtil.extractUsername(token);
+        // int matchId = Integer.parseInt(extractedMatchId);
+        // if (matchId < 1 || matchId > matchService.totalGames) {
+        // return ResponseEntity.badRequest().build();
+        // }
+        int matchId = 1;
         try {
             List<CardInGameInformation> hand = matchService.getPlayerCardsInHand(matchId, username);
             return ResponseEntity.ok().body(hand);
@@ -120,6 +129,36 @@ public class MatchController {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/{username}/summon")
+    public ResponseEntity<String> summonCard(@RequestHeader("my-authorization") String token,
+            @PathVariable String username, @RequestBody SummonCard summonCard) {
+        // String extractedMatchId = jwtUtil.extractUsername(token);
+        // int matchId = Integer.parseInt(extractedMatchId);
+        // if (matchId < 1 || matchId > matchService.totalGames) {
+        // return ResponseEntity.badRequest().body("Error summoning card: match not
+        // found");
+        // }
+        int matchId = 1;
+        try {
+            return ResponseEntity.ok()
+                    .body(matchService.summonCard(matchId, username, summonCard.cardName, summonCard.zone));
+        } catch (PlayerNotInGameException e) {
+            return ResponseEntity.badRequest().body("Error summoning card: player not in game");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error summoning card: " + e);
+        }
+    }
+
+    @PostMapping("/skip")
+    public ResponseEntity<String> skipToPhase(@RequestBody SkipToPhase skipToPhase) {
+        int matchId = 1;
+        try {
+            return ResponseEntity.ok().body(matchService.skipToPhase(matchId, skipToPhase.username, skipToPhase.phase));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error going to next phase: " + e);
         }
     }
 }

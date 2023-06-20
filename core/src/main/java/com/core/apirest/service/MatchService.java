@@ -23,6 +23,7 @@ import com.core.g3.Match.GameMode.GameMode2;
 import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.Player;
 import com.core.g3.Match.Player.PlayerZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
 @Component
@@ -108,6 +109,32 @@ public class MatchService {
         List<CardInGameInformation> cards = player.seeHand().stream().map(card -> CardInGameInformation.fromCard(card))
                 .collect(Collectors.toList());
         return cards;
+    }
+
+    public String summonCard(int matchId, String username, String cardName, String zone) {
+        Match match = this.getMatch(matchId);
+        String bluePlayer = match.getPlayer(PlayerZone.Blue).getUsername();
+        String greenPlayer = match.getPlayer(PlayerZone.Green).getUsername();
+        if (!bluePlayer.equals(username) && !greenPlayer.equals(username)) {
+            throw new PlayerNotInGameException();
+        }
+        PlayerZone playerZone = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
+                ? PlayerZone.Blue
+                : PlayerZone.Green;
+
+        ActiveZoneType zoneType = ActiveZoneType.valueOf(zone);
+        match.summon(playerZone, CardName.valueOf(cardName), zoneType);
+        return "Card summond";
+    }
+
+    public String skipToPhase(int matchId, String username, String phase) {
+        Match match = this.getMatch(matchId);
+        PlayerZone playerZone = match.getPlayer(PlayerZone.Blue).getUsername().equals(username)
+                ? PlayerZone.Blue
+                : PlayerZone.Green;
+        PhaseType phaseType = PhaseType.valueOf(phase);
+        match.skipToPhase(playerZone, phaseType);
+        return "Phase skipped";
     }
 
     // Create deck only for testing purposes
