@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.core.apirest.model.UserAPI;
-import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Market.Market;
@@ -30,7 +29,7 @@ public class MarketService {
     // venta de una carta
     public ResponseEntity<String> sellCard(UserAPI user, String cardName, int price) {
 
-        ICard card = userService.getCardByName(user, CardName.valueOf(cardName));
+        ICard card = userService.getCard(cardName, user);
         if (card == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la carta");
         }

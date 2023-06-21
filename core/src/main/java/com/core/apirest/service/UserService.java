@@ -90,10 +90,6 @@ public class UserService {
         return ResponseEntity.ok(founds);
     }
 
-    public ICard getCardByName(UserAPI user, CardName name) {
-        return user.user.getCards().stream().filter(card -> card.getName().equals(name)).findFirst().orElse(null);
-    }
-
     public ResponseEntity<List<String>> getDecks(String username) {
         UserAPI user;
         try {
@@ -128,15 +124,13 @@ public class UserService {
         } catch (UserDoesntExistException e) {
             return ResponseEntity.notFound().build();
         }
-        CardName cardNameEnum = CardName.valueOf(cardName);
-
-        // get cards from inventory and select card by name
-        ICard card = user.user.getCardInventory().getCards().stream().filter(c -> c.getName().equals(cardNameEnum)).findFirst().orElse(null);
+        
+        ICard card = this.getCard(cardName, user);
         if (card == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carta no encontrada");
         }
-        // get deck name from user
-        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+
+        IDeck deck = this.GetDeck(deckName, user);
         if (deckName == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deck no encontrado");
         }
@@ -160,7 +154,7 @@ public class UserService {
             return ResponseEntity.notFound().build();
         }
 
-        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        IDeck deck = this.GetDeck(deckName, user);
         if (deckName == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }    
@@ -176,15 +170,12 @@ public class UserService {
         } catch (UserDoesntExistException e) {
             return ResponseEntity.notFound().build();
         }
-        CardName cardNameEnum = CardName.valueOf(cardName);
-
-        // get cards from inventory and select card by name
-        ICard card = user.user.getCardInventory().getCards().stream().filter(c -> c.getName().equals(cardNameEnum)).findFirst().orElse(null);
+        ICard card = this.getCard(cardName, user);
         if (card == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carta no encontrada");
         }
-        // get deck name from user
-        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        
+        IDeck deck = this.GetDeck(deckName, user);
         if (deckName == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deck no encontrado");
         }
@@ -196,6 +187,18 @@ public class UserService {
         }
         
         return ResponseEntity.ok("Carta removida de deck");
+    }
+
+    public IDeck GetDeck(String deckName, UserAPI user) {
+        IDeck deck = user.user.getDeckInventory().getDecks().stream().filter(deck_ -> deck_.getDeckName().equals(deckName)).findFirst().orElse(null);
+        return deck;
+    }
+
+    public ICard getCard(String cardName,UserAPI user) {
+        CardName cardNameEnum = CardName.valueOf(cardName);
+        // get cards from inventory and select card by name
+        ICard card = user.user.getCardInventory().getCards().stream().filter(c -> c.getName().equals(cardNameEnum)).findFirst().orElse(null);
+        return card;
     }
 
 }
