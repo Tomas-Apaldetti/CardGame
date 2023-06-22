@@ -59,7 +59,7 @@ public class UserController {
         } catch (io.jsonwebtoken.security.SignatureException e) {
             return ResponseEntity.badRequest().build();
         }
-       
+
         return userService.getUserFounds(extractedUsername);
     }
 
@@ -91,7 +91,6 @@ public class UserController {
         try {
             extractedUsername = jwtUtil.extractUsername(token);
         } catch (io.jsonwebtoken.security.SignatureException e) {
-            System.out.println(e);
             return ResponseEntity.badRequest().build();
         }
 
@@ -157,7 +156,8 @@ public class UserController {
     }
 
     @GetMapping("/decks/cards")
-    public ResponseEntity<List<String>> getDeckCards(@RequestHeader("Authorization") String token, @RequestBody final DeckDTO data) {
+    public ResponseEntity<List<String>> getDeckCards(@RequestHeader("Authorization") String token,
+            @RequestBody final DeckDTO data) {
         String deckName = data.deckName;
         String extractedUsername;
         try {

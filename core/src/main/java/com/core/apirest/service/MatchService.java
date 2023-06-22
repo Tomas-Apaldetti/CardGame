@@ -198,10 +198,6 @@ public class MatchService {
             List<CardTarget> cardsTargetList) {
         Match match = this.getMatch(matchId);
         List<ICard> cardsTarget = this.getCardsTarget(match, cardsTargetList);
-
-        System.out.println("Card name to play: " + cardName);
-        System.out.println("Cards target to activate artifact: " + cardsTarget);
-
         match.activateArtifact(cardName, idx, playerZone, cardsTarget);
         return "Artifact activated";
     }
@@ -210,8 +206,6 @@ public class MatchService {
             List<CardTarget> cardsTargetList) {
         Match match = this.getMatch(matchId);
         List<ICard> cardsTarget = this.getCardsTarget(match, cardsTargetList);
-        System.out.println("Cards target selected: "
-                + cardsTarget.stream().map(card -> card.getName()).collect(Collectors.toList()));
         PlayerZone playerZone = match.currentActivePlayerZone();
         match.activateAction(playerZone, cardName, idx, playerZoneOptional, cardsTarget);
         return "Action activated";

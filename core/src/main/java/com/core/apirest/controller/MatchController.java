@@ -48,7 +48,6 @@ public class MatchController {
     public ResponseEntity<String> createMatch(@RequestHeader("Authorization") String token,
             @RequestBody final NewMatch match) {
         String extractedUsername;
-        System.out.println("Token received: " + token);
         try {
             extractedUsername = jwtUtil.extractUsername(token);
         } catch (io.jsonwebtoken.security.SignatureException e) {
@@ -69,7 +68,6 @@ public class MatchController {
         try {
             int gameId = matchService.createMatch(bluePlayer, greenPlayer, gameMode, match.blueDeck, match.greenDeck);
             String gameIdString = String.valueOf(gameId);
-            System.out.println("Match created with id: " + gameIdString);
             String gameToken = jwtUtil.generateMatchToken(extractedUsername, String.valueOf(gameId));
             return ResponseEntity.ok().body(gameToken);
         } catch (UserDoesntExistException e) {
@@ -81,7 +79,6 @@ public class MatchController {
     public ResponseEntity<String> createForcedMatch(@RequestHeader("Authorization") String token,
             @RequestBody final NewMatch match) {
         String extractedUsername;
-        System.out.println("Token received: " + token);
         try {
             extractedUsername = jwtUtil.extractUsername(token);
         } catch (io.jsonwebtoken.security.SignatureException e) {
@@ -102,7 +99,6 @@ public class MatchController {
         try {
             int gameId = matchService.createForcedMatch(bluePlayer, greenPlayer, gameMode);
             String gameIdString = String.valueOf(gameId);
-            System.out.println("Match created with id: " + gameIdString);
             String gameToken = jwtUtil.generateMatchToken(extractedUsername, String.valueOf(gameId));
             return ResponseEntity.ok().body(gameToken);
         } catch (UserDoesntExistException e) {
@@ -135,7 +131,6 @@ public class MatchController {
     @GetMapping
     public ResponseEntity<MatchInformation> getMatch(@RequestHeader("Authorization") String token) {
         String extractedMatchId = jwtUtil.extractMatchId(token);
-        System.out.println(extractedMatchId);
         int matchId = Integer.parseInt(extractedMatchId);
         if (matchId < 1 || matchId > matchService.totalGames) {
             return ResponseEntity.badRequest().build();
@@ -241,7 +236,6 @@ public class MatchController {
         } catch (PlayerNotInGameException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -370,7 +364,6 @@ public class MatchController {
             try {
                 playerTarget = Optional.ofNullable(PlayerZone.valueOf(activateAction.playerTarget));
             } catch (Exception e) {
-                System.out.println("No player target in activate-action");
                 playerTarget = Optional.empty();
             }
             return ResponseEntity.ok().body(matchService.activateAction(matchId, cardName,
