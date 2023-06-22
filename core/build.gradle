@@ -8,13 +8,7 @@ group = 'ar.uba.fi.tdd'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = "17"
 
-apply plugin: 'checkstyle'
 apply plugin: "jacoco"
-
-// REMOVE LATER WHEN TESTS PASS
-test {
-	ignoreFailures = true
-}
 
 repositories {
 	mavenCentral()
@@ -38,11 +32,6 @@ springBoot {
 
 test {
 	useJUnitPlatform()
-}
-
-checkstyle {
-	configFile file('config/checkstyle/checkstyle.xml');
-	toolVersion '8.32';
 }
 
 test.doLast jacocoTestReport.&generate

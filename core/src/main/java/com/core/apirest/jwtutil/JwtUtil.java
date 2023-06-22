@@ -30,7 +30,6 @@ public class JwtUtil {
     }
 
     public String extractMatchId(String token) {
-        System.out.println("Match token: " + token);
         String extractedToken = token.substring(7);
         return extractClaim(extractedToken, claims -> claims.get("matchId", String.class));
     }
