@@ -1,5 +1,6 @@
 package com.core.g3.Market.Transactions;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Market.Transactions.Status.TransactionStatus;
 
 public interface ITransaction {
@@ -9,4 +10,8 @@ public interface ITransaction {
      TransactionStatus status();
 
      boolean isPublisher(IBuyer user);
+
+     CardName getName();
+
+     Integer getPrice();
 }

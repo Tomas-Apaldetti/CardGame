@@ -3,7 +3,6 @@ package com.core.g3.User;
 import java.util.Collection;
 
 import com.core.g3.Card.Card;
-import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;

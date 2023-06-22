@@ -48,7 +48,7 @@ public class CardInGame implements IAffectable, IDeathPub {
         this.owner = owner;
     }
 
-    private void initFromBase(){
+    private void initFromBase() {
         this.health = this.base.getHealth();
 
         this.attackState = new AttackStateManager(this.base.getAttacks());
@@ -60,9 +60,15 @@ public class CardInGame implements IAffectable, IDeathPub {
         this.reactionState = new OnceManager<>(this.base.getReactionEffects());
         this.reactionState.deplete();
     }
-    public void putInDiscard(){
+
+    public ActiveZone getCurrentZone() {
+        return this.currentZone;
+    }
+
+    public void putInDiscard() {
         this.owner.discard(this.base);
     }
+
     public void discard() {
         this.currentZone.remove(this);
     }
@@ -124,7 +130,7 @@ public class CardInGame implements IAffectable, IDeathPub {
         this.reactionState.reset();
     }
 
-    private void notifyDeath(){
+    private void notifyDeath() {
         this.removeSubsPending();
         this.interested.forEach(i -> i.notify(this));
     }
@@ -150,7 +156,7 @@ public class CardInGame implements IAffectable, IDeathPub {
     @Override
     public void receiveAttack(Amount damage) {
         this.health.receiveAttack(damage);
-        if(this.health.isDead()){
+        if (this.health.isDead()) {
             this.notifyDeath();
         }
     }
@@ -166,7 +172,6 @@ public class CardInGame implements IAffectable, IDeathPub {
         this.health.heal(heal);
     }
 
-
     @Override
     public void add(IDeathSub sub) {
         this.removeSubsPending();
@@ -178,8 +183,8 @@ public class CardInGame implements IAffectable, IDeathPub {
         this.subRemovalsPending.add(sub);
     }
 
-    private void removeSubsPending(){
-        this.subRemovalsPending.forEach(s-> this.interested.remove(s));
+    private void removeSubsPending() {
+        this.subRemovalsPending.forEach(s -> this.interested.remove(s));
         this.subRemovalsPending.clear();
     }
 
@@ -193,8 +198,7 @@ public class CardInGame implements IAffectable, IDeathPub {
         return this.currentZone.getType();
     }
 
-    @Override
-    public Player getOwner(){
+    public Player getOwner() {
         return this.owner;
     }
 

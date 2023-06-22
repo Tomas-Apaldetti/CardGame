@@ -1,5 +1,6 @@
 package com.core.g3.Market;
 
+import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Market.Exceptions.NotEnoughFoundsException;
 import com.core.g3.Market.Transactions.IBuyer;
@@ -63,6 +64,14 @@ public class Transaction implements ITransaction {
     private void transferMoney(IBuyer buyer) {
         this.publisher.credit(this.value);
         buyer.subtract(this.value);
+    }
+
+    public Integer getPrice() {
+        return this.value.value();
+    }
+
+    public CardName getName() {
+        return this.item.getName();
     }
 
 }

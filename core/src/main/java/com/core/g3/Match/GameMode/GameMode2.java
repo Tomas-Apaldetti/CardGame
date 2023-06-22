@@ -4,14 +4,8 @@ import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.CardInGame.IDeathSub;
-import com.core.g3.Match.DeckPlayable.DeckPlayable;
-import com.core.g3.Match.Player.MatchEndCondition.IConditionMetPub;
-import com.core.g3.Match.Player.MatchEndCondition.IConditionMetSub;
-import com.core.g3.Match.Player.MatchEndCondition.IMatchEndCondition;
 import com.core.g3.Match.Player.MatchEndCondition.PointsCounter;
 import com.core.g3.Match.Player.Player;
-import com.core.g3.Match.Zone.ActiveZone;
-import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.User.User;
 
 import java.util.Optional;
@@ -31,6 +25,11 @@ public class GameMode2 extends GameMode implements IDeathSub {
         this.reserveZoneLimit = 5;
         this.initialHandSize = 7;
         this.winner = Optional.empty();
+        this.gameModeType = GameModeType.CreatureSlayer;
+    }
+
+    public GameModeType getGameModeType() {
+        return this.gameModeType;
     }
 
     protected PointsCounter getCondition() {
@@ -39,7 +38,7 @@ public class GameMode2 extends GameMode implements IDeathSub {
 
     @Override
     public Player addPlayer(User user, IDeck deck) {
-        Player ret = super.addPlayer(user,deck);
+        Player ret = super.addPlayer(user, deck);
         ret.subscribeToCardDeath(this);
         ret.addConditionMet(this);
         return ret;
@@ -68,16 +67,16 @@ public class GameMode2 extends GameMode implements IDeathSub {
 
     @Override
     public void conditionMet(Player who) {
-        if(this.winner.isPresent()){
+        if (this.winner.isPresent()) {
             return;
         }
         this.winner = Optional.ofNullable(who);
     }
 
     @Override
-    public void onInitialPhase(Player current, Player rival){
-        super.onInitialPhase(current,rival);
-        if(this.winner.isPresent()){
+    public void onInitialPhase(Player current, Player rival) {
+        super.onInitialPhase(current, rival);
+        if (this.winner.isPresent()) {
             this.match.setWinner(this.winner.get());
         }
     }

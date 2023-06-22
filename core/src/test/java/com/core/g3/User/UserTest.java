@@ -2,8 +2,6 @@ package com.core.g3.User;
 
 import org.junit.jupiter.api.Test;
 
-import com.core.g3.Card.Card;
-import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 
@@ -13,8 +11,7 @@ public class UserTest {
         User user = new User("user");
         user.credit(new Amount(10));
         CardName cardName = CardName.Alchemist;
-        Card newCardToBuy = CardFactory.createCard(cardName);
-        user.buyCards(cardName,1);
+        user.buyCards(cardName, 1);
         user.addCardToDeck("deck", cardName, 1);
         assert (user.countCards(cardName) == 1);
     }
@@ -24,7 +21,7 @@ public class UserTest {
         User user = new User("user");
         user.credit(new Amount(10));
         CardName cardName = CardName.Alchemist;
-        user.buyCards(cardName,3);
+        user.buyCards(cardName, 3);
         user.addCardToDeck("deck", cardName, 2);
         assert (user.countCards(cardName) == 3);
         assert (user.getDeckInventory().getDeck("deck").getCards().size() == 2);
@@ -41,11 +38,10 @@ public class UserTest {
 
         for (int i = 0; i < cardNames.length; i++) {
             CardName cardName = cardNames[i];
-            user.buyCards(cardName,3);
+            user.buyCards(cardName, 3);
 
             user.addCardToDeck("deck", cardName, 3);
         }
-        System.out.println(user.getDeckInventory().getDeck("deck").getCards().size());
 
         assert (user.getDeckInventory().getDeck("deck").getCards().size() == 60);
     }

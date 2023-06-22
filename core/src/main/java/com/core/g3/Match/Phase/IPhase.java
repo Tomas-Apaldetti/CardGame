@@ -20,7 +20,7 @@ public interface IPhase {
         throw new ActionNotPossibleException();
     }
 
-    default IPhase useArtifact(CardInGame card, List<CardInGame> targets){
+    default IPhase useArtifact(CardInGame card, List<CardInGame> targets) {
         throw new ActionNotPossibleException();
     }
 
@@ -44,11 +44,11 @@ public interface IPhase {
         throw new ActionNotPossibleException();
     }
 
-    default IPhase useReaction(ICard card, List<CardInGame> targets){
+    default IPhase useReaction(ICard card, List<CardInGame> targets) {
         throw new ActionNotPossibleException();
     }
 
-    default IPhase useReaction(CardInGame card, Player target){
+    default IPhase useReaction(CardInGame card, Player target) {
         throw new ActionNotPossibleException();
     }
 
@@ -56,7 +56,7 @@ public interface IPhase {
         throw new ActionNotPossibleException();
     }
 
-    default IPhase skipReaction(){
+    default IPhase skipReaction() {
         return this;
     }
 
@@ -64,7 +64,10 @@ public interface IPhase {
 
     IPhase next();
 
-    default void initialEffects(){
+    default void initialEffects() {
     }
+
     boolean coincide(Player desiredCurrentPlayer, PhaseType phase);
+
+    PhaseType getPhaseType();
 }

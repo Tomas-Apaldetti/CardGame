@@ -14,7 +14,6 @@ import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Match.Player.Resources.IResource;
 import com.core.g3.Match.ResolutionStack.LingeringEffect.ILingeringEffect;
-
 import com.core.g3.Match.Zone.ActiveZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
 import com.core.g3.Match.Zone.Exceptions.CardLimitReachedException;
@@ -42,19 +41,23 @@ public class Match {
         this.winner = Optional.empty();
     }
 
+    public PhaseType getPhaseType() {
+        return this.phase.getPhaseType();
+    }
+
     public void startMatch(PlayerZone firstTurn) {
         Player first = this.getPlayer(firstTurn);
         Player rival = this.getRival(first);
         this.gameMode.drawInitialCards(bluePlayer);
         this.gameMode.drawInitialCards(greenPlayer);
-        this.phase = new InitialPhase(first,rival, this);
+        this.phase = new InitialPhase(first, rival, this);
     }
 
-    public void skipToPhase(PlayerZone playerSide, PhaseType phase){
+    public void skipToPhase(PlayerZone playerSide, PhaseType phase) {
         Player desired = this.getPlayer(playerSide);
         this.phase = this.phase.next();
         this.phase.initialEffects();
-        while(!this.phase.coincide(desired, phase)){
+        while (!this.phase.coincide(desired, phase)) {
             this.phase = this.phase.next();
             this.phase.initialEffects();
         }
@@ -67,8 +70,7 @@ public class Match {
     public ICard summon(
             PlayerZone side,
             CardName cardName,
-            ActiveZoneType zone
-    ) {
+            ActiveZoneType zone) {
         this.assertCurrentPlayer(side);
         Player player = this.getPlayer(side);
         ICard cardToPlay = player.getCardByCardName(cardName);
@@ -83,13 +85,17 @@ public class Match {
         return cigs;
     }
 
+    public PlayerZone currentActivePlayerZone() {
+        Player current = this.phase.activePlayer();
+        return current.equals(this.bluePlayer) ? PlayerZone.Blue : PlayerZone.Green;
+    }
+
     public void activateAction(
             PlayerZone side,
             CardName cardName,
             int index,
             Optional<PlayerZone> targetPlayer,
-            List<ICard> targetCards
-    ) {
+            List<ICard> targetCards) {
         this.assertCurrentPlayer(side);
         Player player = this.currentActivePlayer();
         ICard cardToPlay = player.getCardByCardName(cardName);
@@ -104,20 +110,43 @@ public class Match {
         this.phase = this.phase.useAction(cardToPlay, cigs);
     }
 
-    public void activateArtifact(
-            ICard artifact,
-            int index,
-            Optional<PlayerZone> toOptionalPlayerZone,
-            List<ICard> targets
-    ) {
-        Player player = this.currentActivePlayer();
-        CardInGame cig = player.getCardInGame(artifact);
+    public void attackPlayer(CardName cardName, int index) {
+        ActiveZone combatZone = this.currentActivePlayer().getZone(ActiveZoneType.Combat);
+        List<CardInGame> creatures = combatZone.getCardsInGameByCardName(cardName);
+        CardInGame firstCreature = creatures.get(0);
+        this.phase = this.phase.attack(
+                firstCreature,
+                new Amount(index),
+                this.getRival(this.currentActivePlayer()));
+    }
 
-        if(cig == null){
+    public List<CardInGame> getCardsByCardName(Player player, CardName cardName, int idx) {
+        List<CardInGame> cardsByCardName = new ArrayList<>();
+        int i = 0;
+        for (CardInGame card : player.getCardsInGame()) {
+            if (card.getBase().getName().equals(cardName)) {
+                if (i == idx) {
+                    cardsByCardName.add(card);
+                    return cardsByCardName;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return cardsByCardName;
+    }
+
+    public void activateArtifact(CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone,
+            List<ICard> targets) {
+        ActiveZone artifactZone = this.currentActivePlayer().getZone(ActiveZoneType.Artifacts);
+        List<CardInGame> artifacts = artifactZone.getCardsInGameByCardName(cardName);
+        CardInGame cig = artifacts.get(0);
+
+        if (cig == null) {
             throw new RuntimeException();
         }
 
-        if(toOptionalPlayerZone.isPresent()){
+        if (toOptionalPlayerZone.isPresent()) {
             this.phase = this.phase.useArtifact(cig, this.getPlayer(toOptionalPlayerZone.get()));
             return;
         }
@@ -127,7 +156,47 @@ public class Match {
         this.phase = this.phase.useArtifact(cig, cigs);
     }
 
-    public void skipReaction(){
+    public void activateArtifactByCardInGame(CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone,
+            List<CardInGame> targets) {
+        ActiveZone artifactZone = this.currentActivePlayer().getZone(ActiveZoneType.Artifacts);
+        List<CardInGame> artifacts = artifactZone.getCardsInGameByCardName(cardName);
+        CardInGame cig = artifacts.get(0);
+
+        if (cig == null) {
+            throw new RuntimeException();
+        }
+
+        if (toOptionalPlayerZone.isPresent()) {
+            this.phase = this.phase.useArtifact(cig, this.getPlayer(toOptionalPlayerZone.get()));
+            return;
+        }
+
+        this.phase = this.phase.useArtifact(cig, targets);
+    }
+
+    public void activateArtifact(
+            ICard artifact,
+            int index,
+            Optional<PlayerZone> toOptionalPlayerZone,
+            List<ICard> targets) {
+        Player player = this.currentActivePlayer();
+        CardInGame cig = player.getCardInGame(artifact);
+
+        if (cig == null) {
+            throw new RuntimeException();
+        }
+
+        if (toOptionalPlayerZone.isPresent()) {
+            this.phase = this.phase.useArtifact(cig, this.getPlayer(toOptionalPlayerZone.get()));
+            return;
+        }
+
+        List<CardInGame> cigs = this.getCardsInGame(targets);
+
+        this.phase = this.phase.useArtifact(cig, cigs);
+    }
+
+    public void skipReaction() {
         this.phase = this.phase.skipReaction();
     }
 
@@ -135,8 +204,7 @@ public class Match {
             PlayerZone side,
             CardName cardName,
             Optional<PlayerZone> targetPlayer,
-            List<ICard> targetCards
-    ){
+            List<ICard> targetCards) {
         this.assertCurrentPlayer(side);
         Player player = this.currentActivePlayer();
         ICard cardToPlay = player.getCardByCardName(cardName);
@@ -154,16 +222,15 @@ public class Match {
     public void activateReactionFromZone(
             ICard card,
             Optional<PlayerZone> targetPlayer,
-            List<ICard> targetCards
-    ){
+            List<ICard> targetCards) {
         Player player = this.currentActivePlayer();
         CardInGame cig = player.getCardInGame(card);
 
-        if(cig == null){
+        if (cig == null) {
             throw new RuntimeException();
         }
 
-        if(targetPlayer.isPresent()) {
+        if (targetPlayer.isPresent()) {
             this.phase = this.phase.useReaction(cig, this.getPlayer(targetPlayer.get()));
             return;
         }
@@ -180,15 +247,13 @@ public class Match {
     public void attackCreature(
             ICard creature,
             int index,
-            ICard target
-    ) {
+            ICard target) {
         CardInGame playerCIG = this.currentActivePlayer().getCardInGame(creature);
         CardInGame targetCIG = this.getRival(this.currentActivePlayer()).getCardInGame(target);
         this.phase = this.phase.attack(
                 playerCIG,
                 new Amount(index),
-                targetCIG
-        );
+                targetCIG);
     }
 
     public void attackPlayer(ICard creature, int index) {
@@ -196,11 +261,10 @@ public class Match {
         this.phase = this.phase.attack(
                 playerCIG,
                 new Amount(index),
-                this.getRival(this.currentActivePlayer())
-        );
+                this.getRival(this.currentActivePlayer()));
     }
 
-    public void moveCreature(ICard creature, ActiveZoneType from, ActiveZoneType to){
+    public void moveCreature(ICard creature, ActiveZoneType from, ActiveZoneType to) {
         this.assertValidCreatureMovement(from, to);
 
         Player currentPlayer = this.currentActivePlayer();
@@ -213,10 +277,10 @@ public class Match {
         original.remove(card);
     }
 
-    private void assertValidCreatureMovement(ActiveZoneType from, ActiveZoneType to){
+    private void assertValidCreatureMovement(ActiveZoneType from, ActiveZoneType to) {
         boolean combatToReserve = ActiveZoneType.Combat == from && ActiveZoneType.Reserve == to;
         boolean reserveToCombat = ActiveZoneType.Reserve == from && ActiveZoneType.Combat == to;
-        if(combatToReserve || reserveToCombat){
+        if (combatToReserve || reserveToCombat) {
             throw new InvalidMovementException();
         }
     }
@@ -241,7 +305,7 @@ public class Match {
         }
     }
 
-    public Player currentActivePlayer(){
+    public Player currentActivePlayer() {
         return this.phase.activePlayer();
     }
 
@@ -253,7 +317,7 @@ public class Match {
         return this.bluePlayer.equals(current) ? this.greenPlayer : this.bluePlayer;
     }
 
-    public void addLingering(List<ILingeringEffect> effects){
+    public void addLingering(List<ILingeringEffect> effects) {
         this.lingeringEffects.addAll(effects);
     }
 

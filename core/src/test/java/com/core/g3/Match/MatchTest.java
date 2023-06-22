@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import com.core.g3.Match.Phase.PhaseType;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;

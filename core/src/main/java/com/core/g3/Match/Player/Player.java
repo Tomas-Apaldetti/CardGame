@@ -38,6 +38,9 @@ public class Player implements IAttackable, IConditionMetPub {
     private PlayerEnergies energies;
     private final List<IConditionMetSub> subs;
 
+    public String getUsername() {
+        return this.account.getUserName();
+    }
 
     public Player(IAccount account, IDeckPlayable deck, IMatchEndCondition condition, ActiveZone artifactZone,
             ActiveZone combatZone, ActiveZone reserveZone) {
@@ -79,8 +82,8 @@ public class Player implements IAttackable, IConditionMetPub {
 
     public void affectMatchEndCondition(Amount value) {
         this.condition = this.condition.modify(value);
-        if(this.condition.isMet()){
-            subs.forEach(s->s.conditionMet(this));
+        if (this.condition.isMet()) {
+            subs.forEach(s -> s.conditionMet(this));
         }
     }
 
@@ -187,6 +190,22 @@ public class Player implements IAttackable, IConditionMetPub {
         this.discard.add(base);
     }
 
+    public List<IAttackable> getCreatures(ActiveZoneType zone) {
+        return this.getZone(zone).getCreatures();
+    }
+
+    public List<CardInGame> getCardsInZoneByCardName(CardName cardName, ActiveZoneType zone) {
+        return this.getZone(zone).getCardsInGameByCardName(cardName);
+    }
+
+    public List<CardInGame> getCardsByCardName(CardName cardName) {
+        List<CardInGame> cards = new ArrayList<>();
+        cards.addAll(this.reserveZone.getCardsInGameByCardName(cardName));
+        cards.addAll(this.combatZone.getCardsInGameByCardName(cardName));
+        cards.addAll(this.artifactZone.getCardsInGameByCardName(cardName));
+        return cards;
+    }
+
     public List<IAttackable> getCreatures(Attribute attrFilter) {
         List<IAttackable> total = new ArrayList<>();
         total.addAll(this.artifactZone.getCreatures(attrFilter));
@@ -253,7 +272,7 @@ public class Player implements IAttackable, IConditionMetPub {
     }
 
     public ActiveZone getZone(ActiveZoneType type) {
-        switch (type){
+        switch (type) {
             case Combat:
                 return this.combatZone;
             case Reserve:

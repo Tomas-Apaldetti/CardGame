@@ -15,7 +15,7 @@ import java.util.HashSet;
 public class Market {
     private HashMap<TransactionStatus, Collection<ITransaction>> publications;
 
-    Market() {
+    public Market() {
         this.publications = new HashMap<>();
         this.publications.put(TransactionStatus.PENDING, new HashSet<>());
         this.publications.put(TransactionStatus.TRANSACTION_APPLIED, new HashSet<>());

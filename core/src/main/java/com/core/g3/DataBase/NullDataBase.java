@@ -1,5 +1,8 @@
 package com.core.g3.DataBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.core.g3.User.UserDB;
 
 class NullDataBase implements IDataBase {
@@ -14,5 +17,10 @@ class NullDataBase implements IDataBase {
 
     public UserDB getUser(String userName) {
         return null;
+    }
+
+    @Override
+    public List<UserDB> getUsers() {
+        return new ArrayList<UserDB>();
     }
 }

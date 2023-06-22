@@ -3,7 +3,6 @@ package com.core.g3.Match.Phase;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;
 import com.core.g3.Match.CardInGame.CardInGame;
@@ -71,10 +70,6 @@ public class MainPhase implements IPhase {
         return new ReactionPhase(this.current, this.rival, rStack, this, this.match);
     }
 
-    private List<IAttackable> getAttackables(List<CardInGame> from){
-        return from.stream().filter(c -> c.isAttackable()).collect(Collectors.toList());
-    }
-
     private List<IAffectable> getAffectables(List<CardInGame> from){
         return from.stream().collect(Collectors.toList());
     }
@@ -97,5 +92,10 @@ public class MainPhase implements IPhase {
     @Override
     public boolean coincide(Player desiredCurrentPlayer, PhaseType phase) {
         return this.current.equals(desiredCurrentPlayer) && PhaseType.Main == phase;
+    }
+
+    @Override
+    public PhaseType getPhaseType() {
+        return PhaseType.Main;
     }
 }
