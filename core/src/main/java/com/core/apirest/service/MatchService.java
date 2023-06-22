@@ -9,14 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.core.apirest.model.CardInGameInformation;
+import com.core.apirest.model.CardTarget;
 import com.core.apirest.model.MatchInformation;
 import com.core.apirest.model.PlayerMatchInformation;
+import com.core.apirest.model.UserAPI;
 import com.core.apirest.service.exceptions.MatchAlreadyStartedException;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
+import com.core.g3.Deck.ICard;
+import com.core.g3.Deck.IDeck;
 import com.core.g3.Match.Match;
 import com.core.g3.Match.CardInGame.CardInGame;
 import com.core.g3.Match.GameMode.GameMode;
@@ -36,7 +40,7 @@ public class MatchService {
     @Autowired
     private UserService userService;
 
-    public int createMatch(String bluePlayer, String greenPlayer, String gameMode) {
+    public int createForcedMatch(String bluePlayer, String greenPlayer, String gameMode) {
         GameMode newGameMode;
         if (gameMode.equals("HitPointLoss")) {
             newGameMode = new GameMode1();
@@ -64,7 +68,32 @@ public class MatchService {
         newGreenPlayer.add(EnergyType.Plant, new Amount(100));
         newBluePlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Alchemist));
         newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Goblin));
+        newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Hospital));
         // Adding energies to players for testing purposes
+
+        Match newMatch = new Match(newBluePlayer, newGreenPlayer, newGameMode);
+        this.totalGames++;
+        this.matches.add(newMatch);
+        return this.totalGames;
+    }
+
+    public int createMatch(String bluePlayer, String greenPlayer, String gameMode, String blueDeckName,
+            String greenDeckName) {
+        GameMode newGameMode;
+        if (gameMode.equals("HitPointLoss")) {
+            newGameMode = new GameMode1();
+        } else {
+            newGameMode = new GameMode2();
+        }
+
+        UserAPI blueUser = userService.getUser(bluePlayer);
+        UserAPI greenUser = userService.getUser(greenPlayer);
+
+        IDeck blueDeck = userService.GetDeck(blueDeckName, blueUser);
+        IDeck greenDeck = userService.GetDeck(greenDeckName, greenUser);
+
+        Player newBluePlayer = newGameMode.addPlayer(blueUser.user, blueDeck);
+        Player newGreenPlayer = newGameMode.addPlayer(greenUser.user, greenDeck);
 
         Match newMatch = new Match(newBluePlayer, newGreenPlayer, newGameMode);
         this.totalGames++;
@@ -142,12 +171,10 @@ public class MatchService {
         Match match = this.getMatch(matchId);
         Player player = match.currentActivePlayer();
         List<CardInGame> creatures = player.getCardsInZoneByCardName(cardName, ActiveZoneType.Combat);
-        System.out.println("Creatures: " + creatures);
         CardInGame card = creatures.get(0);
 
         Player rival = match.getRival(player);
         List<CardInGame> rivalCreatures = rival.getCardsByCardName(rivalCardName);
-        System.out.println("Rival creatures: " + rivalCreatures);
         CardInGame rivalCard = rivalCreatures.get(0);
 
         match.attackCreature(card.getBase(), idx, rivalCard.getBase());
@@ -160,9 +187,15 @@ public class MatchService {
         return "Reaction phase skipped";
     }
 
-    public String activateArtifact(int matchId, CardName cardName, int idx) {
+    public String activateArtifact(int matchId, CardName cardName, int idx, Optional<PlayerZone> playerZone,
+            List<CardTarget> cardsTargetList) {
         Match match = this.getMatch(matchId);
-        match.activateArtifact(cardName, idx, Optional.empty(), new ArrayList<>());
+        List<ICard> cardsTarget = this.getCardsTarget(match, cardsTargetList);
+
+        System.out.println("Card name to play: " + cardName);
+        System.out.println("Cards target to activate artifact: " + cardsTarget);
+
+        match.activateArtifact(cardName, idx, playerZone, cardsTarget);
         return "Artifact activated";
     }
 
@@ -171,6 +204,19 @@ public class MatchService {
         PlayerZone playerZone = match.currentActivePlayerZone();
         match.activateAction(playerZone, cardName, idx, Optional.empty(), new ArrayList<>());
         return "Action activated";
+    }
+
+    private List<ICard> getCardsTarget(Match match, List<CardTarget> cardsTargetList) {
+        List<CardInGame> cardsTarget = new ArrayList<>();
+        for (CardTarget cardTarget : cardsTargetList) {
+            Player player = match.getPlayer(PlayerZone.valueOf(cardTarget.cardPlayer));
+            List<CardInGame> cardTargetsByCardName = match.getCardsByCardName(player,
+                    CardName.valueOf(cardTarget.cardName), cardTarget.cardIdx);
+            for (CardInGame cardInGame : cardTargetsByCardName) {
+                cardsTarget.add(cardInGame);
+            }
+        }
+        return cardsTarget.stream().map(card -> card.getBase()).collect(Collectors.toList());
     }
 
     // Create deck only for testing purposes

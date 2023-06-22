@@ -120,6 +120,22 @@ public class Match {
                 this.getRival(this.currentActivePlayer()));
     }
 
+    public List<CardInGame> getCardsByCardName(Player player, CardName cardName, int idx) {
+        List<CardInGame> cardsByCardName = new ArrayList<>();
+        int i = 0;
+        for (CardInGame card : player.getCardsInGame()) {
+            if (card.getBase().getName().equals(cardName)) {
+                if (i == idx) {
+                    cardsByCardName.add(card);
+                    return cardsByCardName;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return cardsByCardName;
+    }
+
     public void activateArtifact(CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone,
             List<ICard> targets) {
         ActiveZone artifactZone = this.currentActivePlayer().getZone(ActiveZoneType.Artifacts);
@@ -138,7 +154,24 @@ public class Match {
         List<CardInGame> cigs = this.getCardsInGame(targets);
 
         this.phase = this.phase.useArtifact(cig, cigs);
+    }
 
+    public void activateArtifactByCardInGame(CardName cardName, int index, Optional<PlayerZone> toOptionalPlayerZone,
+            List<CardInGame> targets) {
+        ActiveZone artifactZone = this.currentActivePlayer().getZone(ActiveZoneType.Artifacts);
+        List<CardInGame> artifacts = artifactZone.getCardsInGameByCardName(cardName);
+        CardInGame cig = artifacts.get(0);
+
+        if (cig == null) {
+            throw new RuntimeException();
+        }
+
+        if (toOptionalPlayerZone.isPresent()) {
+            this.phase = this.phase.useArtifact(cig, this.getPlayer(toOptionalPlayerZone.get()));
+            return;
+        }
+
+        this.phase = this.phase.useArtifact(cig, targets);
     }
 
     public void activateArtifact(

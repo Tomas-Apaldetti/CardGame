@@ -1,6 +1,9 @@
 package com.core.apirest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,7 @@ import com.core.apirest.service.MatchService;
 import com.core.apirest.service.exceptions.MatchAlreadyStartedException;
 import com.core.apirest.service.exceptions.PlayerNotInGameException;
 import com.core.g3.Card.CardName;
+import com.core.g3.Match.Match;
 import com.core.g3.Match.Phase.PhaseType;
 import com.core.g3.Match.Player.PlayerZone;
 import com.core.g3.Match.Zone.ActiveZoneType;
@@ -41,7 +45,15 @@ public class MatchController {
     private MatchService matchService;
 
     @PostMapping
-    public ResponseEntity<String> createMatch(@RequestBody final NewMatch match) {
+    public ResponseEntity<String> createMatch(@RequestHeader("Authorization") String token,
+            @RequestBody final NewMatch match) {
+        String extractedUsername;
+        System.out.println("Token received: " + token);
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
         String bluePlayer = match.bluePlayer;
         String greenPlayer = match.greenPlayer;
         String gameMode = match.gameMode;
@@ -55,40 +67,94 @@ public class MatchController {
             return ResponseEntity.badRequest().body("Invalid game mode");
         }
         try {
-            int gameId = matchService.createMatch(bluePlayer, greenPlayer, gameMode);
-            String token = jwtUtil.generateToken(String.valueOf(gameId));
-            return ResponseEntity.ok().body(token);
+            int gameId = matchService.createMatch(bluePlayer, greenPlayer, gameMode, match.blueDeck, match.greenDeck);
+            String gameIdString = String.valueOf(gameId);
+            System.out.println("Match created with id: " + gameIdString);
+            String gameToken = jwtUtil.generateMatchToken(extractedUsername, String.valueOf(gameId));
+            return ResponseEntity.ok().body(gameToken);
         } catch (UserDoesntExistException e) {
             return ResponseEntity.badRequest().body("User doesn't exist");
         }
     }
 
-    // Reponer esta variable @RequestHeader("my-authorization") String token
+    @PostMapping("/forced")
+    public ResponseEntity<String> createForcedMatch(@RequestHeader("Authorization") String token,
+            @RequestBody final NewMatch match) {
+        String extractedUsername;
+        System.out.println("Token received: " + token);
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+        String bluePlayer = match.bluePlayer;
+        String greenPlayer = match.greenPlayer;
+        String gameMode = match.gameMode;
+        if (bluePlayer == null || greenPlayer == null || gameMode == null) {
+            return ResponseEntity.badRequest().body("Missing parameters");
+        }
+        if (bluePlayer.equals(greenPlayer)) {
+            return ResponseEntity.badRequest().body("Players must be different");
+        }
+        if (!gameMode.equals("HitPointLoss") && !gameMode.equals("CreatureSlayer")) {
+            return ResponseEntity.badRequest().body("Invalid game mode");
+        }
+        try {
+            int gameId = matchService.createForcedMatch(bluePlayer, greenPlayer, gameMode);
+            String gameIdString = String.valueOf(gameId);
+            System.out.println("Match created with id: " + gameIdString);
+            String gameToken = jwtUtil.generateMatchToken(extractedUsername, String.valueOf(gameId));
+            return ResponseEntity.ok().body(gameToken);
+        } catch (UserDoesntExistException e) {
+            return ResponseEntity.badRequest().body("User doesn't exist");
+        }
+    }
+
+    @PostMapping("/join/{matchId}")
+    public ResponseEntity<String> joinMatch(@RequestHeader("Authorization") String token,
+            @PathVariable int matchId) {
+        String extractedUsername;
+        try {
+            extractedUsername = jwtUtil.extractUsername(token);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            return ResponseEntity.badRequest().body("Invalid token");
+        }
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Invalid match id");
+        }
+        Match match = matchService.getMatch(matchId);
+        if (!match.getPlayer(PlayerZone.Blue).getUsername().equals(extractedUsername)
+                && !match.getPlayer(PlayerZone.Green).getUsername().equals(extractedUsername)) {
+            return ResponseEntity.badRequest().body("User can not join this match");
+        }
+        String gameToken = jwtUtil.generateMatchToken(extractedUsername, String.valueOf(matchId));
+        return ResponseEntity.ok(gameToken);
+
+    }
+
     @GetMapping
-    public ResponseEntity<MatchInformation> getMatch() {
-        // String extractedMatchId = jwtUtil.extractUsername(token);
-        // int matchId = Integer.parseInt(extractedMatchId);
-        // if (matchId < 1 || matchId > matchService.totalGames) {
-        // return ResponseEntity.badRequest().build();
-        // }
-        int matchId = 1;
+    public ResponseEntity<MatchInformation> getMatch(@RequestHeader("Authorization") String token) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        System.out.println(extractedMatchId);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
         try {
             MatchInformation matchInformation = matchService.getMatchInformation(matchId);
             return ResponseEntity.ok().body(matchInformation);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
-
     }
 
     @PostMapping("/start")
-    public ResponseEntity<MatchInformation> startMatch(@RequestHeader("my-authorization") String token) {
-        // String extractedMatchId = jwtUtil.extractUsername(token);
-        // int matchId = Integer.parseInt(extractedMatchId);
-        // if (matchId < 1 || matchId > matchService.totalGames) {
-        // return ResponseEntity.badRequest().build();
-        // }
-        int matchId = 1;
+    public ResponseEntity<MatchInformation> startMatch(@RequestHeader("Authorization") String token) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
         try {
             return ResponseEntity.ok().body(matchService.startMatch(matchId));
         } catch (MatchAlreadyStartedException e) {
@@ -99,14 +165,13 @@ public class MatchController {
     }
 
     @GetMapping("/{player}")
-    public ResponseEntity<PlayerMatchInformation> getPlayerInformation(@RequestHeader("my-authorization") String token,
+    public ResponseEntity<PlayerMatchInformation> getPlayerInformation(@RequestHeader("Authorization") String token,
             @PathVariable String player) {
-        // String extractedMatchId = jwtUtil.extractUsername(token);
-        // int matchId = Integer.parseInt(extractedMatchId);
-        // if (matchId < 1 || matchId > matchService.totalGames) {
-        // return ResponseEntity.badRequest().build();
-        // }
-        int matchId = 1;
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
         if (!player.equals("blue") && !player.equals("green")) {
             return ResponseEntity.badRequest().build();
         }
@@ -127,15 +192,13 @@ public class MatchController {
     }
 
     @GetMapping("/{player}/hand")
-    public ResponseEntity<List<CardInGameInformation>> getHand(@RequestHeader("my-authorization") String token,
+    public ResponseEntity<List<CardInGameInformation>> getHand(@RequestHeader("Authorization") String token,
             @PathVariable String player) {
-        // Add validation to check who is viewing the hand
-        // String extractedMatchId = jwtUtil.extractUsername(token);
-        // int matchId = Integer.parseInt(extractedMatchId);
-        // if (matchId < 1 || matchId > matchService.totalGames) {
-        // return ResponseEntity.badRequest().build();
-        // }
-        int matchId = 1;
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
         if (!player.equals("blue") && !player.equals("green")) {
             return ResponseEntity.badRequest().build();
         }
@@ -156,8 +219,13 @@ public class MatchController {
     }
 
     @GetMapping("/{player}/played-cards")
-    public ResponseEntity<List<CardInGameInformation>> getCardsInZones(@PathVariable String player) {
-        int matchId = 1;
+    public ResponseEntity<List<CardInGameInformation>> getCardsInZones(@RequestHeader("Authorization") String token,
+            @PathVariable String player) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().build();
+        }
         if (!player.equals("blue") && !player.equals("green")) {
             return ResponseEntity.badRequest().build();
         }
@@ -179,15 +247,13 @@ public class MatchController {
     }
 
     @PostMapping("/summon")
-    public ResponseEntity<String> summonCard(@RequestHeader("my-authorization") String token,
+    public ResponseEntity<String> summonCard(@RequestHeader("Authorization") String token,
             @RequestBody SummonCard summonCard) {
-        // String extractedMatchId = jwtUtil.extractUsername(token);
-        // int matchId = Integer.parseInt(extractedMatchId);
-        // if (matchId < 1 || matchId > matchService.totalGames) {
-        // return ResponseEntity.badRequest().body("Error summoning card: match not
-        // found");
-        // }
-        int matchId = 1;
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             CardName cardName = CardName.valueOf(summonCard.cardName);
             ActiveZoneType zone = ActiveZoneType.valueOf(summonCard.zone);
@@ -201,8 +267,13 @@ public class MatchController {
     }
 
     @PostMapping("/skip")
-    public ResponseEntity<String> skipToPhase(@RequestBody SkipToPhase skipToPhase) {
-        int matchId = 1;
+    public ResponseEntity<String> skipToPhase(@RequestHeader("Authorization") String token,
+            @RequestBody SkipToPhase skipToPhase) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             PlayerZone playerZone = PlayerZone.valueOf(skipToPhase.username);
             PhaseType phase = PhaseType.valueOf(skipToPhase.phase);
@@ -213,8 +284,13 @@ public class MatchController {
     }
 
     @PostMapping("/attack")
-    public ResponseEntity<String> attackPlayer(@RequestBody CardAttack cardAttack) {
-        int matchId = 1;
+    public ResponseEntity<String> attackPlayer(@RequestHeader("Authorization") String token,
+            @RequestBody CardAttack cardAttack) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             CardName cardName = CardName.valueOf(cardAttack.cardName);
             return ResponseEntity.ok().body(matchService.attackPlayer(matchId, cardName, cardAttack.idx));
@@ -223,9 +299,14 @@ public class MatchController {
         }
     }
 
-    @PostMapping("/attack-creature")
-    public ResponseEntity<String> attackCreature(@RequestBody CardAttack cardAttack) {
-        int matchId = 1;
+    @PostMapping("/attack/creature")
+    public ResponseEntity<String> attackCreature(@RequestHeader("Authorization") String token,
+            @RequestBody CardAttack cardAttack) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             CardName cardName = CardName.valueOf(cardAttack.cardName);
             CardName cardTarget = CardName.valueOf(cardAttack.cardNameTarget);
@@ -236,8 +317,12 @@ public class MatchController {
     }
 
     @PostMapping("/skip-reaction")
-    public ResponseEntity<String> skipReaction() {
-        int matchId = 1;
+    public ResponseEntity<String> skipReaction(@RequestHeader("Authorization") String token) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             return ResponseEntity.ok().body(matchService.skipReaction(matchId));
         } catch (Exception e) {
@@ -246,20 +331,39 @@ public class MatchController {
     }
 
     @PostMapping("/activate-artifact")
-    public ResponseEntity<String> activateArtifact(@RequestBody ActivateArtifact activateArtifact) {
-        int matchId = 1;
+    public ResponseEntity<String> activateArtifact(@RequestHeader("Authorization") String token,
+            @RequestBody ActivateArtifact activateArtifact) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             CardName cardName = CardName.valueOf(activateArtifact.actifact);
+            Optional<PlayerZone> playerTarget;
+            try {
+                playerTarget = Optional.ofNullable(PlayerZone.valueOf(activateArtifact.playerTarget));
+            } catch (Exception e) {
+                playerTarget = Optional.empty();
+            }
             return ResponseEntity.ok().body(matchService.activateArtifact(matchId, cardName,
-                    activateArtifact.idx));
+                    activateArtifact.idx, playerTarget, activateArtifact.cardsTarget));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error activating artifact: " + e);
+            e.printStackTrace();
+
+            return ResponseEntity.internalServerError()
+                    .body("Error activating artifact: " + e);
         }
     }
 
     @PostMapping("/activate-action")
-    public ResponseEntity<String> activateAction(@RequestBody ActivateAction activateAction) {
-        int matchId = 1;
+    public ResponseEntity<String> activateAction(@RequestHeader("Authorization") String token,
+            @RequestBody ActivateAction activateAction) {
+        String extractedMatchId = jwtUtil.extractMatchId(token);
+        int matchId = Integer.parseInt(extractedMatchId);
+        if (matchId < 1 || matchId > matchService.totalGames) {
+            return ResponseEntity.badRequest().body("Error summoning card: match not found");
+        }
         try {
             CardName cardName = CardName.valueOf(activateAction.action);
             return ResponseEntity.ok().body(matchService.activateAction(matchId, cardName,

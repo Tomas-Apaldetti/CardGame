@@ -1,11 +1,10 @@
 package com.core.apirest.model;
 
+import java.util.List;
+
 public class ActivateArtifact {
     public String actifact;
     public int idx;
-
-    public ActivateArtifact() {
-        this.actifact = null;
-        this.idx = 0;
-    }
+    public String playerTarget;
+    public List<CardTarget> cardsTarget;
 }

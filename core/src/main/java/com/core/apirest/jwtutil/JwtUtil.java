@@ -23,6 +23,17 @@ public class JwtUtil {
         return createToken(claims, username);
     }
 
+    public String generateMatchToken(String username, String matchId) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("matchId", matchId);
+        return createToken(claims, username);
+    }
+
+    public String extractMatchId(String token) {
+        String extractedToken = token.substring(7);
+        return extractClaim(extractedToken, claims -> claims.get("matchId", String.class));
+    }
+
     private String createToken(Map<String, Object> claims, String subject) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + 1000 * 60 * 60); // Token expiration time (1 hour)
@@ -52,6 +63,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
+        System.out.println("Token: " + token);
         return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
     }
 
