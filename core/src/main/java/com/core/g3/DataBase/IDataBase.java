@@ -1,5 +1,7 @@
 package com.core.g3.DataBase;
 
+import java.util.List;
+
 import com.core.g3.User.UserDB;
 
 public interface IDataBase {
@@ -8,4 +10,6 @@ public interface IDataBase {
     public boolean existsUser(String userName);
 
     public UserDB getUser(String userName);
+
+    public List<UserDB> getUsers();
 }

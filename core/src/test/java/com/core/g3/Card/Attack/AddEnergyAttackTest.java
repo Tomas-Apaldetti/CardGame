@@ -2,7 +2,6 @@ package com.core.g3.Card.Attack;
 
 import com.core.g3.Card.Attack.Mocks.AttackMock;
 import com.core.g3.Card.CardBuilder;
-import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Card.Type.Creature.Attribute;
 import com.core.g3.Commons.Amount;

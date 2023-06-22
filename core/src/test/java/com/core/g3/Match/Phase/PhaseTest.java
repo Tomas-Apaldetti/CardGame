@@ -1,21 +1,5 @@
 package com.core.g3.Match.Phase;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.core.g3.Card.Action.AddEnergyAction;
-import com.core.g3.Card.Artifact.AddEnergyArtifact;
-import com.core.g3.Card.Artifact.IArtifactEffect;
-import com.core.g3.Commons.Amount;
-import com.core.g3.Match.Player.Resources.EnergyType;
-import org.junit.jupiter.api.Test;
-
-import com.core.g3.Card.Card;
-import com.core.g3.Card.CardBuilder;
-import com.core.g3.Card.CardName;
-
 public class PhaseTest {
     //
     // @Test

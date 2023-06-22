@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Card.Type.Exceptions.CardTypeIsAlreadyContainedInCardException;
 import com.core.g3.Match.Zone.ActiveZoneType;
 
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CardTypeBuilderTest {
 

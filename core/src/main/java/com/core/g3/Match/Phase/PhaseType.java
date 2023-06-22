@@ -4,5 +4,7 @@ public enum PhaseType {
     Initial,
     Main,
     Attack,
-    End
+    End,
+    Reaction,
+    NotPlayable
 }

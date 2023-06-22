@@ -13,7 +13,7 @@ public interface IDeck {
 
     Collection<ICard> getCards();
 
-    void addCards(Collection<ICard> cards); // TODO -> move?
+    void addCards(Collection<ICard> cards);
 
     void addCard(ICard card);
 

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class GameMode1 extends GameMode {
 
+    private Optional<Player> loser = Optional.empty();
     public GameMode1() {
         this.initialPoints = 20;
         this.maxDeckCards = 60;
@@ -18,6 +19,11 @@ public class GameMode1 extends GameMode {
         this.artifactZoneLimit = 5;
         this.reserveZoneLimit = 0;
         this.initialHandSize = 5;
+        this.gameModeType = GameModeType.HitPointLoss;
+    }
+
+    public GameModeType getGameModeType() {
+        return this.gameModeType;
     }
 
     protected IMatchEndCondition getCondition() {
@@ -35,5 +41,17 @@ public class GameMode1 extends GameMode {
             return Optional.of(player1);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void conditionMet(Player who) {
+        if(this.loser.isPresent()){
+            return;
+        }
+        this.loser = Optional.ofNullable(who);
+
+        if(this.match != null){
+            this.match.setWinner(this.match.getRival(who));
+        }
     }
 }

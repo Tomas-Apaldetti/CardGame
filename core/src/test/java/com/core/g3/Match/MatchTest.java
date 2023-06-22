@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import com.core.g3.Match.Phase.PhaseType;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.Deck;
 import com.core.g3.Match.DeckPlayable.IDeckPlayable;
@@ -48,8 +46,10 @@ public class MatchTest {
         Player playerGreen = gameMode.addPlayer(new User("green"), basicDeck);
 
         Match match = new Match(playerBlue, playerGreen, gameMode);
-        playerGreen.affectMatchEndCondition(new Amount(6));
+        match.startMatch(PlayerZone.Green);
+        playerGreen.affectMatchEndCondition(new Amount(7));
         Optional<PlayerZone> playerZoneGreen = Optional.of(PlayerZone.Green);
+        match.skipToPhase(PlayerZone.Green, PhaseType.Initial);
         assertEquals(playerZoneGreen, match.getWinner());
     }
 
@@ -84,7 +84,7 @@ public class MatchTest {
         match.summon(PlayerZone.Blue, CardName.Antimagic, ActiveZoneType.Combat);
 
         assertEquals(1,
-                playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
+                playerBlue.getZone(ActiveZoneType.Combat).currentCardCount());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class MatchTest {
         match.startMatch(PlayerZone.Blue);
 
         assertEquals(0,
-                playerBlue.seeActiveZone(ActiveZoneType.Combat).currentCardCount());
+                playerBlue.getZone(ActiveZoneType.Combat).currentCardCount());
         assertThrows(Throwable.class, () -> match.summon(PlayerZone.Blue, CardName.Alchemist, ActiveZoneType.Combat));
     }
 

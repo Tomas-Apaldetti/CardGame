@@ -20,6 +20,12 @@ public class MatchDriverClass implements MatchDriver<ICard> {
         this.match = match;
     }
 
+    private void skipReactions(){
+        if(this.shouldSkipReactions){
+            this.match.skipReaction();
+            this.match.skipReaction();
+        }
+    }
     @Override
     public List<DriverCardName> deckOrder(DriverMatchSide player) {
         return match.getPlayer(DriverMapper.toPlayerZone(player)).retrieveDeckOrder();
@@ -60,21 +66,20 @@ public class MatchDriverClass implements MatchDriver<ICard> {
     @Override
     public void attackCreature(ICard creature, int index, ICard target) {
         this.match.attackCreature(creature, index, target);
+        this.skipReactions();
     }
 
     @Override
     public void attackPlayer(ICard creature, int index) {
         this.match.attackPlayer(creature, index);
+        this.skipReactions();
     }
 
     @Override
     public void activateArtifact(ICard artifact, int index, Optional<DriverMatchSide> targetPlayer,
             List<ICard> targets) {
         this.match.activateArtifact(artifact, index, DriverMapper.toOptionalPlayerZone(targetPlayer), targets);
-        if(this.shouldSkipReactions){
-            this.match.skipReaction();
-            this.match.skipReaction();
-        }
+        this.skipReactions();
     }
 
     @Override
@@ -84,10 +89,7 @@ public class MatchDriverClass implements MatchDriver<ICard> {
         CardName cardName = DriverMapper.toCardName(card);
         this.match.activateAction(playerZone, cardName, index, DriverMapper.toOptionalPlayerZone(targetPlayer),
                 targetCards);
-        if(this.shouldSkipReactions){
-            this.match.skipReaction();
-            this.match.skipReaction();
-        }
+        this.skipReactions();
     }
 
     @Override
@@ -129,6 +131,7 @@ public class MatchDriverClass implements MatchDriver<ICard> {
 
     @Override
     public Optional<DriverMatchSide> winner() {
+
         return DriverMapper.toOptionalDriverMatchSide(this.match.getWinner());
     }
 }

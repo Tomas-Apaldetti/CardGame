@@ -1,9 +1,6 @@
 package com.core.g3.Card.Attack;
 
 import com.core.g3.Card.Attack.Mocks.AttackMock;
-import com.core.g3.Deck.Deck;
-import com.core.g3.Deck.IDeck;
-import com.core.g3.Match.DeckPlayable.DeckPlayable;
 import com.core.g3.Match.Player.Resources.EnergyType;
 import com.core.g3.Mock.Exceptions.ExpectedException;
 import com.core.g3.Card.Attack.Mocks.PlayableDeckMock;

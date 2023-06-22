@@ -1,8 +1,5 @@
 package com.core.g3.Match.Zone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.core.g3.Card.Cost.Exception.CanNotPayException;
 import com.core.g3.Card.Type.Exceptions.CardTypeNoSummonableInZoneException;
 import com.core.g3.Match.Player.Resources.EnergyType;
@@ -12,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import com.core.g3.Card.Card;
 import com.core.g3.Card.CardBuilder;
 import com.core.g3.Card.CardName;
-import com.core.g3.Card.Effects.IEffect;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
 
@@ -20,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ActiveZoneTest {
-
-    private final List<IEffect> effects = new TestEffects().effects;
 
     @Test
     public void addCardNoCostEmptyZoneOk() {
@@ -133,15 +127,4 @@ public class ActiveZoneTest {
         assertEquals(1, artifactsZone.currentCardCount());
     }
 
-    private class TestEffects {
-        public List<IEffect> effects;
-
-        public TestEffects() {
-            this.effects = new ArrayList<IEffect>();
-            this.effects.add(new TestEffect());
-        }
-    }
-
-    private class TestEffect implements IEffect {
-    }
 }

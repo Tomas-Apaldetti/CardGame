@@ -7,6 +7,7 @@ import com.core.g3.Card.Cost.NullInvocationCost;
 import com.core.g3.Card.Type.CardType;
 import com.core.g3.Card.Type.CardTypeName;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class CardTypeAction extends CardType {
     }
 
     @Override
-    public OriginalAction action(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction action(OriginalAction action, List<IAffectable> affected, Player user, Player rival) {
         return this.effect.apply(action, affected, user, rival);
     }
 }

@@ -14,37 +14,32 @@ import com.core.g3.Match.CardInGame.CardTypeStateManager.OnceManager;
 import com.core.g3.Match.CardInGame.CardTypeStateManager.AttackStateManager;
 import com.core.g3.Match.CardInGame.AttackableManager.IAttackableManager;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
 import com.core.g3.Match.ResolutionStack.ResolutionStack;
 import com.core.g3.Match.Zone.ActiveZone;
+import com.core.g3.Match.Zone.ActiveZoneType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CardInGame implements IAttackable, IDeathPub {
+public class CardInGame implements IAffectable, IDeathPub {
 
     private final ICard base;
     private final Player owner;
-    private final AttackStateManager attackState;
-    private final OnceManager<IReaction> reactionState;
-    private final OnceManager<IArtifactEffect> artifactState;
+    private AttackStateManager attackState;
+    private OnceManager<IReaction> reactionState;
+    private OnceManager<IArtifactEffect> artifactState;
     private final List<IDeathSub> interested = new ArrayList<>();
+    private final List<IDeathSub> subRemovalsPending = new ArrayList<>();
     private ActiveZone currentZone;
-    private final IAttackableManager health;
+    private IAttackableManager health;
 
     public CardInGame(Player owner, ICard base, ActiveZone summoningZone) {
         this.base = base;
-        this.health = this.base.getHealth();
 
-        this.attackState = new AttackStateManager(this.base.getAttacks());
-        this.attackState.deplete();
-
-        this.artifactState = new OnceManager<>(this.base.getArtifactEffects());
-        this.artifactState.deplete();
-
-        this.reactionState = new OnceManager<>(this.base.getReactionEffects());
-        this.reactionState.deplete();
+        this.initFromBase();
 
         this.currentZone = summoningZone;
 
@@ -52,22 +47,34 @@ public class CardInGame implements IAttackable, IDeathPub {
 
         this.owner = owner;
     }
-    public void putInDiscard(){
+
+    private void initFromBase() {
+        this.health = this.base.getHealth();
+
+        this.attackState = new AttackStateManager(this.base.getAttacks());
+        this.attackState.reset();
+
+        this.artifactState = new OnceManager<>(this.base.getArtifactEffects());
+        this.artifactState.deplete();
+
+        this.reactionState = new OnceManager<>(this.base.getReactionEffects());
+        this.reactionState.deplete();
+    }
+
+    public ActiveZone getCurrentZone() {
+        return this.currentZone;
+    }
+
+    public void putInDiscard() {
         this.owner.discard(this.base);
     }
+
     public void discard() {
         this.currentZone.remove(this);
-        this.putInDiscard();
     }
 
     public ICard getBase() {
         return this.base;
-    }
-
-    public void moveTo(ActiveZone zone) {
-        this.currentZone.remove(this);
-        this.currentZone = zone;
-        this.currentZone.addCard(this);
     }
 
     public OriginalAction attack(IAttackable victim, Player user, Player rival, Amount with) {
@@ -91,7 +98,7 @@ public class CardInGame implements IAttackable, IDeathPub {
         return this.base.artifact(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction artifact(List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction artifact(List<IAffectable> affected, Player user, Player rival) {
         if (!this.artifactState.canActivate()) {
             throw new ArtifactNotUsableException();
         }
@@ -100,13 +107,13 @@ public class CardInGame implements IAttackable, IDeathPub {
     }
 
     public OriginalAction action(Player user, Player rival) {
-        if (!rival.isAttackable()) { // @TODO -> repeat for attack & artifact
+        if (!rival.isAttackable()) {
             throw new ActionNotUsableException();
         }
         return this.base.action(new OriginalAction(this), user, rival);
     }
 
-    public OriginalAction action(List<IAttackable> victim, Player user, Player rival) {
+    public OriginalAction action(List<IAffectable> victim, Player user, Player rival) {
         if (victim.stream().anyMatch(v -> !v.isAttackable())) {
             throw new ActionNotUsableException();
         }
@@ -123,14 +130,33 @@ public class CardInGame implements IAttackable, IDeathPub {
         this.reactionState.reset();
     }
 
-    private void notifyDeath(){
+    private void notifyDeath() {
+        this.removeSubsPending();
         this.interested.forEach(i -> i.notify(this));
+    }
+
+    public int getHealth() {
+        return this.health.current();
+    }
+
+    public Optional<List<Attribute>> getCreatureAttributes() {
+        return this.base.getCreatureAttributes();
+    }
+
+    public boolean isInActiveZone() {
+        return this.currentZone.countsAsActive();
+    }
+
+    public void changeZone(ActiveZone activeZone) {
+        this.remove(this.currentZone);
+        this.currentZone = activeZone;
+        this.add(this.currentZone);
     }
 
     @Override
     public void receiveAttack(Amount damage) {
         this.health.receiveAttack(damage);
-        if(this.isDead()){
+        if (this.health.isDead()) {
             this.notifyDeath();
         }
     }
@@ -146,29 +172,40 @@ public class CardInGame implements IAttackable, IDeathPub {
         this.health.heal(heal);
     }
 
-    public int getHealth() {
-        return this.health.current();
-    }
-
-    public Optional<List<Attribute>> getCreatureAttributes() {
-        return this.base.getCreatureAttributes();
-    }
-
-    public boolean isInActiveZone() {
-        return this.currentZone.countsAsActive();
-    }
-
     @Override
     public void add(IDeathSub sub) {
+        this.removeSubsPending();
         this.interested.add(sub);
     }
 
     @Override
     public void remove(IDeathSub sub) {
-        this.interested.remove(sub);
+        this.subRemovalsPending.add(sub);
     }
 
-    public Player getOwner(){
+    private void removeSubsPending() {
+        this.subRemovalsPending.forEach(s -> this.interested.remove(s));
+        this.subRemovalsPending.clear();
+    }
+
+    @Override
+    public boolean canBeMoved() {
+        return true;
+    }
+
+    @Override
+    public ActiveZoneType currentPlace() {
+        return this.currentZone.getType();
+    }
+
+    public Player getOwner() {
         return this.owner;
+    }
+
+    @Override
+    public void transferTo(ActiveZone zone) {
+        this.currentZone.remove(this);
+        this.changeZone(zone);
+        this.currentZone.addCard(this);
     }
 }

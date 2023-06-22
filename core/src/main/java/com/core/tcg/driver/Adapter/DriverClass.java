@@ -1,8 +1,6 @@
 package com.core.tcg.driver.Adapter;
 
 
-import com.core.g3.Card.Card;
-import com.core.g3.Card.CardFactory;
 import com.core.g3.Card.CardName;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Deck.ICard;

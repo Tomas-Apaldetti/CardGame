@@ -1,9 +1,9 @@
 package com.core.g3.Card.Artifact;
 
 import com.core.g3.Card.Artifact.Exceptions.ArtifactNotUsableException;
-import com.core.g3.Card.Attack.IAttackable;
 import com.core.g3.Commons.Amount;
 import com.core.g3.Match.Player.Player;
+import com.core.g3.Match.ResolutionStack.IAffectable;
 import com.core.g3.Match.ResolutionStack.OriginalAction.Action.HealCard;
 import com.core.g3.Match.ResolutionStack.OriginalAction.ActionType;
 import com.core.g3.Match.ResolutionStack.OriginalAction.OriginalAction;
@@ -24,7 +24,7 @@ public class HealCardArtifact implements IArtifactEffect {
     }
 
     @Override
-    public OriginalAction apply(OriginalAction action, List<IAttackable> affected, Player user, Player rival) {
+    public OriginalAction apply(OriginalAction action, List<IAffectable> affected, Player user, Player rival) {
         action.setType(ActionType.ArtifactEffect);
         action.addEffect(new HealCard(this.healAmount, affected.get(0)));
         return action;

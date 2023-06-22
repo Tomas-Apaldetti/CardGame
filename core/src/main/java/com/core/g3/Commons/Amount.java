@@ -66,4 +66,8 @@ public class Amount {
     public void multiply(Amount increment) {
         this.value = this.value * increment.value;
     }
+
+    public Amount clone(){
+        return new Amount(this.value);
+    }
 }
