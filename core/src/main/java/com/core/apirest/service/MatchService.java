@@ -66,10 +66,17 @@ public class MatchService {
         newGreenPlayer.add(EnergyType.Fire, new Amount(100));
         newGreenPlayer.add(EnergyType.Water, new Amount(100));
         newGreenPlayer.add(EnergyType.Plant, new Amount(100));
+        // Adding energies to players for testing purposes
+
+        // Create deck only for testing purposes
         newBluePlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Alchemist));
+        newBluePlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Orc));
+        newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.MagicSword));
         newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Goblin));
         newGreenPlayer.getDeck().putCardOnTop(CardFactory.createCard(CardName.Hospital));
-        // Adding energies to players for testing purposes
+        // Create deck only for testing purposes
+
+        newGreenPlayer.affectMatchEndCondition(new Amount(11));
 
         Match newMatch = new Match(newBluePlayer, newGreenPlayer, newGameMode);
         this.totalGames++;
@@ -199,10 +206,14 @@ public class MatchService {
         return "Artifact activated";
     }
 
-    public String activateAction(int matchId, CardName cardName, int idx) {
+    public String activateAction(int matchId, CardName cardName, int idx, Optional<PlayerZone> playerZoneOptional,
+            List<CardTarget> cardsTargetList) {
         Match match = this.getMatch(matchId);
+        List<ICard> cardsTarget = this.getCardsTarget(match, cardsTargetList);
+        System.out.println("Cards target selected: "
+                + cardsTarget.stream().map(card -> card.getName()).collect(Collectors.toList()));
         PlayerZone playerZone = match.currentActivePlayerZone();
-        match.activateAction(playerZone, cardName, idx, Optional.empty(), new ArrayList<>());
+        match.activateAction(playerZone, cardName, idx, playerZoneOptional, cardsTarget);
         return "Action activated";
     }
 

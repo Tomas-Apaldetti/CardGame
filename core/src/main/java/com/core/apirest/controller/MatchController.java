@@ -366,8 +366,15 @@ public class MatchController {
         }
         try {
             CardName cardName = CardName.valueOf(activateAction.action);
+            Optional<PlayerZone> playerTarget;
+            try {
+                playerTarget = Optional.ofNullable(PlayerZone.valueOf(activateAction.playerTarget));
+            } catch (Exception e) {
+                System.out.println("No player target in activate-action");
+                playerTarget = Optional.empty();
+            }
             return ResponseEntity.ok().body(matchService.activateAction(matchId, cardName,
-                    activateAction.idx));
+                    activateAction.idx, playerTarget, activateAction.cardsTarget));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error activating action: " + e);
         }
